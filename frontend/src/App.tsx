@@ -12,7 +12,24 @@ function Register() {
         <input type='password'></input>
         <button type='submit'>Register</button>
       </form>
-  
+
+    </>
+  )
+}
+
+function Login() {
+
+  return (
+    <>
+      <h1>Login</h1>
+      <form>
+        <label>Email:</label>
+        <input type='email'></input>
+        <label>Password:</label>
+        <input type='password'></input>
+        <button type='submit'>Login</button>
+      </form>
+
     </>
   )
 }
@@ -20,7 +37,7 @@ function Register() {
 
 function App() {
 
-  
+
 
   return (
     <>

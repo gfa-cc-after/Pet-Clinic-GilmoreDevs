@@ -1,9 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 
+function Register() {
+  return (
+    <>
+      <h1>Register</h1>
+      <form>
+        <label>Email:</label>
+        <input type='email'></input>
+        <label>Password:</label>
+        <input type='password'></input>
+        <button type='submit'>Register</button>
+      </form>
+  
+    </>
+  )
+}
+
+
 function App() {
+
+  
+
   return (
     <>
       <h1>Home</h1>

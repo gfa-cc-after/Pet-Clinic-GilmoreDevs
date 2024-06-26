@@ -25,6 +25,9 @@ jobs:
 
       - name: Run Super-Linter
         uses: super-linter/super-linter@v6.6.0
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Java
         uses: actions/setup-java@v4

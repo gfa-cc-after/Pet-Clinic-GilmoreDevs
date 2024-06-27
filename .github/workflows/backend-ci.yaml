@@ -19,26 +19,37 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Run Super-Linter
-        uses: super-linter/super-linter@v6.6.0
-        env:
-          # To report GitHub Actions status checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 21
-      - name: Setup Maven
-        uses: actions/setup-java@v4
+          java-version: '21'
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
         with:
-          distribution: 'maven'
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Run Maven build
         run: mvn install -DskipTests
       - name: Run tests
         run: mvn test
+
+      - name: Run check style
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: 'github-pr-check'
+          tool_name: 'testtool'
+          fail_on_error: true
+          level: warning,error

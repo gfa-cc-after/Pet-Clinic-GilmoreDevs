@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     userRepository.save(newUser);
   }
   
-  private RegisterUserDto mapToDTO(User user) {
+  private RegisterUserDto mapToDto(User user) {
     RegisterUserDto registerUserDto = modelMapper.map(user, RegisterUserDto.class);
     return registerUserDto;
   }

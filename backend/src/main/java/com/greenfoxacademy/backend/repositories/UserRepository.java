@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Repository to manage {@link User} entities.
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
-
 }

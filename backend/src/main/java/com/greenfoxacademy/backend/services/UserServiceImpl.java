@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
   }
   
   private RegisterUserDto mapToDTO(User user) {
-    RegisterUserDto registerUserDTO = modelMapper.map(user, RegisterUserDto.class);
-    return registerUserDTO;
+    RegisterUserDto registerUserDto = modelMapper.map(user, RegisterUserDto.class);
+    return registerUserDto;
   }
   
   private User mapToEntity(RegisterUserDto userDto) {

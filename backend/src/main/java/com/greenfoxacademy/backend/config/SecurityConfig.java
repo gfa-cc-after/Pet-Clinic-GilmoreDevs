@@ -10,14 +10,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 
 /**
- * To give security permission to all endpoints
+ * To give security permission to all endpoints.
  */
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
   /**
-   * To give security permission to all endpoints
+   * To give security permission to all endpoints.
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

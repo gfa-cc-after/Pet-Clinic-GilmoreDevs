@@ -19,8 +19,8 @@ function Login() {
         <input type='password'></input>
         <button type='submit'>Login</button>
       </form>
-      <Link to='/'>Main</Link>
-      <Link to='/register'>Register</Link>
+      <Link className={"links"} to='/'>Main</Link>
+      <Link className={"links"} to='/register'>Register</Link>
 
     </>
   )
@@ -31,15 +31,18 @@ function Register() {
     <>
       <h1>Register</h1>
       <form>
+        <label>First Name:</label>
+        <input type='text'></input>
+        <label>Last Name:</label>
+        <input type='text'></input>
         <label>Email:</label>
         <input type='email'></input>
         <label>Password:</label>
         <input type='password'></input>
         <button type='submit'>Register</button>
       </form>
-      <Link to='/login'>Login</Link>
-      <Link to='/'>Main</Link>
-
+      <Link className={"links"} to='/login'>Login</Link>
+      <Link className={"links"} to='/'>Main</Link>
     </>
   )
 }
@@ -50,8 +53,8 @@ function Main() {
     <>
       <h1>Home</h1>
       <p>Welcome to Gilmore Devs Pet Clinic!</p>
-      <Link to='/login'>Login</Link>
-      <Link to='/register'>Register</Link>
+      <Link className={"links"} to='/login'>Login</Link>
+      <Link className={"links"} to='/register'>Register</Link>
     </>
   )
 }

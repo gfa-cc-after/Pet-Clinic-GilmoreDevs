@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
   void register(RegisterUserDto userDto);
+
   Boolean emailValidation(String email);
 
   boolean existsByEmail(String email);

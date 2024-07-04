@@ -22,11 +22,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void register(RegisterUserDto userDto) {
-    if (emailValidation(userDto.getEmail()) && !userRepository.existsByEmail(userDto.getEmail())) {
-      User user = this.mapToEntity(userDto);
-      user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-      userRepository.save(user);
-    }
+    User user = this.mapToEntity(userDto);
+    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    userRepository.save(user);
   }
 
   private RegisterUserDto mapToDto(User user) {
@@ -39,7 +37,12 @@ public class UserServiceImpl implements UserService {
     return user;
   }
 
-  private Boolean emailValidation(String email) {
+  public Boolean emailValidation(String email) {
     return EmailValidator.getInstance().isValid(email);
+  }
+
+  @Override
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
   }
 }

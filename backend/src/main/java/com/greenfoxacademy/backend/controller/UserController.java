@@ -18,7 +18,13 @@ public class UserController {
 
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@RequestBody RegisterUserDto registerUserDto) {
-    userService.register(registerUserDto);
-    return ResponseEntity.ok().build();
+    if (!userService.emailValidation(registerUserDto.getEmail())) {
+      return ResponseEntity.badRequest().body("Email is not valid!");
+    } else if (userService.existsByEmail(registerUserDto.getEmail())) {
+      return ResponseEntity.badRequest().body("Email is already exist!");
+    } else {
+      userService.register(registerUserDto);
+      return ResponseEntity.ok().build();
+    }
   }
 }

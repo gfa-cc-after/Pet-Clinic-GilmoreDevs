@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void register(RegisterUserDto userDto) {
-    if (emailValidation(userDto.getEmail())) {
+    if (emailValidation(userDto.getEmail()) && !userRepository.existsByEmail(userDto.getEmail())) {
       User user = this.mapToEntity(userDto);
       user.setPassword(passwordEncoder.encode(userDto.getPassword()));
       userRepository.save(user);

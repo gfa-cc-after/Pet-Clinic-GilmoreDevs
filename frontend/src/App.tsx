@@ -39,7 +39,7 @@ function Register() {
     console.log('lastName:',lastName);
     console.log('email:',email);
     console.log('password:',password);
-    fetch('http://localhost:5180/register', {
+    fetch('http://localhost:8080/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

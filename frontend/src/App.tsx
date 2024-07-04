@@ -40,6 +40,7 @@ function Register() {
     console.log('email:',email);
     console.log('password:',password);
     fetch('http://localhost:8080/register', {
+      mode: 'cors',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

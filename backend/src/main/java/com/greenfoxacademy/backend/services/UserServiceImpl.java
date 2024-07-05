@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
 
   private final UserRepository userRepository;
-  private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
   @Override
   public void register(RegisterUserDto userDto) {

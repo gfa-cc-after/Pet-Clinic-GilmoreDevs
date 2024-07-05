@@ -66,3 +66,41 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+label, input, button {
+  margin-bottom: 10px; /* Adds space between form elements */
+}
+
+input, button {
+  padding: 8px;
+  border-radius: 4px;
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border: none;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.links {
+  display: block; /* Makes each link take up a full line */
+  margin-bottom: 10px; /* Adds space between the links */
+  color: #007BFF; /* Set the color of the links */
+  text-decoration: none; /* Removes the underline from links */
+}

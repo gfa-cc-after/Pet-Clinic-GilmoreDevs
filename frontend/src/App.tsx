@@ -7,6 +7,7 @@ import {
   Link,
 } from "react-router-dom";
 import React, {useState} from "react";
+import validator from "validator";
 
 function Login() {
 
@@ -32,6 +33,7 @@ function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
@@ -39,19 +41,23 @@ function Register() {
     console.log('lastName:',lastName);
     console.log('email:',email);
     console.log('password:',password);
-    fetch('http://localhost:8080/register', {
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      })
-    })
+      if (validator.isEmail(email)) {
+        fetch('http://localhost:8080/register', {
+          mode: 'cors',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+          })
+        })
+      } else if (!validator.isEmail(email)) {
+        setMessage("Please, enter valid email!");
+      }
   }
 
   const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +80,6 @@ function Register() {
     }
   }
 
-
   return (
     <>
       <h1>Register</h1>
@@ -85,6 +90,7 @@ function Register() {
         <input type='text' name={"lastName"} value={lastName} onChange={saveFormData}></input>
         <label>Email:</label>
         <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
+        <span style={{fontWeight: "bold", color: "red"}}>{message}</span>
         <label>Password:</label>
         <input type='password' name={"password"} value={password} onChange={saveFormData}></input>
         <button type='submit'>Register</button>

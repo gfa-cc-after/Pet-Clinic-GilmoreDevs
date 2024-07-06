@@ -50,6 +50,26 @@
       <version>1.9.0</version>
     </dependency>
     <dependency>
+      <groupId>org.passay</groupId>
+      <artifactId>passay</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.0.10.Final</version>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>edu.vt.middleware</groupId>-->
+<!--      <artifactId>vt-password</artifactId>-->
+<!--      <version>3.1.2</version>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>r05</version>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>

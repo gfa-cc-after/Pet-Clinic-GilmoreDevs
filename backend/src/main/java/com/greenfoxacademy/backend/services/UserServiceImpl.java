@@ -4,7 +4,7 @@ import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-//import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,13 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public Boolean emailValidation(String email) {
-        return true;
-//        return EmailValidator.getInstance().isValid(email);
+        return EmailValidator.getInstance().isValid(email);
     }
-
-//  public Boolean passwordValidation(String password) {
-//    return PasswordConstraintValidator.isValid(password);
-//  }
 
     @Override
     public boolean existsByEmail(String email) {

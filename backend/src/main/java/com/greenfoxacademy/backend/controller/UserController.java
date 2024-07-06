@@ -26,11 +26,11 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-//        if (!userService.emailValidation(registerUserDto.getEmail())) {
-//            return ResponseEntity.badRequest().body("Email is not valid!");
-//        } else if (userService.existsByEmail(registerUserDto.getEmail())) {
-//            return ResponseEntity.badRequest().body("Email is already exist!");
-//        }
+        if (!userService.emailValidation(registerUserDto.getEmail())) {
+            return ResponseEntity.badRequest().body("Email is not valid!");
+        } else if (userService.existsByEmail(registerUserDto.getEmail())) {
+            return ResponseEntity.badRequest().body("Email is already exist!");
+        }
         userService.register(registerUserDto);
         return ResponseEntity.ok().build();
     }

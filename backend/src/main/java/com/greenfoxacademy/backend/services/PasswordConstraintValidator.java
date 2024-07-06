@@ -1,41 +1,42 @@
 package com.greenfoxacademy.backend.services;
 
-import org.passay.*;
-import com.google.common.base.Joiner;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
+import java.util.ArrayList;
+
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
-  
-  @Override
-  public void initialize(ValidPassword constraintAnnotation) {
-    // Initialization code, if required
-  }
-  
-  @Override
-  public boolean isValid(String password, ConstraintValidatorContext context) {
-    PasswordValidator validator = new PasswordValidator(Arrays.asList(
-            new LengthRule(8, 30),
-//            new UppercaseCharacterRule(1),
-//            new DigitCharacterRule(1),
-//            new SpecialCharacterRule(1),
-//            new NumericalSequenceRule(3, false),
-//            new AlphabeticalSequenceRule(3, false),
-//            new QwertySequenceRule(3, false),
-            new WhitespaceRule() // Disallow whitespace
-    ));
-    
-    RuleResult result = validator.validate(new PasswordData(password));
-    if (result.isValid()) {
-      return true;
+
+    @Override
+    public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
+        boolean isValid = true;
+        ArrayList<String> errorMessages = new ArrayList<>();
+        if (password.length() < 8) {
+            errorMessages.add("must be at least 8 characters long");
+            isValid = false;
+        }
+        if (!password.matches(".*\\S.*")) {
+            errorMessages.add("must not contain whitespace");
+            isValid = false;
+        }
+        if (!password.matches(".*\\d.*")) {
+            errorMessages.add("must contain at least one digit");
+            isValid = false;
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            errorMessages.add("must contain at least one uppercase letter");
+            isValid = false;
+        }
+        if (!password.matches(".*[a-z].*")) {
+            errorMessages.add("must contain at least one lowercase letter");
+            isValid = false;
+        }
+        if (!isValid) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Invalid password: " + String.join(", ", errorMessages)).addConstraintViolation();
+        }
+        return isValid;
     }
-    
-    context.disableDefaultConstraintViolation();
-    context.buildConstraintViolationWithTemplate(
-                    Joiner.on(",").join(validator.getMessages(result)))
-            .addConstraintViolation();
-    return false;
-  }
 }

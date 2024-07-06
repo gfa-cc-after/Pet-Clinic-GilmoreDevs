@@ -4,7 +4,7 @@ import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.validator.routines.EmailValidator;
+//import org.apache.commons.validator.routines.EmailValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,38 +15,39 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-  private final UserRepository userRepository;
-  private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-  @Override
-  public void register(RegisterUserDto userDto) {
-    User user = this.mapToEntity(userDto);
-    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    userRepository.save(user);
-  }
+    @Override
+    public void register(RegisterUserDto userDto) {
+        User user = this.mapToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(user);
+    }
 
-  private RegisterUserDto mapToDto(User user) {
-    RegisterUserDto registerUserDto = modelMapper.map(user, RegisterUserDto.class);
-    return registerUserDto;
-  }
+    private RegisterUserDto mapToDto(User user) {
+        RegisterUserDto registerUserDto = modelMapper.map(user, RegisterUserDto.class);
+        return registerUserDto;
+    }
 
-  private User mapToEntity(RegisterUserDto userDto) {
-    User user = modelMapper.map(userDto, User.class);
-    return user;
-  }
+    private User mapToEntity(RegisterUserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        return user;
+    }
 
-  public Boolean emailValidation(String email) {
-    return EmailValidator.getInstance().isValid(email);
-  }
+    public Boolean emailValidation(String email) {
+        return true;
+//        return EmailValidator.getInstance().isValid(email);
+    }
 
 //  public Boolean passwordValidation(String password) {
 //    return PasswordConstraintValidator.isValid(password);
 //  }
 
-  @Override
-  public boolean existsByEmail(String email) {
-    return userRepository.existsByEmail(email);
-  }
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

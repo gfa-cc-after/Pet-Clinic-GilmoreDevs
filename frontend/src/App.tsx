@@ -33,7 +33,7 @@ function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [errMessage, setErrMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
@@ -41,7 +41,9 @@ function Register() {
     console.log('lastName:',lastName);
     console.log('email:',email);
     console.log('password:',password);
+
       if (validator.isEmail(email)) {
+        setErrMessage("");
         fetch('http://localhost:8080/register', {
           mode: 'cors',
           method: 'POST',
@@ -56,7 +58,7 @@ function Register() {
           })
         })
       } else if (!validator.isEmail(email)) {
-        setMessage("Please, enter valid email!");
+        setErrMessage("Please, enter valid email!");
       }
   }
 
@@ -90,7 +92,7 @@ function Register() {
         <input type='text' name={"lastName"} value={lastName} onChange={saveFormData}></input>
         <label>Email:</label>
         <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
-        <span style={{fontWeight: "bold", color: "red"}}>{message}</span>
+        <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
         <label>Password:</label>
         <input type='password' name={"password"} value={password} onChange={saveFormData}></input>
         <button type='submit'>Register</button>

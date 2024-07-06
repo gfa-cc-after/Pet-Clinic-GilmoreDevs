@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.controller;
 
+import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -165,6 +166,22 @@ class UserControllerTest {
                 }
                 """;
         this.mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(content)).andDo(print()).andExpectAll(status().isBadRequest(), content().string("Email is already taken"));
+    }
+
+    @DisplayName("Should return email is duplicated when email is duplicated")
+    @Test
+    void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
+
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
+        String content = """
+                {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "asd@asd.com",
+                    "password": "Aa2aaaaaBBBBaaaaa"
+                }
+                """;
+        this.mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(content)).andDo(print()).andExpectAll(status().isCreated(), header().string("Location", "/users/1"));
     }
 
 }

@@ -23,8 +23,7 @@ public class UserServiceImpl implements UserService {
     public RegisterResponseDto register(RegisterUserDto userDto) throws Exception {
         User user = mapToEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User savedUser = userRepository.save(user);
-        return mapToRegisterResponseDto(savedUser);
+        return mapToRegisterResponseDto(userRepository.save(user));
     }
 
     private RegisterResponseDto mapToRegisterResponseDto(User user) {

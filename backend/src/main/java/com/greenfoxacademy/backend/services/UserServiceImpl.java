@@ -1,10 +1,10 @@
 package com.greenfoxacademy.backend.services;
 
+import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,33 +16,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public void register(RegisterUserDto userDto) {
-        User user = this.mapToEntity(userDto);
+    public RegisterResponseDto register(RegisterUserDto userDto) throws Exception {
+        User user = mapToEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return mapToRegisterResponseDto(savedUser);
     }
 
-    private RegisterUserDto mapToDto(User user) {
-        RegisterUserDto registerUserDto = modelMapper.map(user, RegisterUserDto.class);
-        return registerUserDto;
+    private RegisterResponseDto mapToRegisterResponseDto(User user) {
+        return new RegisterResponseDto(user.getId());
     }
 
     private User mapToEntity(RegisterUserDto userDto) {
-        User user = modelMapper.map(userDto, User.class);
-        return user;
-    }
-
-    public Boolean emailValidation(String email) {
-        return EmailValidator.getInstance().isValid(email);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return modelMapper.map(userDto, User.class);
     }
 }

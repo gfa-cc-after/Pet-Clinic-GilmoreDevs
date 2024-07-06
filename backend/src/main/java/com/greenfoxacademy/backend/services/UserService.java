@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.services;
 
+import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.models.User;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-  void register(RegisterUserDto userDto);
-
-  Boolean emailValidation(String email);
-
-  boolean existsByEmail(String email);
+    RegisterResponseDto register(RegisterUserDto userDto) throws Exception;
 }

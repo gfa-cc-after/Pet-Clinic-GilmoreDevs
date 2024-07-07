@@ -38,10 +38,6 @@ function Register() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
-    console.log('firstName:',firstName);
-    console.log('lastName:',lastName);
-    console.log('email:',email);
-    console.log('password:',password);
       if (validator.isEmail(email)) {
         setErrMessage("");
         setMessage("");

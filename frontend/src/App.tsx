@@ -38,9 +38,9 @@ function Register() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
-      if (validator.isEmail(email)) {
+    setMessage("");
+    if (validator.isEmail(email)) {
         setErrMessage("");
-        setMessage("");
         fetch('http://localhost:8080/register', {
           mode: 'cors',
           method: 'POST',

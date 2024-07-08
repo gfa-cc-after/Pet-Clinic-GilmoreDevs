@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,20 +20,18 @@ import java.util.Map;
  */
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     private final UserService userService;
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-        if (!userService.emailValidation(registerUserDto.getEmail())) {
-            return ResponseEntity.badRequest().body("Email is not valid!");
-        } else if (userService.existsByEmail(registerUserDto.getEmail())) {
-            return ResponseEntity.badRequest().body("Email is already exist!");
+        try {
+            URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
+            return ResponseEntity.created(uri).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        userService.register(registerUserDto);
-        return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

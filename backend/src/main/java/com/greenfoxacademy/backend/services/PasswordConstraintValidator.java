@@ -11,13 +11,18 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
+        if (password == null) {
+            constraintValidatorContext.disableDefaultConstraintViolation();
+            constraintValidatorContext.buildConstraintViolationWithTemplate("Password should be added").addConstraintViolation();
+            return false;
+        }
         boolean isValid = true;
         ArrayList<String> errorMessages = new ArrayList<>();
         if (password.length() < 8) {
             errorMessages.add("must be at least 8 characters long");
             isValid = false;
         }
-        if (!password.matches(".*\\S.*")) {
+        if (password.matches(".*\\s.*")) {
             errorMessages.add("must not contain whitespace");
             isValid = false;
         }

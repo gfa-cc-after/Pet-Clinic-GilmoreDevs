@@ -1,11 +1,10 @@
 package com.greenfoxacademy.backend.controller;
 
+import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.services.UserService;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.greenfoxacademy.backend.dtos.RegisterUserDto;
-import com.greenfoxacademy.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
-  
+
+  /**
+   * This method registers a new user.
+   *
+   * @param registerUserDto the user to be registered
+   *
+   * @return a response entity with the status code and the location of the new user
+   */
   @CrossOrigin (origins = "http://localhost:5173")
   @PostMapping ("/register")
   public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
@@ -38,7 +44,14 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
-  
+
+  /**
+   * This method handles validation exceptions.
+   *
+   * @param ex the exception to be handled
+   *
+   * @return a map with the field name and the error message
+   */
   @ResponseStatus (HttpStatus.BAD_REQUEST)
   @ExceptionHandler (MethodArgumentNotValidException.class)
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

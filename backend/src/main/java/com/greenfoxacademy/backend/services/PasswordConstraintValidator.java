@@ -3,7 +3,6 @@ package com.greenfoxacademy.backend.services;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import java.util.ArrayList;
 
 
@@ -15,8 +14,11 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
   @Override
   public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
     if (password == null) {
-      constraintValidatorContext.disableDefaultConstraintViolation();
-      constraintValidatorContext.buildConstraintViolationWithTemplate("Password should be added").addConstraintViolation();
+      constraintValidatorContext
+              .disableDefaultConstraintViolation();
+      constraintValidatorContext
+              .buildConstraintViolationWithTemplate("Password should be added")
+              .addConstraintViolation();
       return false;
     }
     boolean isValid = true;
@@ -43,7 +45,11 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
     }
     if (!isValid) {
       constraintValidatorContext.disableDefaultConstraintViolation();
-      constraintValidatorContext.buildConstraintViolationWithTemplate("Invalid password: " + String.join(", ", errorMessages)).addConstraintViolation();
+      constraintValidatorContext
+              .buildConstraintViolationWithTemplate(
+                      "Invalid password: " + String.join(", ", errorMessages)
+              )
+              .addConstraintViolation();
     }
     return isValid;
   }

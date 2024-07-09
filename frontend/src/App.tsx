@@ -6,8 +6,10 @@ import {
   RouterProvider,
   Link,
 } from "react-router-dom";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import validator from "validator";
+import PasswordStrengthValidator from './components/PasswordStrengthValidator';
+
 
 function Login() {
 
@@ -35,32 +37,32 @@ function Register() {
   const [password, setPassword] = useState("");
   const [errMessage, setErrMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
-    e.preventDefault()
-    console.log('firstName:',firstName);
-    console.log('lastName:',lastName);
-    console.log('email:',email);
-    console.log('password:',password);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('firstName:', firstName);
+    console.log('lastName:', lastName);
+    console.log('email:', email);
+    console.log('password:', password);
 
-      if (validator.isEmail(email)) {
-        setErrMessage("");
-        fetch('http://localhost:8080/register', {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password,
-          })
+    if (validator.isEmail(email)) {
+      setErrMessage("");
+      fetch('http://localhost:8080/register', {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
         })
-      } else if (!validator.isEmail(email)) {
-        setErrMessage("Please, enter valid email!");
-      }
-  }
+      });
+    } else if (!validator.isEmail(email)) {
+      setErrMessage("Please, enter a valid email!");
+    }
+  };
 
   const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,7 +82,7 @@ function Register() {
       default:
         break;
     }
-  }
+  };
 
   return (
     <>
@@ -92,9 +94,10 @@ function Register() {
         <input type='text' name={"lastName"} value={lastName} onChange={saveFormData}></input>
         <label>Email:</label>
         <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
-        <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
+        <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
         <label>Password:</label>
         <input type='password' name={"password"} value={password} onChange={saveFormData}></input>
+        <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
         <button type='submit'>Register</button>
       </form>
       <Link className={"links"} to='/login'>Login</Link>

@@ -24,7 +24,7 @@ public class UserRegistrationTest {
   private UserRepository userRepository;
 
   @Test
-  public void userIsSuccessfulRegisteredInDatabase() {
+  public void userIsSuccessfulRegisteredInDatabase() throws Exception {
     RegisterUserDto newUser = new RegisterUserDto();
     newUser.setFirstName("John");
     newUser.setLastName("Doe");

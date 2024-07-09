@@ -186,8 +186,8 @@ class UserControllerTest {
                     status().isBadRequest(),
                     jsonPath(
                             "$.password",
-                            is("Invalid password: must be at least 8 characters long, "
-                                    + " must not contain whitespace, must contain at least one digit, "
+                            is("Invalid password: must be at least 8 characters long,"
+                                    + " must not contain whitespace, must contain at least one digit,"
                                     + " must contain at least one uppercase letter,"
                                     + " must contain at least one lowercase letter")
                     ));

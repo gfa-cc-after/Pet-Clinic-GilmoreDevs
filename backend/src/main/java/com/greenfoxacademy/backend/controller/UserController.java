@@ -21,30 +21,30 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-
-    @CrossOrigin(origins = "http://localhost:5173")
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-        try {
-            URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
-            return ResponseEntity.created(uri).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+  private final UserService userService;
+  
+  @CrossOrigin (origins = "http://localhost:5173")
+  @PostMapping ("/register")
+  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
+    try {
+      URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
+      return ResponseEntity.created(uri).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
-
+  }
+  
+  @ResponseStatus (HttpStatus.BAD_REQUEST)
+  @ExceptionHandler (MethodArgumentNotValidException.class)
+  public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    Map<String, String> errors = new HashMap<>();
+    ex.getBindingResult().getAllErrors().forEach((error) -> {
+      String fieldName = ((FieldError) error).getField();
+      String errorMessage = error.getDefaultMessage();
+      errors.put(fieldName, errorMessage);
+    });
+    return errors;
+  }
+  
 }
 

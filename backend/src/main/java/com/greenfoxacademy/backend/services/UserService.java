@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-    RegisterResponseDto register(RegisterUserDto userDto) throws Exception;
+  RegisterResponseDto register(RegisterUserDto userDto) throws Exception;
 }

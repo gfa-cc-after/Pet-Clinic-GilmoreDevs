@@ -15,16 +15,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table (name = "_user")
 public class User {
-
-    @Id
-    @GeneratedValue
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    @Column(unique = true)
-    private String email;
-    private String password;
-
+  
+  @Id
+  @GeneratedValue
+  private Integer id;
+  private String firstName;
+  private String lastName;
+  @Column (unique = true)
+  private String email;
+  private String password;
+  
 }

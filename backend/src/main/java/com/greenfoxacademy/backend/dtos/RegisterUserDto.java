@@ -16,12 +16,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterUserDto {
-    @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    @Email
-    private String email;
-    @ValidPassword
-    private String password;
+  @NotBlank
+  private String firstName;
+  @NotBlank
+  private String lastName;
+  @Email
+  private String email;
+  @ValidPassword
+  private String password;
 }

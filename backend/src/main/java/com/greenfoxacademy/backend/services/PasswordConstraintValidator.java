@@ -7,6 +7,9 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 
 
+/**
+ * Custom validator for password field.
+ */
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
   
   @Override

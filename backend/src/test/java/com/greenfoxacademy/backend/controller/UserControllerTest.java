@@ -220,7 +220,8 @@ class UserControllerTest {
   @Test
   void shouldReturnEmailIsIsDuplicatedWhenEmailIsDuplicated() throws Exception {
 
-    Mockito.when(userRepository.save(Mockito.any())).thenThrow(new RuntimeException("Email is already taken"));
+    Mockito.when(userRepository.save(Mockito.any()))
+        .thenThrow(new RuntimeException("Email is already taken"));
     String content = """
         {
             "firstName": "John",

@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -37,18 +36,18 @@ class UserControllerTest {
   void shouldReturnPasswordIsNotPresentWhenPasswordIsNotPresent() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath("$.password", is("Password should be added"))
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath("$.password", is("Password should be added"))
+        );
   }
 
   @DisplayName("Should return password is short when password is short")
@@ -56,21 +55,21 @@ class UserControllerTest {
   void shouldReturnPasswordIsNotLongEnoughWhenPasswordIsShort() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "1Aa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "1Aa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.password",
-                            is("Invalid password: must be at least 8 characters long"))
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.password",
+                is("Invalid password: must be at least 8 characters long"))
+        );
   }
 
 
@@ -79,22 +78,22 @@ class UserControllerTest {
   void shouldReturnPasswordContainsNoDigitsIfItContainsNoDigits() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "aAaaaaaaaaaaaaaaaaaaaaaa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "aAaaaaaaaaaaaaaaaaaaaaaa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.password",
-                            is("Invalid password: must contain at least one digit")
-                    )
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.password",
+                is("Invalid password: must contain at least one digit")
+            )
+        );
   }
 
 
@@ -103,22 +102,22 @@ class UserControllerTest {
   void shouldReturnPasswordContainsNoUpperCaseIfPasswordContainsNoUppercase() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "1aaaaaaaaaaaaaaaaaaaaaaa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "1aaaaaaaaaaaaaaaaaaaaaaa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.password",
-                            is("Invalid password: must contain at least one uppercase letter")
-                    )
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.password",
+                is("Invalid password: must contain at least one uppercase letter")
+            )
+        );
   }
 
 
@@ -127,22 +126,22 @@ class UserControllerTest {
   void shouldReturnPasswordContainsNoLowerCaseIfPasswordContainsNoLowercase() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "1AAAAAAAAAAAAAAAAAAAAAA"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "1AAAAAAAAAAAAAAAAAAAAAA"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON)
             .content(content))
-            .andExpectAll(status().isBadRequest(),
+        .andExpectAll(status().isBadRequest(),
             jsonPath(
-                    "$.password",
-                    is("Invalid password: must contain at least one lowercase letter")
+                "$.password",
+                is("Invalid password: must contain at least one lowercase letter")
             )
-    );
+        );
   }
 
   @DisplayName("Should return password contains white space when password contains white space")
@@ -150,22 +149,22 @@ class UserControllerTest {
   void shouldReturnPasswordContainsWhiteSpaceIfContainsWhiteSpace() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "1 A c a 2 b B a 2"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "1 A c a 2 b B a 2"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.password",
-                            is("Invalid password: must not contain whitespace")
-                    )
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.password",
+                is("Invalid password: must not contain whitespace")
+            )
+        );
   }
 
   @DisplayName("Should return password is invalid with all errors if it has all errors")
@@ -173,24 +172,24 @@ class UserControllerTest {
   void shouldReturnPasswordIsInvalidWithAllErrorsIfItHasAllErrors() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john@doe.com",
-                "password": "  "
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@doe.com",
+            "password": "  "
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.password",
-                            is("Invalid password: must be at least 8 characters long,"
-                                    + " must not contain whitespace, must contain at least one digit,"
-                                    + " must contain at least one uppercase letter,"
-                                    + " must contain at least one lowercase letter")
-                    ));
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.password",
+                is("Invalid password: must be at least 8 characters long,"
+                    + " must not contain whitespace, must contain at least one digit,"
+                    + " must contain at least one uppercase letter,"
+                    + " must contain at least one lowercase letter")
+            ));
   }
 
   @DisplayName("Should return email is not valid when email in not valid")
@@ -198,22 +197,22 @@ class UserControllerTest {
   void shouldReturnEmailIsInvalidWhenEmailIsInvalid() throws Exception {
 
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john.doe.com",
-                "password": "Aa2aaaaaBBBBaaaaa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe.com",
+            "password": "Aa2aaaaaBBBBaaaaa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    jsonPath(
-                            "$.email",
-                            is("must be a well-formed email address")
-                    )
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            jsonPath(
+                "$.email",
+                is("must be a well-formed email address")
+            )
+        );
   }
 
 
@@ -223,19 +222,19 @@ class UserControllerTest {
 
     Mockito.when(userRepository.save(Mockito.any())).thenThrow(new RuntimeException("Email is already taken"));
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "asd@asd.com",
-                "password": "Aa2aaaaaBBBBaaaaa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "asd@asd.com",
+            "password": "Aa2aaaaaBBBBaaaaa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isBadRequest(),
-                    content().string("Email is already taken")
-            );
+        .andExpectAll(
+            status().isBadRequest(),
+            content().string("Email is already taken")
+        );
   }
 
   @DisplayName("Should return email is duplicated when email is duplicated")
@@ -244,19 +243,19 @@ class UserControllerTest {
 
     Mockito.when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
     String content = """
-            {
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "asd@asd.com",
-                "password": "Aa2aaaaaBBBBaaaaa"
-            }
-            """;
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "asd@asd.com",
+            "password": "Aa2aaaaaBBBBaaaaa"
+        }
+        """;
     this.mockMvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON).content(content))
-            .andExpectAll(
-                    status().isCreated(),
-                    header().string("Location", "/users/1")
-            );
+        .andExpectAll(
+            status().isCreated(),
+            header().string("Location", "/users/1")
+        );
   }
 
 }

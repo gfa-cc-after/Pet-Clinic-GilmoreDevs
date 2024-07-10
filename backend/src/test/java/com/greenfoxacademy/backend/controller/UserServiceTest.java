@@ -27,7 +27,7 @@ public class UserServiceTest {
   private UserController userController;
 
   @Test
-  public void registerMethodIsSuccessfullyCalled() {
+  public void registerMethodIsSuccessfullyCalled() throws Exception {
     RegisterUserDto registerUserDto = new RegisterUserDto();
     registerUserDto.setFirstName("John");
     registerUserDto.setLastName("Doe");

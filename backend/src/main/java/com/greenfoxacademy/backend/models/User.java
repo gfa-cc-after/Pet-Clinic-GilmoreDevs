@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Represents a user entity in the system. This class is a data model
- * that maps to the user table in the database
+ * that maps to the user table in the database.
  */
 @Data
 @Builder
@@ -26,8 +27,8 @@ public class User {
   private Integer id;
   private String firstName;
   private String lastName;
+  @Column(unique = true)
   private String email;
   private String password;
-
 
 }

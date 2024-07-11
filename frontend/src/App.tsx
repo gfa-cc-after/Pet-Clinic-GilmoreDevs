@@ -1,4 +1,3 @@
-
 import './App.css'
 
 import {
@@ -98,7 +97,7 @@ function Register() {
         <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
         <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
         <label>Password:</label>
-        <input type='password' name={"password"} value={password} onChange={saveFormData}></input>
+        <input type='password' aria-label={"pass"} name={"password"} value={password} onChange={saveFormData}></input>
         <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
         <button type='submit'>Register</button>
         <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
@@ -143,8 +142,7 @@ function App() {
     <div className='App'>
       <RouterProvider router={router} />
     </div>
-
   )
 }
 
-export default App
+export {App, Register}

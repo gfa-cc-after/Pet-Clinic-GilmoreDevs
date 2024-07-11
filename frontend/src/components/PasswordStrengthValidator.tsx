@@ -21,7 +21,7 @@ const PasswordStrengthValidator: React.FC<PasswordStrengthValidatorProps> = ({ p
     <div>
       <ul style={{ color: 'red', fontWeight: 'bold' }}>
         {errors.map((error, index) => (
-          <li key={index}>{error}</li>
+          <li aria-label={'passworderrors'} key={index}>{error}</li>
         ))}
       </ul>
     </div>

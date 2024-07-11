@@ -11,7 +11,7 @@ npm install
 
 Run React
 ```bash
-nmp run dev
+npm run dev
 ```
 
 It was created with Vite

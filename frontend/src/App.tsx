@@ -6,8 +6,10 @@ import {
   RouterProvider,
   Link,
 } from "react-router-dom";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import validator from "validator";
+import PasswordStrengthValidator from './components/PasswordStrengthValidator';
+
 
 function Login() {
 
@@ -38,8 +40,12 @@ function Register() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
-    setMessage("");
-    if (validator.isEmail(email)) {
+    console.log('firstName:',firstName);
+    console.log('lastName:',lastName);
+    console.log('email:',email);
+    console.log('password:',password);
+
+      if (validator.isEmail(email)) {
         setErrMessage("");
         fetch('http://localhost:8080/register', {
           mode: 'cors',
@@ -78,7 +84,7 @@ function Register() {
       default:
         break;
     }
-  }
+  };
 
   return (
     <>
@@ -90,9 +96,10 @@ function Register() {
         <input type='text' name={"lastName"} value={lastName} onChange={saveFormData}></input>
         <label>Email:</label>
         <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
-        <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
+        <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
         <label>Password:</label>
         <input type='password' name={"password"} value={password} onChange={saveFormData}></input>
+        <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
         <button type='submit'>Register</button>
         <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
       </form>

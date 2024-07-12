@@ -18,8 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+
+    /* Needed for the Vitest */
+    "types":  ["vitest/globals"],
+
   },
-  "include": ["src"],
+  "include": ["src", "src/tests/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

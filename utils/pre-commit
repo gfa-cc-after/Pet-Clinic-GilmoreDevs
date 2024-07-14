@@ -1,0 +1,42 @@
+#!/bin/sh
+
+## This script is used to run tests and checkstyle before commiting the code
+## If the tests or checkstyle fails, the commit will be aborted
+
+# Change to the backend directory
+cd backend
+
+# Check if there are any changes to commit
+
+if [ -z "$(git status --porcelain)" ]; then
+    # Working directory clean, nothing to commit, not running things
+    echo "No changes to commit in backend"
+else
+    # Working directory not clean, running tests and checkstyle
+    ## Looking for maven binary
+    if ! [ -x "$(command -v mvn)" ]; then
+        ## If maven not found, print error message and exit
+        echo 'Error: maven is not installed.' >&2
+        echo 'Please install maven (with the recommended package managers) and try again' >&2
+        echo 'On mac, you can install maven using brew: brew install maven
+        brew -> https://brew.sh/
+        maven -> brew install maven' >&2
+        echo 'on linux, you can install maven using apt: sudo apt install maven' >&2
+        echo 'on windows, you can install maven using chocolatey: choco install maven\
+        chocolatey -> https://chocolatey.org/
+        maven -> choco install maven' >&2
+        exit 1
+    else
+        ## If maven is found, run tests and checkstyle
+        echo "Running tests and checkstyle"
+        local maven_result = $(mvn clean install checkstyle:check)
+        if [ $? -eq 0 ]; then
+            echo "Tests and checkstyle passed, hopefully the watchdog will be happy too"
+        else
+            echo "Tests or checkstyle failed"
+            echo "Please fix the issues and try again"
+            echo "Aborting commit"
+            exit 1
+        fi
+    fi
+fi

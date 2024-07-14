@@ -29,14 +29,6 @@ else
     else
         ## If maven is found, run tests and checkstyle
         echo "Running tests and checkstyle"
-        local maven_result = $(mvn clean install checkstyle:check)
-        if [ $? -eq 0 ]; then
-            echo "Tests and checkstyle passed, hopefully the watchdog will be happy too"
-        else
-            echo "Tests or checkstyle failed"
-            echo "Please fix the issues and try again"
-            echo "Aborting commit"
-            exit 1
-        fi
+        mvn clean install checkstyle:check
     fi
 fi

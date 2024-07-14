@@ -22,7 +22,7 @@ else
         brew -> https://brew.sh/
         maven -> brew install maven' >&2
         echo 'on linux, you can install maven using apt: sudo apt install maven' >&2
-        echo 'on windows, you can install maven using chocolatey: choco install maven\
+        echo 'on windows, you can install maven using chocolatey:
         chocolatey -> https://chocolatey.org/
         maven -> choco install maven' >&2
         exit 1

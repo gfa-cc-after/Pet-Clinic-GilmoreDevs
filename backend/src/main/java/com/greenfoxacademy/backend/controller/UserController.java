@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backend.controller;
 
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
+import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.services.UserService;
 import java.net.URI;
@@ -31,7 +33,6 @@ public class UserController {
    * This method registers a new user.
    *
    * @param registerUserDto the user to be registered
-   *
    * @return a response entity with the status code and the location of the new user
    */
   @CrossOrigin (origins = "http://localhost:5173")
@@ -42,6 +43,15 @@ public class UserController {
       return ResponseEntity.created(uri).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponseDto> loginUser(@Validated @RequestBody LoginRequestDto registerUserDto) {
+    try {
+      return ResponseEntity.ok(userService.login(registerUserDto));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
   }
 

@@ -16,21 +16,18 @@ export function Login() {
             },
             body: JSON.stringify({ email, password })
         })
-        .then(async res => {
-            // Ellenőrizd a válasz státuszát
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
+            .then(async res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
 
-            // Próbáld meg parse-olni a választ
-            const data = await res.json().catch(() => {
-                throw new Error('Invalid JSON response');
-            });
+                const data = await res.json().catch(() => {
+                    throw new Error('Invalid JSON response');
+                });
 
-            // Ha minden rendben, logold ki a választ
-            console.log(data);
-        })
-        .catch(error => console.error('Error:', error));
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
     };
 
     const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {

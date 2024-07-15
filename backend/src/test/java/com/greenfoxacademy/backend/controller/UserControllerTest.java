@@ -2,13 +2,14 @@ package com.greenfoxacademy.backend.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,18 +20,27 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
 
+  /**
+   * The UserRepository is mocked, so we can define its behavior in each test.
+   */
   @MockBean
   private UserRepository userRepository;
 
+  /**
+   * The MockMvc is used to perform a request to the controller and validate the response.
+   */
   @Autowired
   private MockMvc mockMvc;
 
+  /**
+   * The PasswordEncoder is used to encode the password before saving it to the database.
+   * The password is encoded using the BCrypt algorithm.
+   */
   @Autowired
   private PasswordEncoder passwordEncoder;
 

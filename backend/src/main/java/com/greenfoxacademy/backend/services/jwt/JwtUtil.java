@@ -4,14 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.crypto.SecretKey;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 /**
  * This class is responsible for generating and validating JWT tokens.
@@ -28,7 +27,7 @@ public class JwtUtil {
    * This key should be stored in a secure location.
    * This should be at least 32 characters long.
    */
-  private final String SECRET_KEY = "secretsecretsecretsecretsecretsecretsecretsecretsecretsecret";
+  private final String secretKey = "secretsecretsecretsecretsecretsecretsecretsecretsecretsecret";
 
   /**
    * Extracts the username from the token.
@@ -131,11 +130,10 @@ public class JwtUtil {
 
   /**
    * This method generates a secret key based on the secret key string.
-   * 
    * @return the secret key
    */
   private SecretKey getSigningKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 }

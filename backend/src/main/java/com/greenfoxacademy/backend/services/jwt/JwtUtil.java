@@ -33,6 +33,7 @@ public class JwtUtil {
    * Extracts the username from the token.
    *
    * @param token the token from which the username is extracted
+   *
    * @return the username
    */
   public String extractUsername(String token) {
@@ -43,6 +44,7 @@ public class JwtUtil {
    * Extracts the expiration date from the token.
    *
    * @param token the token from which the expiration date is extracted
+   *
    * @return the expiration date
    */
   public Date extractExpiration(String token) {
@@ -53,6 +55,7 @@ public class JwtUtil {
    * Extracts a claim from the token.
    *
    * @param token          the token from which the claim is extracted
+   *
    * @param claimsResolver the function that extracts the claim
    * @return the claim
    */
@@ -69,6 +72,7 @@ public class JwtUtil {
    * parse token documentation</a>
    *
    * @param token
+   *
    * @return all claims from the token
    */
   private Claims extractAllClaims(String token) {
@@ -79,6 +83,7 @@ public class JwtUtil {
    * Checks if the token is expired.
    *
    * @param token the token to be checked
+   *
    * @return true if the token is expired, false otherwise
    */
   private Boolean isTokenExpired(String token) {
@@ -89,6 +94,7 @@ public class JwtUtil {
    * Generates a token based on the user details.
    *
    * @param userDetails the user details
+   *
    * @return the generated token
    */
   public String generateToken(UserDetails userDetails) {
@@ -100,6 +106,7 @@ public class JwtUtil {
    * Creates a token based on the claims and the subject.
    *
    * @param claims  the claims
+   *
    * @param subject the subject
    * @return the created token
    */
@@ -120,6 +127,7 @@ public class JwtUtil {
    * Validates the token based on the token and the user details.
    *
    * @param token       the token to be validated
+   *
    * @param userDetails the user details
    * @return true if the token is valid, false otherwise
    */
@@ -130,6 +138,7 @@ public class JwtUtil {
 
   /**
    * This method generates a secret key based on the secret key string.
+   *
    * @return the secret key
    */
   private SecretKey getSigningKey() {

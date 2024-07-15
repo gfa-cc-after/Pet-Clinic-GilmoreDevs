@@ -1,6 +1,6 @@
 package com.greenfoxacademy.backend.controller;
 
-import com.greenfoxacademy.backend.dtos.LoginUserDto;
+import com.greenfoxacademy.backend.dtos.LoginUserDtoRecord;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.services.UserService;
 
@@ -68,12 +68,12 @@ public class UserController {
   /**
    * This method login an existing user.
    *
-   * @param loginUserDto the user to be logged in
+   * @param loginUserDtoRecord the user to be logged in
    * @return a response entity
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/login")
-  public ResponseEntity<?> loginUser(@RequestBody LoginUserDto loginUserDto) {
+  public ResponseEntity<?> loginUser(@RequestBody LoginUserDtoRecord loginUserDtoRecord) {
     Map<String, String> response = new HashMap<>();
     response.put("Response", "Login OK");
     return ResponseEntity.ok().body(response);

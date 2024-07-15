@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 
+import axios from "axios";
+
+
 function Register() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -16,20 +19,22 @@ function Register() {
 
         if (validator.isEmail(email)) {
             setErrMessage("");
-            fetch('http://localhost:8080/register', {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    password: password,
-                })
+            axios.post('http://localhost:8080/register', {
+                firstName,
+                lastName,
+                email,
+                password,
             })
-            setMessage("Successful registration!");
+                .then((_response) => {
+                    setMessage("Successful registration!");
+                    setFirstName("");
+                    setLastName("");
+                    setEmail("");
+                    setPassword("");
+                })
+                .catch((error) => {
+                    setErrMessage(error.response.data);
+                });
         } else if (!validator.isEmail(email)) {
             setErrMessage("Please, enter valid email!");
         }
@@ -59,14 +64,20 @@ function Register() {
         <>
             <h1>Register</h1>
             <form onSubmit={handleSubmit}>
-                <label>First Name:</label>
-                <input type='text' name={"firstName"} value={firstName} onChange={saveFormData}></input>
-                <label>Last Name:</label>
-                <input type='text' name={"lastName"} value={lastName} onChange={saveFormData}></input>
-                <label>Email:</label>
-                <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
+                <label htmlFor="firstName">First Name:</label>
+                <input
+                    type='text'
+                    required aria-label="firstName"
+                    name={"firstName"}
+                    value={firstName}
+                    onChange={saveFormData}
+                ></input>
+                <label htmlFor="lastName">Last Name:</label>
+                <input type='text' required aria-label="lastName" name={"lastName"} value={lastName} onChange={saveFormData}></input>
+                <label htmlFor="email">Email:</label>
+                <input type='email' required aria-label="email" name={"email"} value={email} onChange={saveFormData}></input>
                 <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
-                <label>Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input type='password' aria-label={"pass"} name={"password"} value={password} onChange={saveFormData}></input>
                 <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
                 <button type='submit'>Register</button>

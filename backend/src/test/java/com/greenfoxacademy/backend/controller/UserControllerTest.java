@@ -47,7 +47,6 @@ class UserControllerTest {
   @DisplayName("Should return password is not present when password is not present")
   @Test
   void shouldReturnPasswordIsNotPresentWhenPasswordIsNotPresent() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -65,7 +64,6 @@ class UserControllerTest {
   @DisplayName("Should return password is short when password is short")
   @Test
   void shouldReturnPasswordIsNotLongEnoughWhenPasswordIsShort() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -86,7 +84,6 @@ class UserControllerTest {
   @DisplayName("Should return password has no digit when password has no digit")
   @Test
   void shouldReturnPasswordContainsNoDigitsIfItContainsNoDigits() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -107,7 +104,6 @@ class UserControllerTest {
   @DisplayName("Should return password has no uppercase when password has no uppercase")
   @Test
   void shouldReturnPasswordContainsNoUpperCaseIfPasswordContainsNoUppercase() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -128,7 +124,6 @@ class UserControllerTest {
   @DisplayName("Should return password has no lowercase when password has no lowercase")
   @Test
   void shouldReturnPasswordContainsNoLowerCaseIfPasswordContainsNoLowercase() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -149,7 +144,6 @@ class UserControllerTest {
   @DisplayName("Should return password contains white space when password contains white space")
   @Test
   void shouldReturnPasswordContainsWhiteSpaceIfContainsWhiteSpace() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -170,7 +164,6 @@ class UserControllerTest {
   @DisplayName("Should return password is invalid with all errors if it has all errors")
   @Test
   void shouldReturnPasswordIsInvalidWithAllErrorsIfItHasAllErrors() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -194,7 +187,6 @@ class UserControllerTest {
   @DisplayName("Should return email is not valid when email in not valid")
   @Test
   void shouldReturnEmailIsInvalidWhenEmailIsInvalid() throws Exception {
-
     String content = """
         {
             "firstName": "John",
@@ -215,7 +207,6 @@ class UserControllerTest {
   @DisplayName("Should return email is duplicated when email is duplicated")
   @Test
   void shouldReturnEmailIsIsDuplicatedWhenEmailIsDuplicated() throws Exception {
-
     Mockito.when(userRepository.save(Mockito.any()))
         .thenThrow(new RuntimeException("Email is already taken"));
     String content = """
@@ -236,7 +227,6 @@ class UserControllerTest {
   @DisplayName("Should created object")
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
-
     Mockito.when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
     String content = """
         {

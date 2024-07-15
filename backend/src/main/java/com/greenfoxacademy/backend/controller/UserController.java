@@ -46,8 +46,20 @@ public class UserController {
     }
   }
 
+  /**
+   * This method logs in a user.
+   * Outcomes:
+   *  - If the user is not found, return a 401 status code.
+   *  - If the user is found, return a 200 status code and the token.
+   *
+   * @param registerUserDto the user to be logged in
+   * @return a response entity with the status code and the token
+   */
+  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> loginUser(@Validated @RequestBody LoginRequestDto registerUserDto) {
+  public ResponseEntity<LoginResponseDto> loginUser(
+      @RequestBody LoginRequestDto registerUserDto
+  ) {
     try {
       return ResponseEntity.ok(userService.login(registerUserDto));
     } catch (Exception e) {

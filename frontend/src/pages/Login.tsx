@@ -4,35 +4,41 @@ import { Link } from "react-router-dom";
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    console.log(email)
-    console.log(password)
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
         fetch('http://localhost:8080/login', {
-            mode: 'cors',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
+            body: JSON.stringify({ email, password })
         })
-    }
+        .then(async res => {
+            // Ellenőrizd a válasz státuszát
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            // Próbáld meg parse-olni a választ
+            const data = await res.json().catch(() => {
+                throw new Error('Invalid JSON response');
+            });
+
+            // Ha minden rendben, logold ki a választ
+            console.log(data);
+        })
+        .catch(error => console.error('Error:', error));
+    };
+
     const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        switch (name) {
-            case 'email':
-                setEmail(value);
-                break;
-            case 'password':
-                setPassword(value);
-                break;
-            default:
-                break;
+        if (name === 'email') {
+            setEmail(value);
+        } else if (name === 'password') {
+            setPassword(value);
         }
     };
 
@@ -40,13 +46,28 @@ export function Login() {
         <>
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
-                <input type='email' name={"email"} value={email} onChange={saveFormData}></input>
-                <label>Password:</label>
-                <input type='password' aria-label={"pass"} name={"password"} value={password} onChange={saveFormData}></input>
-                <button type='submit'>Login</button>
+                <label htmlFor="email">Email:</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={saveFormData}
+                    required
+                />
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={saveFormData}
+                    required
+                />
+                <button type="submit">Login</button>
             </form>
-            <Link className={"links"} to='/'>Main</Link>
-            <Link className={"links"} to='/register'>Register</Link>
+            <Link className="links" to="/">Main</Link>
+            <Link className="links" to="/register">Register</Link>
         </>
-    )
+    );
 }

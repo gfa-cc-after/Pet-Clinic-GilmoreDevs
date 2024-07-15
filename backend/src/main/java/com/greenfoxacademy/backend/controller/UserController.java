@@ -9,6 +9,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,7 +76,9 @@ public class UserController {
   @CrossOrigin (origins = "http://localhost:5173")
   @PostMapping ("/login")
   public ResponseEntity<?> loginUser(@RequestBody LoginUserDto loginUserDto) {
-    return ResponseEntity.ok().body(loginUserDto);
+    Map<String,String> response = new HashMap<>();
+    response.put("Response","Login OK");
+    return ResponseEntity.ok().body(response);
   }
   
 }

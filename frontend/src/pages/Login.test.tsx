@@ -64,7 +64,6 @@ describe("Register component", () => {
             </Router>
         );
 
-        const emailField = screen.getByRole('textbox', { name: /email:/i });
         const passwordField = screen.getByLabelText(/password:/i)
         const button = screen.getByRole('button', { name: /login/i });
         userEvent.setup();

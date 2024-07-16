@@ -1,6 +1,7 @@
 package com.greenfoxacademy.backend.controller;
 
-import com.greenfoxacademy.backend.dtos.LoginUserDtoRecord;
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
+import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.services.UserService;
 
@@ -48,6 +49,27 @@ public class UserController {
   }
 
   /**
+   * This method logs in a user.
+   * Outcomes:
+   *  - If the user is not found, return a 401 status code.
+   *  - If the user is found, return a 200 status code and the token.
+   *
+   * @param registerUserDto the user to be logged in
+   * @return a response entity with the status code and the token
+   */
+  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponseDto> loginUser(
+      @RequestBody LoginRequestDto registerUserDto
+  ) {
+    try {
+      return ResponseEntity.ok(userService.login(registerUserDto));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
+  /**
    * This method handles validation exceptions.
    *
    * @param ex the exception to be handled
@@ -63,20 +85,6 @@ public class UserController {
       errors.put(fieldName, errorMessage);
     });
     return errors;
-  }
-
-  /**
-   * This method login an existing user.
-   *
-   * @param loginUserDtoRecord the user to be logged in
-   * @return a response entity
-   */
-  @CrossOrigin(origins = "http://localhost:5173")
-  @PostMapping("/login")
-  public ResponseEntity<?> loginUser(@RequestBody LoginUserDtoRecord loginUserDtoRecord) {
-    Map<String, String> response = new HashMap<>();
-    response.put("Response", "Login OK");
-    return ResponseEntity.ok().body(response);
   }
 
 }

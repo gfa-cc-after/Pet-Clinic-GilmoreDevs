@@ -7,7 +7,6 @@ package com.greenfoxacademy.backend.dtos;
  * @param id of the created user
  *
  */
-
 public record RegisterResponseDto(
         Integer id
 ) {

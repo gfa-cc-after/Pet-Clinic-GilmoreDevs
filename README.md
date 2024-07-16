@@ -33,3 +33,10 @@ chmod +x ./setup-pre-commit-hook.sh
 sh ./setup-pre-commit-hook.sh
 ```
 
+
+> :alert: this will block you in many cases to commit your code if the tests are not passing or the code is not formatted correctly. If you want to commit your code without running the tests or formatting the code, you can use the `--no-verify` flag in your commit command; e.g.:
+
+```bash
+git commit -m "your message" --no-verify
+```
+

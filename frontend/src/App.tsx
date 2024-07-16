@@ -6,25 +6,7 @@ import {
   Link,
 } from "react-router-dom";
 import { Register } from './pages/Register';
-
-
-function Login() {
-
-  return (
-    <>
-      <h1>Login</h1>
-      <form>
-        <label>Email:</label>
-        <input type='email'></input>
-        <label>Password:</label>
-        <input type='password'></input>
-        <button type='submit'>Login</button>
-      </form>
-      <Link className={"links"} to='/'>Main</Link>
-      <Link className={"links"} to='/register'>Register</Link>
-    </>
-  )
-}
+import { Login } from './pages/Login';
 
 
 function Main() {

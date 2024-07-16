@@ -49,4 +49,34 @@ describe("Register component", () => {
         // Assert
         expect(screen.queryByLabelText('passworderrors')).toBeNull();
     });
+
+
+    test("successfull registration should clear the form", async () => {
+        // Arrange
+        render(
+            <Router>
+                <Register />
+            </Router>
+        );
+        const user = userEvent.setup();
+        const passwordField = screen.getByLabelText('pass');
+
+        const firstNameField = screen.getByLabelText("firstName")
+        const lastNameField = screen.getByLabelText("lastName")
+        const emailField = screen.getByLabelText("email")
+
+        // Act
+        await user.type(passwordField, "Ajg65657h")
+        await user.type(firstNameField, "John")
+        await user.type(lastNameField, "Doe")
+        await user.type(emailField, "johndoe@gmail.com")
+
+        await user.click(screen.getByRole('button', { name: 'Register' }));
+
+        // Assert
+        expect(firstNameField).toHaveTextContent("")
+        expect(lastNameField).toHaveTextContent("")
+        expect(passwordField).toHaveTextContent("")
+        expect(emailField).toHaveTextContent("")
+    });
 });

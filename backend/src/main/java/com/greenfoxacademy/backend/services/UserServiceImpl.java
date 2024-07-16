@@ -1,9 +1,12 @@
 package com.greenfoxacademy.backend.services;
 
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
+import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.services.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,19 +21,30 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
-  
+  private final JwtUtil jwtUtil;
+
   @Override
   public RegisterResponseDto register(RegisterUserDto userDto) throws Exception {
     User user = mapToEntity(userDto);
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
     return mapToRegisterResponseDto(userRepository.save(user));
   }
-  
+
   private RegisterResponseDto mapToRegisterResponseDto(User user) {
     return new RegisterResponseDto(user.getId());
   }
-  
+
   private User mapToEntity(RegisterUserDto userDto) {
     return modelMapper.map(userDto, User.class);
+  }
+
+  @Override
+  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
+    User user = userRepository.findByEmail(loginRequestDto.email())
+        .orElseThrow(() -> new Exception("User not found"));
+    if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+      throw new Exception("Invalid password");
+    }
+    return new LoginResponseDto(jwtUtil.createToken(null, user.getEmail()));
   }
 }

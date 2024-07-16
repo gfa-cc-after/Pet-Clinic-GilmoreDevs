@@ -5,7 +5,7 @@ import { userEvent } from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { vi } from 'vitest';
 
-describe.only("Register component", () => {
+describe("Register component", () => {
     test("has a heading 'Register'", async () => {
         // Arrange
         render(
@@ -20,7 +20,7 @@ describe.only("Register component", () => {
         expect(screen.getByRole("heading")).toHaveTextContent("Login");
     });
 
-    test.only("sends an HTTP request, when Submit is clicked", async () => {
+    test("sends an HTTP request, when Submit is clicked", async () => {
 
         //Arrange
         render(
@@ -55,7 +55,7 @@ describe.only("Register component", () => {
 
     })
 
-    test.only("does not send an HTTP request, when Submit is clicked and email field is empty", async () => {
+    test("does not send an HTTP request, when Submit is clicked and email field is empty", async () => {
 
         //Arrange
         render(

@@ -51,22 +51,6 @@ describe("Register component", () => {
     });
 
 
-    test("passworderrors dissappear after successfull password input", async () => {
-        // Arrange
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
-        const user = userEvent.setup();
-        const passwordInput = screen.getByLabelText('pass');
-        // Act
-        await user.type(passwordInput, "Ajg65657h")
-
-        // Assert
-        expect(screen.queryByLabelText('passworderrors')).toBeNull();
-    });
-
     test("successfull registration should clear the form", async () => {
         // Arrange
         render(

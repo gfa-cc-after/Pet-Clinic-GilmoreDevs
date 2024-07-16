@@ -107,6 +107,8 @@
                     <configLocation>google_checks.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                    <violationSeverity>warning</violationSeverity>
                     <linkXRef>false</linkXRef>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <includeResources>true</includeResources>

@@ -40,3 +40,4 @@ sh ./setup-pre-commit-hook.sh
 git commit -m "your message" --no-verify
 ```
 
+or you can delete the `.git/hooks/pre-commit` file to get rid of the pre-commit hooks.

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -17,7 +18,10 @@ export function Login() {
             body: JSON.stringify({ email, password })
         })
             .then(async res => {
-                if (!res.ok) {
+                if (res.ok) {
+                    navigate('/');
+                }
+                else if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }
 

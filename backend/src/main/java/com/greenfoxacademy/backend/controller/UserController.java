@@ -58,6 +58,7 @@ public class UserController {
    * @return a response entity with the status code and the token
    */
   //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
+  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> loginUser(
       @RequestBody LoginRequestDto registerUserDto

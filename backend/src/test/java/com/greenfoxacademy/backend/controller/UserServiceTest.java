@@ -4,6 +4,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ public class UserServiceTest {
   private UserController userController;
 
   @Test
-  public void registerMethodIsSuccessfullyCalled() throws Exception {
+  public void registerMethodIsSuccessfullyCalled() throws Exception, UserAlreadyExistsError {
     RegisterUserDto registerUserDto = new RegisterUserDto();
     registerUserDto.setFirstName("John");
     registerUserDto.setLastName("Doe");

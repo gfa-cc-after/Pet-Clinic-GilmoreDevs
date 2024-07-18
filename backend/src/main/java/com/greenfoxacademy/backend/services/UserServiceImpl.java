@@ -4,6 +4,7 @@ import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.jwt.JwtUtil;
@@ -24,10 +25,14 @@ public class UserServiceImpl implements UserService {
   private final JwtUtil jwtUtil;
 
   @Override
-  public RegisterResponseDto register(RegisterUserDto userDto) throws Exception {
+  public RegisterResponseDto register(RegisterUserDto userDto) throws UserAlreadyExistsError {
     User user = mapToEntity(userDto);
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    return mapToRegisterResponseDto(userRepository.save(user));
+    try {
+      return mapToRegisterResponseDto(userRepository.save(user));
+    } catch (Exception e) {
+      throw new UserAlreadyExistsError("Email is already taken!");
+    }
   }
 
   private RegisterResponseDto mapToRegisterResponseDto(User user) {

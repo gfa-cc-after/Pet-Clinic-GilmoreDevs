@@ -3,6 +3,7 @@ package com.greenfoxacademy.backend.controller;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.UserService;
 
 import java.net.URI;
@@ -39,13 +40,9 @@ public class UserController {
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-    try {
+  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) throws UserAlreadyExistsError {
       URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
       return ResponseEntity.created(uri).build();
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
   }
 
   /**
@@ -87,6 +84,20 @@ public class UserController {
     });
     return errors;
   }
+
+//  /**
+//   * This method handles validation exceptions.
+//   *
+//   * @param ex the exception to be handled
+//   * @return a map with the field name and the error message
+//   */
+//  @ResponseStatus(HttpStatus.BAD_REQUEST)
+//  @ExceptionHandler(UserAlreadyExistsError.class)
+//  public Map<String, String> handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
+//    Map<String, String> errors = new HashMap<>();
+//    errors.put("error",ex.getMessage());
+//    return errors;
+//  }
 
 }
 

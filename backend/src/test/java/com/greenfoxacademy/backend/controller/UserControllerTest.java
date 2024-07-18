@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import java.util.Optional;
@@ -208,7 +209,7 @@ class UserControllerTest {
   @Test
   void shouldReturnEmailIsIsDuplicatedWhenEmailIsDuplicated() throws Exception {
     Mockito.when(userRepository.save(Mockito.any()))
-        .thenThrow(new RuntimeException("Email is already taken"));
+        .thenThrow(new UserAlreadyExistsError("Email is already taken!"));
     String content = """
         {
             "firstName": "John",
@@ -221,7 +222,7 @@ class UserControllerTest {
         .contentType(MediaType.APPLICATION_JSON).content(content))
         .andExpectAll(
             status().isBadRequest(),
-            content().string("Email is already taken"));
+            jsonPath("$.error").value("Email is already taken!"));
   }
 
   @DisplayName("Should created object")

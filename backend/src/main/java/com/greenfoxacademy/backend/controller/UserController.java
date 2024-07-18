@@ -40,7 +40,8 @@ public class UserController {
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) throws UserAlreadyExistsError {
+  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto)
+      throws UserAlreadyExistsError {
       URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
       return ResponseEntity.created(uri).build();
   }
@@ -84,20 +85,4 @@ public class UserController {
     });
     return errors;
   }
-
-//  /**
-//   * This method handles validation exceptions.
-//   *
-//   * @param ex the exception to be handled
-//   * @return a map with the field name and the error message
-//   */
-//  @ResponseStatus(HttpStatus.BAD_REQUEST)
-//  @ExceptionHandler(UserAlreadyExistsError.class)
-//  public Map<String, String> handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
-//    Map<String, String> errors = new HashMap<>();
-//    errors.put("error",ex.getMessage());
-//    return errors;
-//  }
-
 }
-

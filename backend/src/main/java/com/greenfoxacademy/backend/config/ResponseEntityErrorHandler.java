@@ -1,5 +1,8 @@
 package com.greenfoxacademy.backend.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +10,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * This class handles Email error.
+ *
+ */
 @ControllerAdvice
 public class ResponseEntityErrorHandler {
   /**
@@ -20,9 +24,10 @@ public class ResponseEntityErrorHandler {
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(UserAlreadyExistsError.class)
-  public ResponseEntity <Map<String, String>> handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
+  public ResponseEntity<Map<String, String>>
+    handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
     Map<String, String> errors = new HashMap<>();
-    errors.put("error","Email is already taken!");
+    errors.put("error", "Email is already taken!");
     return ResponseEntity.badRequest().body(errors);
   }
 }

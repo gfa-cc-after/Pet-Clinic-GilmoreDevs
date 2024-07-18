@@ -33,7 +33,7 @@ setMessage (" ");
                     setPassword("");
                 })
                 .catch((error) => {
-                    setErrMessage(error.response.data);
+                    setErrMessage(error.response.data.error);
                 });
         } else if (!validator.isEmail(email)) {
             setErrMessage("Please, enter valid email!");

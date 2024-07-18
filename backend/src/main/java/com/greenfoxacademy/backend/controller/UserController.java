@@ -42,15 +42,15 @@ public class UserController {
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto)
       throws UserAlreadyExistsError {
-      URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
-      return ResponseEntity.created(uri).build();
+    URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
+    return ResponseEntity.created(uri).build();
   }
 
   /**
    * This method logs in a user.
    * Outcomes:
-   *  - If the user is not found, return a 401 status code.
-   *  - If the user is found, return a 200 status code and the token.
+   * - If the user is not found, return a 401 status code.
+   * - If the user is found, return a 200 status code and the token.
    *
    * @param registerUserDto the user to be logged in
    * @return a response entity with the status code and the token

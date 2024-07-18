@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState<string|null>(null);
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -18,16 +19,18 @@ export function Login() {
         })
             .then(async res => {
                 if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                    setError('Login failed');
                 }
 
                 const data = await res.json().catch(() => {
-                    throw new Error('Invalid JSON response');
+                    setError('Login failed');
+                    
                 });
-
                 console.log(data);
+                setError(null);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(_error => setError('Login failed'));
+            
     };
 
     const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +66,7 @@ export function Login() {
                 />
                 <button type="submit">Login</button>
             </form>
+            {error && <p className="loginErrorMsg">{error}</p>}
             <Link className="links" to="/">Main</Link>
             <Link className="links" to="/register">Register</Link>
         </>

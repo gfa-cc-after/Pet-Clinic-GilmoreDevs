@@ -24,11 +24,12 @@ export function Login() {
 
                 const data = await res.json().catch(() => {
                     setError('Login failed');
+                    
                 });
-
+                console.log(data);
                 setError(null);
             })
-            .catch(error => setError('Login failed'));
+            .catch(_error => setError('Login failed'));
             
     };
 

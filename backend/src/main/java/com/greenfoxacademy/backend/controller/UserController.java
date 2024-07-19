@@ -3,12 +3,11 @@ package com.greenfoxacademy.backend.controller;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.UserService;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,20 +38,17 @@ public class UserController {
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-    try {
-      URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
-      return ResponseEntity.created(uri).build();
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
+  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterUserDto registerUserDto)
+      throws UserAlreadyExistsError {
+    URI uri = URI.create("/users/" + userService.register(registerUserDto).id());
+    return ResponseEntity.created(uri).build();
   }
 
   /**
    * This method logs in a user.
    * Outcomes:
-   *  - If the user is not found, return a 401 status code.
-   *  - If the user is found, return a 200 status code and the token.
+   * - If the user is not found, return a 401 status code.
+   * - If the user is found, return a 200 status code and the token.
    *
    * @param registerUserDto the user to be logged in
    * @return a response entity with the status code and the token
@@ -87,6 +83,4 @@ public class UserController {
     });
     return errors;
   }
-
 }
-

@@ -18,6 +18,7 @@ export function Login() {
             body: JSON.stringify({ email, password })
         })
             .then(async res => {
+
                 if (!res.ok) {
                     setError('Login failed');
                 }

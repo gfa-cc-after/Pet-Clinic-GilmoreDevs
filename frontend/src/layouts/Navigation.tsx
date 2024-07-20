@@ -1,5 +1,6 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { Button, Flex, Link, Spacer, useColorMode } from "@chakra-ui/react"
+import { Link as ReactRouterLink } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 
 const Navigation = () => {
@@ -32,8 +33,8 @@ interface ChackRaLinkWithCurrentPathStyleProps {
 const ActiveLink = ({ href, children }: ChackRaLinkWithCurrentPathStyleProps) => {
     const { pathname } = useLocation()
     return (
-        <Link
-            href={href}
+        <Link as={ReactRouterLink}
+            to={href}
             layerStyle={pathname === href ? 'selected' : 'base'}
         >
             {children}

@@ -1,8 +1,10 @@
+import { Box } from "@chakra-ui/react";
+
 export function Main() {
 
     return (
         <>
-            <h1>Home</h1>
+            <Box textStyle="h1">Home</Box>
             <p>Welcome to Gilmore Devs Pet Clinic!</p>
         </>
     );

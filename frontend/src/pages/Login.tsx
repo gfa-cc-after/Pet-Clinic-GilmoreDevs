@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, FormLabel, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react'
+import { Box, Button, FormLabel, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react'
 import { apiClient } from "../lib/apiClient";
 
 export function Login() {
@@ -33,7 +33,7 @@ export function Login() {
 
     return (
         <>
-            <h1>Login</h1>
+            <Box textStyle="h1">Login</Box>
             <form onSubmit={handleLogin}>
                 <FormLabel htmlFor="email">Email:</FormLabel>
                 <Input

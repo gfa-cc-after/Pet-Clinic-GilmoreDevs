@@ -21,6 +21,7 @@ const Layout = () => {
                 alignItems="center"
                 width="100vw"
                 justifyContent="space-evenly"
+                h="60vh"
             >
                 <Outlet />
             </Flex>

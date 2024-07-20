@@ -31,13 +31,10 @@ interface ChackRaLinkWithCurrentPathStyleProps {
 
 const ActiveLink = ({ href, children }: ChackRaLinkWithCurrentPathStyleProps) => {
     const { pathname } = useLocation()
-    const activeLinkColor = 'blue.500'
-    const linkStyle = pathname === href ? activeLinkColor : "blue.150"
     return (
         <Link
             href={href}
-            backgroundColor={linkStyle}
-        //TODO: Fix the color of the link make it nice
+            layerStyle={pathname === href ? 'selected' : 'base'}
         >
             {children}
         </Link>

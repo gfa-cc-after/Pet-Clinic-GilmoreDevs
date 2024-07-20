@@ -1,9 +1,11 @@
-import { Flex } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 
 const Footer = () => {
     return (
-        <Flex >
-            Footer
+        <Flex>
+            <Box>
+                Footer
+            </Box>
         </Flex>
     )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import validator from "validator";
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast } from "@chakra-ui/react";
 import { apiClient } from "../lib/apiClient";
 import { AxiosError } from "axios";
 
@@ -56,8 +56,8 @@ function Register() {
     };
 
     return (
-        <>
-            <h1>Register</h1>
+        < >
+            <Box textStyle="h1">Register</Box>
             <form onSubmit={handleSubmit}>
                 <FormLabel htmlFor="firstName">First Name:</FormLabel>
                 <Input

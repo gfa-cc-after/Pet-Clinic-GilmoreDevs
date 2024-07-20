@@ -2,6 +2,7 @@ package com.greenfoxacademy.gilmoredevs;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
 public class TestBrowser {
@@ -18,6 +19,12 @@ public class TestBrowser {
             playwright = Playwright.create();
         }
         return playwright.chromium().launch(options);
+    }
+
+    public static Page newPage() {
+        try (Browser browser = open()) {
+            return browser.newPage();
+        }
     }
 
     public static void close() {

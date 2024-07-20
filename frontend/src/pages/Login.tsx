@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastAction } from "@/components/ui/toast"
+import { toast, useToast } from "@/components/ui/use-toast"
+
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string|null>(null);
-
+    const {toast} = useToast();
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -21,10 +24,22 @@ export function Login() {
 
                 if (!res.ok) {
                     setError('Login failed');
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "There was a problem with your request.",
+                        action: <ToastAction altText="Try again">Try again</ToastAction>,
+                      })
                 }
 
                 const data = await res.json().catch(() => {
                     setError('Login failed');
+                    toast({
+                        variant: "destructive",
+                        title: "Uh oh! Something went wrong.",
+                        description: "There was a problem with your request.",
+                        action: <ToastAction altText="Try again">Try again</ToastAction>,
+                      })
                     
                 });
                 console.log(data);

@@ -7,22 +7,30 @@ import {
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Main } from './pages/Main';
+import { Toaster } from './components/ui/toaster';
+import RootLayout from './Layout';
 
 const router = createBrowserRouter([
   {
+    children: [
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />
+      }
+    ],
     path: "/",
-    element: <Main />,
+    element: <RootLayout> 
+      <Main />
+    </RootLayout>,
   },
-  {
-    path: "register",
-    element: <Register />,
-  },
-  {
-    path: "login",
-    element: <Login />
-  }
 
-]);
+], {
+
+});
 
 function App() {
   return (

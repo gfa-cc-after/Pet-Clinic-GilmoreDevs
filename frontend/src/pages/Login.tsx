@@ -1,26 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, FormLabel, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react'
+import { apiClient } from "../lib/apiClient";
 
 export function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const toast = useToast();
     const navigate = useNavigate();
+    const { login } = apiClient();
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
+            const { token } = await login(formData);
+            localStorage.setItem('token', token);
             navigate('/');
         } catch (error) {
             toast({

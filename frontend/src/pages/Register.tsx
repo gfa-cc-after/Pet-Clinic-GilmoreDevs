@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import validator from "validator";
-import axios from "axios";
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from "@chakra-ui/react";
+import { apiClient } from "../lib/apiClient";
+import { AxiosError } from "axios";
 
 
 function Register() {
     const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", password: "" });
-    const [errors, setErrors] = useState<string[]>([]);
+    const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
     const toast = useToast();
+    const { register } = apiClient();
 
     const validatePassword = (password: string) => {
         const errors: string[] = [];
@@ -20,44 +22,34 @@ function Register() {
     };
 
     useEffect(() => {
-        setErrors(validatePassword(formData.password));
+        setPasswordErrors(validatePassword(formData.password));
     }, [formData.password]);
 
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!validator.isEmail(formData.email)) {
+        try {
+            await register(formData);
+            setFormData({ firstName: "", lastName: "", email: "", password: "" });
             toast({
-                title: "Error",
-                description: "Please, enter a valid email!",
-                status: "error",
-                duration: 1000,
+                title: "Success",
+                description: "Successful registration!",
+                status: "success",
+                duration: 2000,
                 isClosable: true,
-            })
-            return;
-        }
-        axios.post('http://localhost:8080/register', formData)
-            .then((_response) => {
-                toast({
-                    title: "Success",
-                    description: "Successful registration!",
-                    status: "success",
-                    duration: 2000,
-                    isClosable: true,
-                });
-                setFormData({ firstName: "", lastName: "", email: "", password: "" });
-            })
-            .catch((error) => {
+            });
+        } catch (error) {
+            if (error instanceof AxiosError) {
                 toast({
                     title: "Error",
-                    description: error.response.data.error,
+                    description: error.response?.data.error || "Registration failed",
                     status: "error",
                     duration: 1000,
                     isClosable: true,
                 })
-            });
+            }
+        }
     }
-
 
     const saveFormData = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [name]: value });
@@ -83,16 +75,21 @@ function Register() {
                     name={"lastName"}
                     value={formData.lastName}
                     onChange={saveFormData} />
-                <FormLabel htmlFor="email">Email:</FormLabel>
-                <Input
-                    type='email'
-                    autoComplete="email"
-                    required aria-label="email"
-                    name={"email"}
-                    value={formData.email}
-                    onChange={saveFormData}
-                />
-                <FormControl isInvalid={errors.length !== 0} >
+                <FormControl isInvalid={!validator.isEmail(formData.email)}>
+                    <FormLabel htmlFor="email">Email:</FormLabel>
+                    <Input
+                        type='email'
+                        autoComplete="email"
+                        required aria-label="email"
+                        name={"email"}
+                        value={formData.email}
+                        onChange={saveFormData}
+                    />
+                    {validator.isEmail(formData.email) ? null :
+                        <FormErrorMessage color='red.500'>Please, enter a valid email!</FormErrorMessage>
+                    }
+                </FormControl>
+                <FormControl isInvalid={passwordErrors.length !== 0} >
                     <FormLabel htmlFor="password">Password:</FormLabel>
                     <Input
                         type='password'
@@ -101,7 +98,7 @@ function Register() {
                         value={formData.password}
                         onChange={saveFormData}
                     />
-                    {errors.map((error, index) =>
+                    {passwordErrors.map((error, index) =>
                         <FormErrorMessage key={`${index}-${error}`} color='red.500'>{error}</FormErrorMessage>
                     )}
                 </FormControl>

@@ -7,17 +7,13 @@ import { Button, Input, useToast } from "@chakra-ui/react";
 
 function Register() {
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
+    const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", password: "" });
 
     const toast = useToast();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!validator.isEmail(email)) {
+        if (!validator.isEmail(formData.email)) {
             toast({
                 title: "Error",
                 description: "Please, enter a valid email!",
@@ -27,12 +23,7 @@ function Register() {
             })
             return;
         }
-        axios.post('http://localhost:8080/register', {
-            firstName,
-            lastName,
-            email,
-            password,
-        })
+        axios.post('http://localhost:8080/register', formData)
             .then((_response) => {
                 toast({
                     title: "Success",
@@ -41,10 +32,7 @@ function Register() {
                     duration: 2000,
                     isClosable: true,
                 });
-                setFirstName("");
-                setLastName("");
-                setEmail("");
-                setPassword("");
+                setFormData({ firstName: "", lastName: "", email: "", password: "" });
             })
             .catch((error) => {
                 toast({
@@ -57,24 +45,8 @@ function Register() {
             });
     }
 
-    const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        switch (name) {
-            case 'firstName':
-                setFirstName(value);
-                break;
-            case 'lastName':
-                setLastName(value);
-                break;
-            case 'email':
-                setEmail(value);
-                break;
-            case 'password':
-                setPassword(value);
-                break;
-            default:
-                break;
-        }
+    const saveFormData = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [name]: value });
     };
 
     return (
@@ -87,7 +59,7 @@ function Register() {
                     required aria-label="firstName"
                     name={"firstName"}
                     autoComplete="given-name"
-                    value={firstName}
+                    value={formData.firstName}
                     onChange={saveFormData}
                 />
                 <label htmlFor="lastName">Last Name:</label>
@@ -95,7 +67,7 @@ function Register() {
                     autoComplete="family-name"
                     required aria-label="lastName"
                     name={"lastName"}
-                    value={lastName}
+                    value={formData.lastName}
                     onChange={saveFormData} />
                 <label htmlFor="email">Email:</label>
 
@@ -104,7 +76,7 @@ function Register() {
                     autoComplete="email"
                     required aria-label="email"
                     name={"email"}
-                    value={email}
+                    value={formData.email}
                     onChange={saveFormData}
                 />
                 <label htmlFor="password">Password:</label>
@@ -112,10 +84,10 @@ function Register() {
                     type='password'
                     aria-label={"pass"}
                     name={"password"}
-                    value={password}
+                    value={formData.password}
                     onChange={saveFormData}
                 />
-                <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
+                <PasswordStrengthValidator password={formData.password}></PasswordStrengthValidator>
                 <Button colorScheme='green' type='submit'>Register</Button>
             </form>
             <Link className={"links"} to='/login'>Login</Link>

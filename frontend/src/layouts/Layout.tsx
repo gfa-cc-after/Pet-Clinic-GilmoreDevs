@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import { Outlet } from 'react-router-dom';
 
-import './Layout.css'
 import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 
@@ -14,11 +13,17 @@ const Layout = () => {
             height="100vh"
             justifyContent="space-between"
             flexDirection="column"
+            padding="2vw"
         >
             <Navigation />
-            <div className='outlet_layout'>
+            <Flex
+                flexDirection="column"
+                alignItems="center"
+                width="100vw"
+                justifyContent="space-evenly"
+            >
                 <Outlet />
-            </div>
+            </Flex>
             <Footer />
         </Flex>
     );

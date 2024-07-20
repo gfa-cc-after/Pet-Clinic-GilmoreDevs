@@ -15,10 +15,10 @@ const Navigation = () => {
 
 const Layout = () => {
     return (
-        <div>
+        <>
             <Navigation />
             <Outlet />
-        </div>
+        </>
     );
 };
 

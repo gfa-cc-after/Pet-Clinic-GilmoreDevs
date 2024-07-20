@@ -34,35 +34,37 @@ export function Login() {
     return (
         <>
             <Box textStyle="h1">Login</Box>
-            <form onSubmit={handleLogin}>
-                <FormLabel htmlFor="email">Email:</FormLabel>
-                <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={saveFormData}
-                    required
-                />
-                <FormLabel htmlFor="password">Password:</FormLabel>
-                <InputGroup>
+            <Box w="max(40vw, 500px)">
+                <form onSubmit={handleLogin}>
+                    <FormLabel htmlFor="email">Email:</FormLabel>
                     <Input
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        id="password"
-                        value={formData.password}
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={formData.email}
                         onChange={saveFormData}
                         required
                     />
-                    <InputRightElement width='4.5rem'>
-                        <Button h='1.75rem' size='sm' onClick={
-                            () => setShowPassword(p => !p)}>
-                            {showPassword ? 'Hide' : 'Show'}
-                        </Button>
-                    </InputRightElement>
-                </InputGroup>
-                <Button colorScheme="blue" type="submit">Login</Button>
-            </form>
+                    <FormLabel htmlFor="password">Password:</FormLabel>
+                    <InputGroup mb="8">
+                        <Input
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            id="password"
+                            value={formData.password}
+                            onChange={saveFormData}
+                            required
+                        />
+                        <InputRightElement width='4.5rem'>
+                            <Button h='1.75rem' size='sm' onClick={
+                                () => setShowPassword(p => !p)}>
+                                {showPassword ? 'Hide' : 'Show'}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                    <Button colorScheme="blue" type="submit">Login</Button>
+                </form>
+            </Box>
         </>
     );
 }

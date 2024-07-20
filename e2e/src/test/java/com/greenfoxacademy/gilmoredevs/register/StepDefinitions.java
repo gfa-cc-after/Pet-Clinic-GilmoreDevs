@@ -1,10 +1,7 @@
 package com.greenfoxacademy.gilmoredevs.register;
 
 import com.greenfoxacademy.gilmoredevs.TestBrowser;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
@@ -12,10 +9,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 
 public class StepDefinitions {
     private static Page page;
-    private static final String REGISTER_URL = "http://localhost:8080/register";
+    private static final String REGISTER_URL = "http://localhost:5173/register";
     private static final BrowserType.LaunchOptions launchOptions;
 
     static {
@@ -63,6 +62,19 @@ public class StepDefinitions {
 
     @Then("I should see a success message")
     public void iShouldSeeASuccessMessage() {
-        page.waitForSelector("div.alert-success");
+        Locator successMessage = page.getByText("successful registration!");
+        successMessage.waitFor();
+        assertThat(successMessage).isVisible();
     }
+
+    @And("I fill the firstName field with {string}")
+    public void iFillTheFirstNameFieldWithFirstName(String firstName) {
+        page.fill("input[name=firstName]", firstName);
+    }
+
+    @And("I fill the lastName field with {string}")
+    public void iFillTheLastNameFieldWithLastName(String lastName) {
+        page.fill("input[name=lastName]", lastName);
+    }
+
 }

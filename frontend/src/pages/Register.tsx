@@ -2,42 +2,59 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
-
 import axios from "axios";
-
+import { Button, Input, useToast } from "@chakra-ui/react";
 
 function Register() {
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errMessage, setErrMessage] = useState("");
-    const [message, setMessage] = useState("");
+
+
+    const toast = useToast();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-setMessage (" ");
-        if (validator.isEmail(email)) {
-            setErrMessage("");
-            axios.post('http://localhost:8080/register', {
-                firstName,
-                lastName,
-                email,
-                password,
+        if (!validator.isEmail(email)) {
+            toast({
+                title: "Error",
+                description: "Please, enter a valid email!",
+                status: "error",
+                duration: 1000,
+                isClosable: true,
             })
-                .then((_response) => {
-                    setMessage("Successful registration!");
-                    setFirstName("");
-                    setLastName("");
-                    setEmail("");
-                    setPassword("");
-                })
-                .catch((error) => {
-                    setErrMessage(error.response.data.error);
-                });
-        } else if (!validator.isEmail(email)) {
-            setErrMessage("Please, enter valid email!");
+            return;
         }
+        axios.post('http://localhost:8080/register', {
+            firstName,
+            lastName,
+            email,
+            password,
+        })
+            .then((_response) => {
+                toast({
+                    title: "Success",
+                    description: "Successful registration!",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                });
+                setFirstName("");
+                setLastName("");
+                setEmail("");
+                setPassword("");
+            })
+            .catch((error) => {
+                toast({
+                    title: "Error",
+                    description: error.response.data.error,
+                    status: "error",
+                    duration: 1000,
+                    isClosable: true,
+                })
+            });
     }
 
     const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,23 +82,41 @@ setMessage (" ");
             <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="firstName">First Name:</label>
-                <input
+                <Input
                     type='text'
                     required aria-label="firstName"
                     name={"firstName"}
+                    autoComplete="given-name"
                     value={firstName}
                     onChange={saveFormData}
-                ></input>
+                />
                 <label htmlFor="lastName">Last Name:</label>
-                <input type='text' required aria-label="lastName" name={"lastName"} value={lastName} onChange={saveFormData}></input>
+                <Input type='text'
+                    autoComplete="family-name"
+                    required aria-label="lastName"
+                    name={"lastName"}
+                    value={lastName}
+                    onChange={saveFormData} />
                 <label htmlFor="email">Email:</label>
-                <input type='email' required aria-label="email" name={"email"} value={email} onChange={saveFormData}></input>
-                <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
+
+                <Input
+                    type='email'
+                    autoComplete="email"
+                    required aria-label="email"
+                    name={"email"}
+                    value={email}
+                    onChange={saveFormData}
+                />
                 <label htmlFor="password">Password:</label>
-                <input type='password' aria-label={"pass"} name={"password"} value={password} onChange={saveFormData}></input>
+                <Input
+                    type='password'
+                    aria-label={"pass"}
+                    name={"password"}
+                    value={password}
+                    onChange={saveFormData}
+                />
                 <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
-                <button type='submit'>Register</button>
-                <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>
+                <Button colorScheme='green' type='submit'>Register</Button>
             </form>
             <Link className={"links"} to='/login'>Login</Link>
             <Link className={"links"} to='/'>Main</Link>

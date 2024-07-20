@@ -19,8 +19,12 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'io.cucumber:cucumber-java:7.18.1'
+    testImplementation 'io.cucumber:cucumber-junit:7.18.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.1'
 }
 
 test {
     useJUnitPlatform()
+    systemProperty("cucumber.junit-platform.naming-strategy", "long")
 }

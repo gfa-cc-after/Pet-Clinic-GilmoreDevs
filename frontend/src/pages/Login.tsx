@@ -1,47 +1,40 @@
 import { useState } from "react";
-import { Button, FormLabel, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { useNavigate } from "react-router-dom";
+import { Button, FormLabel, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react'
 
 export function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
+    const toast = useToast();
+    const navigate = useNavigate();
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-            .then(async res => {
-
-                if (!res.ok) {
-                    setError('Login failed');
-                }
-
-                const data = await res.json().catch(() => {
-                    setError('Login failed');
-
-                });
-                console.log(data);
-                setError(null);
+        try {
+            const response = await fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
-            .catch(_error => setError('Login failed'));
-
-    };
-
-    const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        if (name === 'email') {
-            setEmail(value);
-        } else if (name === 'password') {
-            setPassword(value);
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            navigate('/');
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Login failed",
+                status: "error",
+                duration: 1000,
+                isClosable: true,
+            })
         }
+    }
+
+    const saveFormData = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [name]: value });
     };
 
     return (
@@ -53,7 +46,7 @@ export function Login() {
                     type="email"
                     name="email"
                     id="email"
-                    value={email}
+                    value={formData.email}
                     onChange={saveFormData}
                     required
                 />
@@ -63,7 +56,7 @@ export function Login() {
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         id="password"
-                        value={password}
+                        value={formData.password}
                         onChange={saveFormData}
                         required
                     />
@@ -76,7 +69,6 @@ export function Login() {
                 </InputGroup>
                 <Button colorScheme="blue" type="submit">Login</Button>
             </form>
-            {error && <p className="loginErrorMsg">{error}</p>}
         </>
     );
 }

@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState<string|null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -25,13 +28,13 @@ export function Login() {
 
                 const data = await res.json().catch(() => {
                     setError('Login failed');
-                    
+
                 });
                 console.log(data);
                 setError(null);
             })
             .catch(_error => setError('Login failed'));
-            
+
     };
 
     const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +51,7 @@ export function Login() {
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
                 <label htmlFor="email">Email:</label>
-                <input
+                <Input
                     type="email"
                     name="email"
                     id="email"
@@ -57,15 +60,24 @@ export function Login() {
                     required
                 />
                 <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    value={password}
-                    onChange={saveFormData}
-                    required
-                />
-                <button type="submit">Login</button>
+                <InputGroup>
+                    <Input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        id="password"
+                        value={password}
+                        onChange={saveFormData}
+                        required
+                    />
+                    <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={
+                            () => setShowPassword(p => !p)}>
+                            {showPassword ? 'Hide' : 'Show'}
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
+
+                <Button type="submit">Login</Button>
             </form>
             {error && <p className="loginErrorMsg">{error}</p>}
             <Link className="links" to="/">Main</Link>

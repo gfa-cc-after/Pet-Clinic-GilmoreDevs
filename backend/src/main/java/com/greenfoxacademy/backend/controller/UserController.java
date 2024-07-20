@@ -3,10 +3,9 @@ package com.greenfoxacademy.backend.controller;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
+import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.UserService;
-
-import java.net.URI;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,10 +33,9 @@ public class UserController {
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<?> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto)
+  public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto)
           throws UserAlreadyExistsError {
-    URI uri = URI.create("/users/" + userService.register(registerRequestDto).id());
-    return ResponseEntity.status(HttpStatus.CREATED).body(uri);
+    return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
   /**

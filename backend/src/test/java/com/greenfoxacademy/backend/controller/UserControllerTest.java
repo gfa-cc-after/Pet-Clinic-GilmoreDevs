@@ -240,8 +240,8 @@ class UserControllerTest {
     this.mockMvc.perform(post("/register")
         .contentType(MediaType.APPLICATION_JSON).content(content))
         .andExpectAll(
-            status().isCreated(),
-            header().string("Location", "/users/1"));
+            status().isOk(),
+            jsonPath("$.id").isNumber());
   }
 
   @DisplayName("Should return a token when a user is successfully logged in with good credentials")

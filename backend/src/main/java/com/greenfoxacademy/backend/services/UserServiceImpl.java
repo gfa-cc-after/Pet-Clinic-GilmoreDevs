@@ -3,7 +3,7 @@ package com.greenfoxacademy.backend.services;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
-import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
   private final JwtUtil jwtUtil;
 
   @Override
-  public RegisterResponseDto register(RegisterUserDto userDto) throws UserAlreadyExistsError {
+  public RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError {
     User user = mapToEntity(userDto);
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
     try {
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     return new RegisterResponseDto(user.getId());
   }
 
-  private User mapToEntity(RegisterUserDto userDto) {
+  private User mapToEntity(RegisterRequestDto userDto) {
     return modelMapper.map(userDto, User.class);
   }
 

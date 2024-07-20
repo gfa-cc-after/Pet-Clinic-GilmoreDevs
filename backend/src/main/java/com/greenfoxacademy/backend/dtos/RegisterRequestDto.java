@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegisterUserDto {
+public class RegisterRequestDto {
   @NotBlank
   private String firstName;
   @NotBlank

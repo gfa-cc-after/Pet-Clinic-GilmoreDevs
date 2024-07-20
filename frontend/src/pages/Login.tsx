@@ -77,7 +77,7 @@ export function Login() {
                     </InputRightElement>
                 </InputGroup>
 
-                <Button type="submit">Login</Button>
+                <Button colorScheme="blue" type="submit">Login</Button>
             </form>
             {error && <p className="loginErrorMsg">{error}</p>}
             <Link className="links" to="/">Main</Link>

@@ -7,20 +7,28 @@ import {
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Main } from './pages/Main';
+import { Layout } from './layouts/Layout';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    Component: Layout,
+    children: [
+      {
+        path: "/",
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />
+      }
+    ]
   },
-  {
-    path: "register",
-    element: <Register />,
-  },
-  {
-    path: "login",
-    element: <Login />
-  }
 
 ]);
 

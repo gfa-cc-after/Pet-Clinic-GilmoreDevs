@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import axios from "axios";
-import { Button, Input, useToast } from "@chakra-ui/react";
+import { Button, FormLabel, Input, useToast } from "@chakra-ui/react";
 
 function Register() {
 
@@ -53,7 +53,7 @@ function Register() {
         <>
             <h1>Register</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="firstName">First Name:</label>
+                <FormLabel htmlFor="firstName">First Name:</FormLabel>
                 <Input
                     type='text'
                     required aria-label="firstName"
@@ -62,15 +62,14 @@ function Register() {
                     value={formData.firstName}
                     onChange={saveFormData}
                 />
-                <label htmlFor="lastName">Last Name:</label>
+                <FormLabel htmlFor="lastName">Last Name:</FormLabel>
                 <Input type='text'
                     autoComplete="family-name"
                     required aria-label="lastName"
                     name={"lastName"}
                     value={formData.lastName}
                     onChange={saveFormData} />
-                <label htmlFor="email">Email:</label>
-
+                <FormLabel htmlFor="email">Email:</FormLabel>
                 <Input
                     type='email'
                     autoComplete="email"
@@ -79,7 +78,7 @@ function Register() {
                     value={formData.email}
                     onChange={saveFormData}
                 />
-                <label htmlFor="password">Password:</label>
+                <FormLabel htmlFor="password">Password:</FormLabel>
                 <Input
                     type='password'
                     aria-label={"pass"}
@@ -90,8 +89,6 @@ function Register() {
                 <PasswordStrengthValidator password={formData.password}></PasswordStrengthValidator>
                 <Button colorScheme='green' type='submit'>Register</Button>
             </form>
-            <Link className={"links"} to='/login'>Login</Link>
-            <Link className={"links"} to='/'>Main</Link>
         </>
     )
 }

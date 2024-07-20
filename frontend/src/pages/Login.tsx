@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Button, FormLabel, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 
 export function Login() {
     const [email, setEmail] = useState("");
@@ -50,7 +48,7 @@ export function Login() {
         <>
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
-                <label htmlFor="email">Email:</label>
+                <FormLabel htmlFor="email">Email:</FormLabel>
                 <Input
                     type="email"
                     name="email"
@@ -59,7 +57,7 @@ export function Login() {
                     onChange={saveFormData}
                     required
                 />
-                <label htmlFor="password">Password:</label>
+                <FormLabel htmlFor="password">Password:</FormLabel>
                 <InputGroup>
                     <Input
                         type={showPassword ? 'text' : 'password'}
@@ -76,12 +74,9 @@ export function Login() {
                         </Button>
                     </InputRightElement>
                 </InputGroup>
-
                 <Button colorScheme="blue" type="submit">Login</Button>
             </form>
             {error && <p className="loginErrorMsg">{error}</p>}
-            <Link className="links" to="/">Main</Link>
-            <Link className="links" to="/register">Register</Link>
         </>
     );
 }

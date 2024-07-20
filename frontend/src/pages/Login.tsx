@@ -33,7 +33,7 @@ export function Login() {
 
     return (
         <>
-            <Box textStyle="h1">Login</Box>
+            <Box textStyle="h1"><h1>Login</h1></Box>
             <Box w="max(40vw, 500px)">
                 <form onSubmit={handleLogin}>
                     <FormLabel htmlFor="email">Email:</FormLabel>

@@ -45,7 +45,7 @@ function Register() {
 
     return (
         <>
-            <Box textStyle="h1">Register</Box>
+            <Box textStyle="h1"><h1>Register</h1></Box>
             <Box w="max(40vw, 500px)">
                 <form onSubmit={handleSubmit}>
                     <FormLabel htmlFor="firstName">First Name:</FormLabel>
@@ -78,17 +78,18 @@ function Register() {
                             <FormErrorMessage color='red.500'>Please, enter a valid email!</FormErrorMessage>
                         }
                     </FormControl>
-                    <FormControl isInvalid={isValid()} mb="8">
-                        <FormLabel htmlFor="password">Password:</FormLabel>
+                    <FormControl isInvalid={isValid()} mb="8" data-test-id="password">
+                        <FormLabel id="password-label" htmlFor="password">Password:</FormLabel>
                         <Input
                             type='password'
                             aria-label={"pass"}
                             name={"password"}
+                            aria-labelledby="password-label"
                             value={formData.password}
                             onChange={saveFormData}
                         />
                         {passwordErrors.map((error, index) =>
-                            <FormErrorMessage key={`${index}-${error}`} color='red.500'>{error}</FormErrorMessage>
+                            <FormErrorMessage key={`${index}-${error}`} aria-label="passworderror" color='red.500'>{error}</FormErrorMessage>
                         )}
                     </FormControl>
                     <Button colorScheme='green' type='submit' w="100%" >Register</Button>

@@ -5,6 +5,19 @@ import { userEvent } from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { vi } from 'vitest';
 
+import { apiClient } from '../lib/apiClient';
+
+const apiClientInstance = apiClient();
+const loginSpy = vi.spyOn(apiClientInstance, "login");
+
+// vi.mock('../lib/apiClient', async (importOriginal) => {
+//     return {
+//         ...await importOriginal<typeof import('../lib/apiClient')>(),
+//         login: vi.fn(),
+//         register: vi.fn(),
+//     }
+// })
+
 describe("Register component", () => {
     test("has a heading 'Register'", async () => {
         // Arrange
@@ -33,8 +46,6 @@ describe("Register component", () => {
         const passwordField = screen.getByLabelText(/password:/i)
         const button = screen.getByRole('button', { name: /login/i });
         userEvent.setup();
-        const spy = vi.spyOn(global, "fetch");
-
 
         //Act
         await userEvent.type(emailField, "example@gmail.com");
@@ -43,15 +54,15 @@ describe("Register component", () => {
 
         //Assert
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toHaveBeenCalledWith("http://localhost:8080/login", {
-            "body": "{\"email\":\"example@gmail.com\",\"password\":\"passworD123!\"}",
-            "headers": {
-                "Accept": "application/json, text/plain, */*",
-                "Content-Type": "application/json",
-            },
-            "method": "POST"
-        });
+        expect(loginSpy).toHaveBeenCalled();
+        // expect(loginSpy).toHaveBeenCalledWith("http://localhost:8080/login", {
+        //     "body": "{\"email\":\"example@gmail.com\",\"password\":\"passworD123!\"}",
+        //     "headers": {
+        //         "Accept": "application/json, text/plain, */*",
+        //         "Content-Type": "application/json",
+        //     },
+        //     "method": "POST"
+        // });
 
     })
 

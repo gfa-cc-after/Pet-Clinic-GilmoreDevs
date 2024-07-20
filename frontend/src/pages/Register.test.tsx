@@ -26,12 +26,11 @@ describe("Register component", () => {
                 <Register />
             </Router>
         );
-        const passworderrors = screen.getAllByLabelText('passworderrors');
 
         // Act
 
         // Assert
-        expect(passworderrors.length).toEqual(4);
+        expect(screen.queryAllByLabelText("passworderror").length).toEqual(4);
     });
 
     test("passworderrors dissappear after successfull password input", async () => {
@@ -42,12 +41,13 @@ describe("Register component", () => {
             </Router>
         );
         const user = userEvent.setup();
-        const passwordInput = screen.getByLabelText('pass');
+        const passwordInput = screen.getByLabelText(/password:/i);
         // Act
+
         await user.type(passwordInput, "Ajg65657h")
 
         // Assert
-        expect(screen.queryByLabelText('passworderrors')).toBeNull();
+        expect(screen.queryAllByLabelText("passworderror").length).toEqual(0);
     });
 
 
@@ -59,7 +59,7 @@ describe("Register component", () => {
             </Router>
         );
         const user = userEvent.setup();
-        const passwordField = screen.getByLabelText('pass');
+        const passwordField = screen.getByLabelText(/password:/i)
 
         const firstNameField = screen.getByLabelText("firstName")
         const lastNameField = screen.getByLabelText("lastName")

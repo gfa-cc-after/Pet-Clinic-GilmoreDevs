@@ -4,7 +4,7 @@ import { App } from './App';
 import { act } from 'react';
 
 
-describe('App', () => {
+describe.only('App', () => {
     it('should render successfully', () => {
         render(<App />);
         expect(true).toBe(true);
@@ -28,7 +28,7 @@ describe('App', () => {
         const { getByRole } = render(<App />);
 
         act(() => {
-            getByRole('link', { name: /main/i }).click();
+            getByRole('link', { name: /home/i }).click();
         });
         expect(getByRole('heading', { name: /home/i })).toBeInTheDocument();
     });

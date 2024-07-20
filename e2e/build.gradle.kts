@@ -14,6 +14,9 @@ dependencies {
 
     // Playwright dependencies
     implementation("com.microsoft.playwright:playwright:1.45.0")
+
+    // TestContainers dependencies
+    testImplementation("org.testcontainers:testcontainers:1.20.0")
 }
 
 repositories {

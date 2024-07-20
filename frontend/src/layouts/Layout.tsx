@@ -8,7 +8,13 @@ import { Footer } from './Footer';
 
 const Layout = () => {
     return (
-        <Flex className='main_layout'>
+        <Flex
+            alignItems="center"
+            width="100vw"
+            height="100vh"
+            justifyContent="space-between"
+            flexDirection="column"
+        >
             <Navigation />
             <div className='outlet_layout'>
                 <Outlet />

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, FormLabel, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react'
-import { apiClient } from "../lib/apiClient";
+import { login } from "../lib/apiClient";
 
 export function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [showPassword, setShowPassword] = useState(false);
     const toast = useToast();
     const navigate = useNavigate();
-    const { login } = apiClient();
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

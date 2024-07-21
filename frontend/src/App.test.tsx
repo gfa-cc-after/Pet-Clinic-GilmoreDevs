@@ -4,7 +4,7 @@ import { App } from './App';
 import { act } from 'react';
 
 
-describe.only('App', () => {
+describe('App', () => {
     it('should render successfully', () => {
         render(<App />);
         expect(true).toBe(true);

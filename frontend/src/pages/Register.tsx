@@ -1,7 +1,7 @@
 import { useState } from "react";
 import validator from "validator";
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from "@chakra-ui/react";
-import { apiClient } from "../lib/apiClient";
+import { register } from "../lib/apiClient";
 import { AxiosError } from "axios";
 import { usePasswordValidator } from "../hooks/usePasswordErrors";
 
@@ -9,10 +9,7 @@ import { usePasswordValidator } from "../hooks/usePasswordErrors";
 function Register() {
     const [formData, setFormData] = useState({ firstName: "", lastName: "", email: "", password: "" });
     const toast = useToast();
-    const { register } = apiClient();
-
     const { passwordErrors, isValid } = usePasswordValidator(formData.password);
-
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

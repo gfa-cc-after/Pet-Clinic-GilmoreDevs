@@ -5,7 +5,9 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: example_password
+      POSTGRES_USER: example_user
+      POSTGRES_DB: example_db
 
   backend:
     build: ./backend
@@ -14,3 +16,17 @@ services:
       - 8080:8080
     depends_on:
       - postgres-db
+    environment:
+      - USERNAME=example_user
+      - DBHOST=jdbc:postgresql://postgres-db:5432/example_db
+      - PASSWORD=example_password
+      - CORSURLS=http://localhost:3000
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - 3000:80
+    depends_on:
+      - backend
+    environment:
+      - VITE_BACKEND_URL=http://localhost:8080

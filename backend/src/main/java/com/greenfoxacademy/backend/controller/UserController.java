@@ -33,7 +33,8 @@ public class UserController {
    */
   @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto)
+  public ResponseEntity<RegisterResponseDto> registerUser(
+        @Validated @RequestBody RegisterRequestDto registerRequestDto) 
           throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }

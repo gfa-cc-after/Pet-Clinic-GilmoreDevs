@@ -2,7 +2,7 @@ package com.greenfoxacademy.backend.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.greenfoxacademy.backend.dtos.RegisterUserDto;
+import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.UserService;
@@ -26,7 +26,7 @@ public class UserRegistrationTest {
 
   @Test
   public void userIsSuccessfulRegisteredInDatabase() throws Exception, UserAlreadyExistsError {
-    RegisterUserDto newUser = new RegisterUserDto();
+    RegisterRequestDto newUser = new RegisterRequestDto();
     newUser.setFirstName("John");
     newUser.setLastName("Doe");
     newUser.setEmail("john.doe@example.com");

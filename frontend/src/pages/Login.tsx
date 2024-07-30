@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+type LoginResponse = {
+    token : string
+}
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string|null>(null);
+    const navigate = useNavigate();
 
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -23,12 +27,13 @@ export function Login() {
                     setError('Login failed');
                 }
 
-                const data = await res.json().catch(() => {
+                const data : LoginResponse = await res.json().catch(() => {
                     setError('Login failed');
                     
                 });
-                console.log(data);
+                localStorage.setItem('token',data.token);
                 setError(null);
+                navigate('/');
             })
             .catch(_error => setError('Login failed'));
             

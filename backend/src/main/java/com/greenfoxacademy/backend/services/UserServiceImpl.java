@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 /**
  * Service implementation to manage {@link UserService}.
  */
@@ -50,6 +52,9 @@ public class UserServiceImpl implements UserService {
     if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
-    return new LoginResponseDto(jwtUtil.createToken(null, user.getEmail()));
+    HashMap<String, Object> claims = new HashMap<>();
+    claims.put("firstName",user.getFirstName());
+    claims.put("lastName",user.getLastName());
+    return new LoginResponseDto(jwtUtil.createToken(claims, user.getEmail()));
   }
 }

@@ -3,9 +3,6 @@ import {useState} from "react";
 import validator from "validator";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
-import {Icon} from 'react-icons-kit';
-import {eyeOff} from 'react-icons-kit/feather/eyeOff';
-import {eye} from 'react-icons-kit/feather/eye'
 
 type User = { firstName: string; lastName: string; sub: string }
 
@@ -26,7 +23,6 @@ export function Profile() {
     const [errMessage, setErrMessage] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [type, setType] = useState<"password" | "text">('password');
-    const [icon, setIcon] = useState(eyeOff);
     const navigate = useNavigate();
 
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,16 +32,6 @@ export function Profile() {
     const routChange = () => {
         const path = '/';
         navigate(path);
-    }
-
-    const handleToggle = () => {
-        if (type === 'password') {
-            setIcon(eye);
-            setType('text')
-        } else {
-            setIcon(eyeOff)
-            setType('password')
-        }
     }
 
     const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
@@ -100,20 +86,15 @@ export function Profile() {
                     onChange={handleUserChange}
                 />
                 <label htmlFor="password">Password:</label>
-                <div className="password">
-                    <input
-                        type={type}
-                        name="password"
-                        placeholder={password}
-                        id="password"
-                        defaultValue={password}
-                        onChange={e => setPassword(e.target.value)}
-                        autoComplete="current-password"
-                    />
-                    <span className="password" onClick={handleToggle}>
-                        <Icon className="password" icon={icon} size={25}/>
-                    </span>
-                </div>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder={password}
+                    id="password"
+                    defaultValue={password}
+                    onChange={e => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                />
                 <button type="submit">Save</button>
                 <button type="button" onClick={routChange}>Discard</button>
             </form>

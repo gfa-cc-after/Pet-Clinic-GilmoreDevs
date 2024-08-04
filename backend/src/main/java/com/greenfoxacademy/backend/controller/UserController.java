@@ -6,7 +6,6 @@ import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.UserService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

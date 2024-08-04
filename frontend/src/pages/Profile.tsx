@@ -1,8 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import validator from "validator";
-import axios from "axios";
 import {jwtDecode} from "jwt-decode";
+import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 
 type User = { firstName: string; lastName: string; sub: string }
 
@@ -21,8 +21,6 @@ export function Profile() {
     const [password, setPassword] = useState("");
     const [user, setUser] = useState<User | null>(userFromToken);
     const [errMessage, setErrMessage] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
-    const [type, setType] = useState<"password" | "text">('password');
     const navigate = useNavigate();
 
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,25 +34,16 @@ export function Profile() {
 
     const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (user == null) {
+        if (user?.sub == "" || user?.lastName == "" || user?.lastName == "" || password == "") {
+            setErrMessage("Please, fill all field!");
             return;
         }
-        if (!validator.isEmail(user.sub)) {
+        if (!validator.isEmail(String(user?.sub))) {
             setErrMessage("Please, enter valid email!");
             return;
         }
         setErrMessage("");
-        axios.post('http://localhost:8080/profile', {
-            email: user?.sub,
-            password,
-        })
-            .then((_response) => {
-                setMessage("Successful profile change!");
-                setPassword("");
-            })
-            .catch((error) => {
-                setErrMessage(error.response.data.error);
-            });
+
     }
 
     return (
@@ -88,6 +77,7 @@ export function Profile() {
                 <label htmlFor="password">Password:</label>
                 <input
                     type="password"
+                    aria-label={"pass"}
                     name="password"
                     placeholder={password}
                     id="password"
@@ -95,11 +85,11 @@ export function Profile() {
                     onChange={e => setPassword(e.target.value)}
                     autoComplete="current-password"
                 />
+                <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
                 <button type="submit">Save</button>
                 <button type="button" onClick={routChange}>Discard</button>
             </form>
             <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
-            <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
         </>
     );
 }

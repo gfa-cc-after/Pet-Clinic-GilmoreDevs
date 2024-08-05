@@ -1,9 +1,6 @@
 package com.greenfoxacademy.backend.controller;
 
-import com.greenfoxacademy.backend.dtos.LoginRequestDto;
-import com.greenfoxacademy.backend.dtos.LoginResponseDto;
-import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
-import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +54,28 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
+  /**
+   * This method logs in a user.
+   * Outcomes:
+   * - If the user is not found, return a 401 status code.
+   * - If the user is found, return a 200 status code and the token.
+   *
+   * @param profileUpdateRequestDto the user to be logged in
+   * @return a response entity with the status code and the token
+   */
+  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
+  @CrossOrigin(origins = "http://localhost:5173")
+  @PostMapping("/profile")
+  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
+      @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
+  ) {
+    try {
+      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(profileUpdateRequestDto));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
   }
 }

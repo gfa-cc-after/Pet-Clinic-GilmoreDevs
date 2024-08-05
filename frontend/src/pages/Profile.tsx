@@ -34,10 +34,6 @@ export function Profile() {
 
     const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (user?.sub == "" || user?.lastName == "" || user?.lastName == "" || password == "") {
-            setErrMessage("Please, fill all field!");
-            return;
-        }
         if (!validator.isEmail(String(user?.sub))) {
             setErrMessage("Please, enter valid email!");
             return;
@@ -55,24 +51,30 @@ export function Profile() {
                     type="email"
                     name="sub"
                     id="sub"
+                    autoComplete={"email"}
                     value={user?.sub}
                     onChange={handleUserChange}
+                    required
                 />
                 <label htmlFor="firstName">FirstName:</label>
                 <input
                     type="text"
                     name="firstName"
                     id="firstName"
+                    autoComplete={"given-name"}
                     value={user?.firstName}
                     onChange={handleUserChange}
+                    required
                 />
                 <label htmlFor="lastName">LastName:</label>
                 <input
                     type="text"
                     name="lastName"
                     id="lastName"
+                    autoComplete={"family-name"}
                     value={user?.lastName}
                     onChange={handleUserChange}
+                    required
                 />
                 <label htmlFor="password">Password:</label>
                 <input
@@ -81,9 +83,10 @@ export function Profile() {
                     name="password"
                     placeholder={password}
                     id="password"
-                    defaultValue={password}
+                    value={password}
                     onChange={e => setPassword(e.target.value)}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
+                    required
                 />
                 <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
                 <button type="submit">Save</button>

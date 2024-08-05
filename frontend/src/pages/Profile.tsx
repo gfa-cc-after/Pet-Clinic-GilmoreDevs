@@ -3,6 +3,7 @@ import {useState} from "react";
 import validator from "validator";
 import {jwtDecode} from "jwt-decode";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import axios from "axios";
 
 type User = { firstName: string; lastName: string; sub: string }
 
@@ -21,6 +22,7 @@ export function Profile() {
     const [password, setPassword] = useState("");
     const [user, setUser] = useState<User | null>(userFromToken);
     const [errMessage, setErrMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +40,19 @@ export function Profile() {
             setErrMessage("Please, enter valid email!");
             return;
         }
-        setErrMessage("");
+        axios.post('http://localhost:8080/profile', {
+            email: user?.sub,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            password,
+        })
+            .then((_response) => {
+                setMessage("Successful profile change!");
+            })
+            .catch((error) => {
+                setErrMessage(error.response.data.error);
+            });
+
 
     }
 
@@ -93,6 +107,7 @@ export function Profile() {
                 <button type="button" onClick={routChange}>Discard</button>
             </form>
             <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
+            <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
         </>
     );
 }

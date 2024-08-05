@@ -7,7 +7,7 @@ import {
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Main } from './pages/Main';
-import { Profile } from './pages/Profile';
+import { ProfileUpdate } from './pages/ProfileUpdate.tsx';
 
 const router = createBrowserRouter([
   {

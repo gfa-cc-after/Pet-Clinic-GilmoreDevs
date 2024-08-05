@@ -1,9 +1,6 @@
 package com.greenfoxacademy.backend.services;
 
-import com.greenfoxacademy.backend.dtos.LoginRequestDto;
-import com.greenfoxacademy.backend.dtos.LoginResponseDto;
-import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
-import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
@@ -55,5 +52,23 @@ public class UserServiceImpl implements UserService {
     claims.put("firstName", user.getFirstName());
     claims.put("lastName", user.getLastName());
     return new LoginResponseDto(jwtUtil.createToken(claims, user.getEmail()));
+  }
+
+  @Override
+  public ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception {
+    User user = userRepository.findByEmail(profileUpdateRequestDto.email())
+        .orElseThrow(() -> new Exception("User not found"));
+    if (!passwordEncoder.matches(profileUpdateRequestDto.password(), user.getPassword())) {
+      throw new Exception("Invalid password");
+    }
+    user.setEmail(profileUpdateRequestDto.email());
+    user.setFirstName(profileUpdateRequestDto.firstName());
+    user.setLastName(profileUpdateRequestDto.lastName());
+    user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
+    return mapToProfileUpdateResponseDto(userRepository.save(user));
+  }
+
+  private ProfileUpdateResponseDto mapToProfileUpdateResponseDto(User user) {
+    return new ProfileUpdateResponseDto(user.getId());
   }
 }

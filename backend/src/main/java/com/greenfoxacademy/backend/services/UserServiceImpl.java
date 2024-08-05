@@ -8,6 +8,7 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.jwt.JwtUtil;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,6 +51,9 @@ public class UserServiceImpl implements UserService {
     if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
-    return new LoginResponseDto(jwtUtil.createToken(null, user.getEmail()));
+    HashMap<String, Object> claims = new HashMap<>();
+    claims.put("firstName", user.getFirstName());
+    claims.put("lastName", user.getLastName());
+    return new LoginResponseDto(jwtUtil.createToken(claims, user.getEmail()));
   }
 }

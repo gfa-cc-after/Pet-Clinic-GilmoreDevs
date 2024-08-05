@@ -1,10 +1,8 @@
 package com.greenfoxacademy.backend.config;
 
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

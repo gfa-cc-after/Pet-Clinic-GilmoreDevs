@@ -1,11 +1,10 @@
-package com.greenfoxacademy.backend.controller;
+package com.greenfoxacademy.backend.services;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-import com.greenfoxacademy.backend.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

@@ -8,6 +8,7 @@ import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { Main } from './pages/Main';
 import { ProfileUpdate } from './pages/ProfileUpdate.tsx';
+import {Profile} from "./pages/Profile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,11 @@ const router = createBrowserRouter([
   {
     path: "login",
     element: <Login />
-  }  ,
+  },
+  {
+    path: "profile-update",
+    element: <ProfileUpdate />
+  },
   {
     path: "profile",
     element: <Profile />

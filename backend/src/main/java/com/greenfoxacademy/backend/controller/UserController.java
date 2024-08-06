@@ -2,15 +2,14 @@ package com.greenfoxacademy.backend.controller;
 
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -68,12 +67,13 @@ public class UserController {
    */
   //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
   @CrossOrigin(origins = "http://localhost:5173")
-  @PostMapping("/profile")
+  @PatchMapping("/profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
       @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
   ) {
     try {
-      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(profileUpdateRequestDto));
+      User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(profileUpdateRequestDto, user));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

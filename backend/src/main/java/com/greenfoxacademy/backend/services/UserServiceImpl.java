@@ -8,6 +8,8 @@ import com.greenfoxacademy.backend.services.jwt.JwtUtil;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,12 +57,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception {
-    User user = userRepository.findByEmail(profileUpdateRequestDto.email())
-        .orElseThrow(() -> new Exception("User not found"));
-    if (!passwordEncoder.matches(profileUpdateRequestDto.password(), user.getPassword())) {
-      throw new Exception("Invalid password");
-    }
+  public ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto, User user) throws Exception {
     user.setEmail(profileUpdateRequestDto.email());
     user.setFirstName(profileUpdateRequestDto.firstName());
     user.setLastName(profileUpdateRequestDto.lastName());
@@ -70,5 +67,10 @@ public class UserServiceImpl implements UserService {
 
   private ProfileUpdateResponseDto mapToProfileUpdateResponseDto(User user) {
     return new ProfileUpdateResponseDto(user.getId());
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 }

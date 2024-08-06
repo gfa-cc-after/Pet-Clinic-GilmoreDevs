@@ -11,6 +11,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * This class is responsible for generating and validating JWT tokens.
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
  * Find the library here: <a href="https://github.com/jwtk/jjwt">JJWT
  * documentation on github</a>
  */
-@Component
+@Service
 public class JwtUtil {
 
   /**
@@ -86,7 +87,7 @@ public class JwtUtil {
    *
    * @return true if the token is expired, false otherwise
    */
-  private Boolean isTokenExpired(String token) {
+  public Boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }
 

@@ -2,8 +2,9 @@ import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import validator from "validator";
 import {jwtDecode} from "jwt-decode";
-import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
-import axios from "axios";
+import {PasswordStrengthValidator} from "../components/PasswordStrengthValidator";
+import axios, {AxiosRequestConfig} from "axios";
+import {App} from "../App.tsx";
 
 type User = { firstName: string; lastName: string; sub: string }
 
@@ -40,12 +41,29 @@ export function Profile() {
             setErrMessage("Please, enter valid email!");
             return;
         }
-        axios.post('http://localhost:8080/profile', {
-            email: user?.sub,
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-            password,
-        })
+        const config: AxiosRequestConfig = {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}};
+
+        fetch('http://localhost:8080/profile-update',
+            {
+                method: 'patch',
+                body: JSON.stringify(
+                    {
+                        email: user?.sub,
+                        firstName: user?.firstName,
+                        lastName: user?.lastName,
+                        password
+                    }),
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            // axios.post('http://localhost:8080/profile-update', {
+            //         email: user?.sub,
+            //         firstName: user?.firstName,
+            //         lastName: user?.lastName,
+            //         password,
+            //     },config)
             .then((_response) => {
                 setMessage("Successful profile change!");
             })

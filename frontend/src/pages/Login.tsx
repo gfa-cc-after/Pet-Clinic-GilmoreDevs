@@ -1,52 +1,35 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-type LoginResponse = {
-    token : string
-}
+import { LoginRequestDTO, login } from "../lib";
+import { appState, User } from "../store";
+import { jwtDecode } from "jwt-decode";
 
 export function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState<string|null>(null);
+    const { setToken, setUser } = appState()
+    const [loginForm, setLoginForm] = useState<LoginRequestDTO>({
+        email: "",
+        password: ""
+    });
+
     const navigate = useNavigate();
 
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    const [error, setError] = useState<string | null>(null);
+
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-            .then(async res => {
-
-                if (!res.ok) {
-                    setError('Login failed');
-                }
-
-                const data : LoginResponse = await res.json().catch(() => {
-                    setError('Login failed');
-                    
-                });
-                localStorage.setItem('token',data.token);
-                setError(null);
-                navigate('/');
-            })
-            .catch(_error => setError('Login failed'));
-            
-    };
-
-    const saveFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        if (name === 'email') {
-            setEmail(value);
-        } else if (name === 'password') {
-            setPassword(value);
+        try {
+            const { token } = await login(loginForm);
+            setToken(token);
+            setUser(jwtDecode<User>(token));
+            navigate('/');
+        } catch (e) {
+            setError('Login failed');
         }
     };
+
+    const updateForm =
+        ({ target: { value, name } }: React.ChangeEvent<HTMLInputElement>) =>
+            setLoginForm({ ...loginForm, [name]: value });
 
     return (
         <>
@@ -55,10 +38,11 @@ export function Login() {
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
-                    name="email"
+                    name={"email"}
                     id="email"
-                    value={email}
-                    onChange={saveFormData}
+                    value={loginForm.email}
+                    onChange={updateForm}
+                    autoComplete="email"
                     required
                 />
                 <label htmlFor="password">Password:</label>
@@ -66,8 +50,9 @@ export function Login() {
                     type="password"
                     name="password"
                     id="password"
-                    value={password}
-                    onChange={saveFormData}
+                    value={loginForm.password}
+                    onChange={updateForm}
+                    autoComplete="current-password"
                     required
                 />
                 <button type="submit">Login</button>

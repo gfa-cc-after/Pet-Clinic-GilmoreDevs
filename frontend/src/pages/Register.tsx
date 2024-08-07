@@ -16,10 +16,10 @@ function Register() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-setMessage (" ");
+        setMessage(" ");
         if (validator.isEmail(email)) {
             setErrMessage("");
-            axios.post('http://localhost:8080/register', {
+            axios.post('http://localhost:8080/api/user/register', {
                 firstName,
                 lastName,
                 email,

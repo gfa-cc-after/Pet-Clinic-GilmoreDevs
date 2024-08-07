@@ -36,7 +36,6 @@ public class UserController {
    * @param registerRequestDto the user to be registered
    * @return a response entity with the status code and the location of the new user
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("register")
   @Operation(summary = "This method creates a user.")
   public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
@@ -53,7 +52,6 @@ public class UserController {
    * @return a response entity with the status code and the token
    */
   @Operation(summary = "This method generates a jwt token for a user based on credentials.")
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("login")
   public ResponseEntity<LoginResponseDto> loginUser(@Valid @RequestBody LoginRequestDto loginRequestDto) {
     try {
@@ -72,10 +70,10 @@ public class UserController {
    * @param profileUpdateRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @Operation(summary = "This method updates the authenticated user.")
   @PatchMapping("profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(@AuthenticationPrincipal User user, @Valid @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
+    System.out.println("user: " + user.toString());
     return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(user, profileUpdateRequestDto));
   }
 }

@@ -1,77 +1,34 @@
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
-import validator from "validator";
-import {jwtDecode} from "jwt-decode";
-import {PasswordStrengthValidator} from "../components/PasswordStrengthValidator";
-import axios, {AxiosRequestConfig} from "axios";
-import {App} from "../App.tsx";
+import { useState } from "react";
+import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { appState } from "../store";
+import { updateUser, UpdateUserRequestDto } from '../lib'
 
-type User = { firstName: string; lastName: string; sub: string }
-
-const decodeToken = (): User | null => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        const decodeToken = jwtDecode<User>(token);
-        console.log(decodeToken);
-        return decodeToken;
-    }
-    return null;
-};
 
 export function Profile() {
-    const userFromToken = decodeToken();
-    const [password, setPassword] = useState("");
-    const [user, setUser] = useState<User | null>(userFromToken);
-    const [errMessage, setErrMessage] = useState<string | null>(null);
-    const [message, setMessage] = useState("");
-    const navigate = useNavigate();
+    const { user, token } = appState();
 
-    const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setUser({...user!, [name]: value})
-    }
-    const routChange = () => {
-        const path = '/';
-        navigate(path);
-    }
+    const [userUpdate, setUserUpdate] = useState<UpdateUserRequestDto>({
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        email: user?.sub || "",
+        password: ""
+    });
 
-    const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
+    const [error, setError] = useState<string | null>(null);
+
+    const handleUpdateUserChange = ({ target: { value, name } }: React.ChangeEvent<HTMLInputElement>) =>
+        setUserUpdate({ ...userUpdate, [name]: value })
+
+
+    const handleProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!validator.isEmail(String(user?.sub))) {
-            setErrMessage("Please, enter valid email!");
-            return;
+        if (!token) { return }
+        if (!userUpdate) { return }
+        try {
+            await updateUser(userUpdate, token)
+        } catch (e) {
+            setError('Update failed');
         }
-        const config: AxiosRequestConfig = {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}};
-
-        fetch('http://localhost:8080/profile-update',
-            {
-                method: 'patch',
-                body: JSON.stringify(
-                    {
-                        email: user?.sub,
-                        firstName: user?.firstName,
-                        lastName: user?.lastName,
-                        password
-                    }),
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Content-Type': 'application/json'
-                }
-            })
-            // axios.post('http://localhost:8080/profile-update', {
-            //         email: user?.sub,
-            //         firstName: user?.firstName,
-            //         lastName: user?.lastName,
-            //         password,
-            //     },config)
-            .then((_response) => {
-                setMessage("Successful profile change!");
-            })
-            .catch((error) => {
-                setErrMessage(error.response.data.error);
-            });
-
-
     }
 
     return (
@@ -81,11 +38,11 @@ export function Profile() {
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
-                    name="sub"
-                    id="sub"
-                    autoComplete={"email"}
-                    value={user?.sub}
-                    onChange={handleUserChange}
+                    name="email"
+                    id="email"
+                    autoComplete="email"
+                    value={userUpdate.email}
+                    onChange={handleUpdateUserChange}
                     required
                 />
                 <label htmlFor="firstName">FirstName:</label>
@@ -93,9 +50,9 @@ export function Profile() {
                     type="text"
                     name="firstName"
                     id="firstName"
-                    autoComplete={"given-name"}
-                    value={user?.firstName}
-                    onChange={handleUserChange}
+                    autoComplete="given-name"
+                    value={userUpdate.firstName}
+                    onChange={handleUpdateUserChange}
                     required
                 />
                 <label htmlFor="lastName">LastName:</label>
@@ -103,9 +60,9 @@ export function Profile() {
                     type="text"
                     name="lastName"
                     id="lastName"
-                    autoComplete={"family-name"}
-                    value={user?.lastName}
-                    onChange={handleUserChange}
+                    autoComplete="family-name"
+                    value={userUpdate.lastName}
+                    onChange={handleUpdateUserChange}
                     required
                 />
                 <label htmlFor="password">Password:</label>
@@ -113,19 +70,20 @@ export function Profile() {
                     type="password"
                     aria-label={"pass"}
                     name="password"
-                    placeholder={password}
                     id="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    value={userUpdate.password}
+                    onChange={handleUpdateUserChange}
                     autoComplete="new-password"
                     required
                 />
-                <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
+                {
+                    userUpdate?.password &&
+                    <PasswordStrengthValidator password={userUpdate?.password}></PasswordStrengthValidator>
+                }
                 <button type="submit">Save</button>
-                <button type="button" onClick={routChange}>Discard</button>
+                <button type="button" onClick={() => { }}>Discard</button>
+                {error && <p className="loginErrorMsg">{error}</p>}
             </form>
-            <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
-            <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
         </>
     );
 }

@@ -10,5 +10,5 @@ export function Main() {
             <Link className={"links"} to='/register'>Register</Link>
             <Link className={"links"} to='/profile'>Profile update</Link>
         </>
-);
+    );
 }

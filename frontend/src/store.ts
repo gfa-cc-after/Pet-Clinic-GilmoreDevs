@@ -1,12 +1,11 @@
 import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 
-type User = {
+export type User = {
     sub: string;
     firstName: string;
     lastName: string;
 };
-
 
 interface State {
     user: User | null;

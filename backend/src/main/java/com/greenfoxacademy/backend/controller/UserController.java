@@ -5,6 +5,7 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.services.UserService;
+import com.sun.net.httpserver.Request;
 import io.swagger.v3.oas.annotations.OpenAPI31;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -72,8 +73,9 @@ public class UserController {
    */
   @Operation(summary = "This method updates the authenticated user.")
   @PatchMapping("profile-update")
-  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(@AuthenticationPrincipal User user, @Valid @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
-    System.out.println("user: " + user.toString());
+  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
+          @AuthenticationPrincipal User user,
+          @Valid @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
     return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(user, profileUpdateRequestDto));
   }
 }

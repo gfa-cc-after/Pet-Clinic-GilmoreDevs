@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
+import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.UpdateUserRequestDTO;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
@@ -20,6 +22,8 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import java.util.Optional;
 
 import com.greenfoxacademy.backend.utils.WithMockCustomUser;
+import io.jsonwebtoken.lang.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,12 +36,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -275,4 +281,32 @@ class UserControllerTest {
     Mockito.verify(userRepository, Mockito.times(0)).save(Mockito.any());
   }
 
+
+  @Test
+  @DisplayName("Should generate a token when a user is successfully logged in with good credentials and update the user")
+  void shouldGenerateTokenWhenUserIsSuccessfullyLoggedInWithGoodCredentialsAndUpdateUser() throws Exception {
+    // Given
+    String email = "john.doe@gmail.com";
+    String password = "AValidPassword1";
+    User user = User.builder().id(1).email(email).password(passwordEncoder.encode(password)).firstName("Jon").lastName("Doe").build();
+    LoginRequestDto loginRequestDto = new LoginRequestDto(email, password);
+
+    when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+    when(userRepository.existsByEmail(email)).thenReturn(true);
+    when(userRepository.save(Mockito.any())).thenReturn(user);
+
+    MvcResult loginResult = mockMvc.perform(post("/api/user/login").contentType(MediaType.APPLICATION_JSON).content(jacksonObjectMapper.writeValueAsString(loginRequestDto))).andReturn();
+
+    LoginResponseDto loginResponseDto = jacksonObjectMapper.readValue(loginResult.getResponse().getContentAsString(), LoginResponseDto.class);
+    Assertions.assertNotNull(loginResponseDto.token());
+    Assertions.assertFalse(loginResponseDto.token().isEmpty());
+    Assertions.assertEquals(3, loginResponseDto.token().split("\\.").length);
+
+    UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO("john.doe@gmail.com", "John", "Doe", "AValidPassword2");
+    // When
+    // This test is a bit verbose and unnecessary, but it's a good example of how to test a PATCH request with an authenticated user
+    // should be replaced with a simpler test, but will leave it here until auth works
+    mockMvc.perform(patch("/api/user/profile-update").contentType(MediaType.APPLICATION_JSON).content(jacksonObjectMapper.writeValueAsString(updateUserRequestDTO)).header(HttpHeaders.AUTHORIZATION, "Bearer " + loginResponseDto.token())).andExpect(status().is2xxSuccessful());
+
+  }
 }

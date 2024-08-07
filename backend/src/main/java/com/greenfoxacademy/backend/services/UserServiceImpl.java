@@ -8,6 +8,7 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.jwt.JwtUtil;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -61,14 +62,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public ProfileUpdateResponseDto profileUpdate(User user, ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
+
+    User userInDatabase = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
     if (userRepository.findByEmail(profileUpdateRequestDto.email()).isPresent() && !profileUpdateRequestDto.email().equals(user.getEmail())) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
-    user.setEmail(profileUpdateRequestDto.email());
-    user.setFirstName(profileUpdateRequestDto.firstName());
-    user.setLastName(profileUpdateRequestDto.lastName());
-    user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
-    return mapToProfileUpdateResponseDto(userRepository.save(user));
+    userInDatabase.setEmail(profileUpdateRequestDto.email());
+    userInDatabase.setFirstName(profileUpdateRequestDto.firstName());
+    userInDatabase.setLastName(profileUpdateRequestDto.lastName());
+    userInDatabase.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
+    User updatedUser = userRepository.save(userInDatabase);
+    return new ProfileUpdateResponseDto(updatedUser.getId());
   }
 
   private ProfileUpdateResponseDto mapToProfileUpdateResponseDto(User user) {
@@ -77,6 +81,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    User asd = userRepository.findByEmail(username).orElse(null);
+    System.out.println(asd);
     return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 }

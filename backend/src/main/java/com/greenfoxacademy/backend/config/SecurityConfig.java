@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
 /**
@@ -51,26 +54,25 @@ public class SecurityConfig {
           "/webjars/**",
           // -- Swagger UI v3 (OpenAPI)
           "/v3/api-docs/**",
-          "/swagger-ui/**"
+          "/swagger-ui/**",
           // other public endpoints of your API may be appended to this array
+          "/health-check",
+          "/api/user/register",
+          "/api/user/login"
   };
+
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(config -> config.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
-                    .requestMatchers("/api/user/profile-update").authenticated()
-                    .requestMatchers(AUTH_ENABLE_LIST).permitAll()
+    http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request ->
+                    request
+                            .requestMatchers(AUTH_ENABLE_LIST).permitAll()
+                            .anyRequest().authenticated()
             )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationManager(authenticationManager())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+            .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+            .authenticationProvider(authenticationProvider());
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

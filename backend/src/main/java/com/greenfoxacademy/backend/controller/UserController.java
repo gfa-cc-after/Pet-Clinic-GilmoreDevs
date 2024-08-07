@@ -13,8 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 /**
@@ -69,11 +72,10 @@ public class UserController {
    * @param profileUpdateRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
   @CrossOrigin(origins = "http://localhost:5173")
   @Operation(summary = "This method updates the authenticated user.")
   @PatchMapping("profile-update")
-  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(@AuthenticationPrincipal User user, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
+  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(@AuthenticationPrincipal User user, @Valid @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
     return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(user, profileUpdateRequestDto));
   }
 }

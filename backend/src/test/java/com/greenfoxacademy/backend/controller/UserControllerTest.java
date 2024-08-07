@@ -242,7 +242,7 @@ class UserControllerTest {
 
   @Test
   @DisplayName("Should call the repository save when updating a user")
-  @WithMockCustomUser(username = "john.doe@gmail.com", roles = {"USER"}, name = "John Doe")
+  @WithMockCustomUser(username = "john.doe@gmail.com", roles = "USER", name = "John Doe")
   void shouldCallTheRepositorySaveWhenUpdatingAUser() throws Exception {
 
     // Given
@@ -266,16 +266,12 @@ class UserControllerTest {
   void shouldCallTheRepositorySaveWhenUpdatingAUserWithAuthentication() throws Exception {
 
     // Given
-    User user = User.builder().id(1).email("john.doe@gmail.com").password(passwordEncoder.encode("AValidPassword1")).build();
     UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO("john.doe@gmail.com", "John", "Doe", "AValidPassword2");
 
     // When
-    when(userRepository.findByEmail("john.doe@gmail.com")).thenReturn(Optional.of(user));
-    when(userRepository.save(Mockito.any())).thenReturn(user);
-
-    // Then
     mockMvc.perform(patch("/api/user/profile-update").content(jacksonObjectMapper.writeValueAsString(updateUserRequestDTO)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
 
+    // Then
     Mockito.verify(userRepository, Mockito.times(0)).save(Mockito.any());
   }
 

@@ -63,7 +63,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
-                    .requestMatchers(HttpMethod.PATCH, "/api/user/").authenticated()
+                    .requestMatchers(HttpMethod.PATCH, "/api/user/profile-update").authenticated()
                     .requestMatchers(AUTH_ENABLE_LIST).permitAll()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

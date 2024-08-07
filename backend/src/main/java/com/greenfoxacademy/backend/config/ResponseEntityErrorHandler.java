@@ -1,8 +1,11 @@
 package com.greenfoxacademy.backend.config;
 
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -24,10 +27,17 @@ public class ResponseEntityErrorHandler {
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(UserAlreadyExistsError.class)
-  public ResponseEntity<HashMap<String, String>>
-      handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
+  public ResponseEntity<HashMap<String, String>> handleUserAlreadyExistsError(UserAlreadyExistsError ex) {
     HashMap<String, String> errors = new HashMap<>();
-    errors.put("error", "Email is already taken!");
+    errors.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(CannotUpdateUserException.class)
+  public ResponseEntity<HashMap<String, String>> handleCannotUpdateUserException(CannotUpdateUserException ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 
@@ -39,8 +49,7 @@ public class ResponseEntityErrorHandler {
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> handleValidationExceptions(
-      MethodArgumentNotValidException ex) {
+  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
     ex.getBindingResult().getAllErrors().forEach((error) -> {
       String fieldName = ((FieldError) error).getField();

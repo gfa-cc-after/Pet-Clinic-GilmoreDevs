@@ -4,10 +4,12 @@ import com.greenfoxacademy.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,7 +32,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -38,30 +40,43 @@ public class SecurityConfig {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
 
-  /**
-   * To give security permission to all endpoints.
-   */
+  private static final String[] AUTH_ENABLE_LIST = {
+          // -- Swagger UI v2
+          "/v2/api-docs",
+          "/swagger-resources",
+          "/swagger-resources/**",
+          "/configuration/ui",
+          "/configuration/security",
+          "/swagger-ui.html",
+          "/webjars/**",
+          // -- Swagger UI v3 (OpenAPI)
+          "/v3/api-docs/**",
+          "/swagger-ui/**"
+          // other public endpoints of your API may be appended to this array
+  };
+
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity
-        .csrf(AbstractHttpConfigurer::disable)
-        .cors(config -> config.configurationSource(corsConfigurationSource()) )
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register").permitAll()
-            .requestMatchers("/login").permitAll()
-            .requestMatchers("/health-check").permitAll()
-            .requestMatchers("/swagger-ui").permitAll()
-            .requestMatchers("/profile-update").authenticated()
-        )
-        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(AbstractHttpConfigurer::disable)
+            .cors(config -> config.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/user/register").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/api/user/").authenticated()
+                    .requestMatchers(AUTH_ENABLE_LIST).permitAll()
+            )
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationManager(authenticationManager())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
   }
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setUserDetailsService(getUserDetailService());
+    provider.setUserDetailsService(userService);
     provider.setPasswordEncoder(passwordEncoder);
     return provider;
   }
@@ -82,11 +97,6 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
-  }
-
-  @Bean
-  public UserDetailsService getUserDetailService() {
-    return userService;
   }
 }
 

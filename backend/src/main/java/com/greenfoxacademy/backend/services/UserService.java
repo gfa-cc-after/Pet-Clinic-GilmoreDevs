@@ -1,6 +1,7 @@
 package com.greenfoxacademy.backend.services;
 
 import com.greenfoxacademy.backend.dtos.*;
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,5 +16,5 @@ public interface UserService extends UserDetailsService {
 
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;
 
-  ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto, User userFromToken) throws Exception;
+  ProfileUpdateResponseDto profileUpdate(User user, ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
 }

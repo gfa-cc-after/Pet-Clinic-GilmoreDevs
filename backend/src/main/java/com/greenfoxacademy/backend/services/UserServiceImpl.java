@@ -4,8 +4,9 @@ import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-import com.greenfoxacademy.backend.services.jwt.JwtUtil;
-import java.util.HashMap;
+import com.greenfoxacademy.backend.services.jwt.JwtServiceImpl;
+
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
-  private final JwtUtil jwtUtil;
+  private final JwtServiceImpl jwtService;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError {
@@ -45,15 +46,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
-    User user = userRepository.findByEmail(loginRequestDto.email())
-        .orElseThrow(() -> new Exception("User not found"));
+    User user = userRepository.findByEmail(loginRequestDto.email()).orElseThrow(() -> new Exception("User not found"));
     if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
-    HashMap<String, Object> claims = new HashMap<>();
-    claims.put("firstName", user.getFirstName());
-    claims.put("lastName", user.getLastName());
-    return new LoginResponseDto(jwtUtil.createToken(claims, user.getEmail()));
+    return new LoginResponseDto(jwtService.generateToken(user));
   }
 
   @Override

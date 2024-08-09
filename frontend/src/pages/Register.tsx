@@ -49,7 +49,6 @@ function Register() {
         // }
     }
 
-
     return (
         <>
             <h1>Register</h1>
@@ -58,7 +57,7 @@ function Register() {
                 <input
                     type='text'
                     required aria-label="firstName"
-                    name={"firstName"}
+                    name="firstName"
                     value={user.firstName}
                     onChange={handleUserChange}
                 />
@@ -67,7 +66,7 @@ function Register() {
                     type='text'
                     required
                     aria-label="lastName"
-                    name={"lastName"}
+                    name="lastName"
                     value={user.lastName}
                     onChange={handleUserChange}
                 />

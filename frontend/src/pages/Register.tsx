@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { register } from '../httpClient'
 
 type RegisterFormData = {
     firstName: string;
@@ -23,30 +24,15 @@ function Register() {
     const [errMessage, setErrMessage] = useState("");
     const [message, setMessage] = useState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        setMessage(" ");
-        // if (validator.isEmail(email)) {
-        //     setErrMessage("");
-        //     axios.post('http://localhost:8080/register', {
-        //         firstName,
-        //         lastName,
-        //         email,
-        //         password,
-        //     })
-        //         .then((_response) => {
-        //             setMessage("Successful registration!");
-        //             setFirstName("");
-        //             setLastName("");
-        //             setEmail("");
-        //             setPassword("");
-        //         })
-        //         .catch((error) => {
-        //             setErrMessage(error.response.data.error);
-        //         });
-        // } else if (!validator.isEmail(email)) {
-        //     setErrMessage("Please, enter valid email!");
-        // }
+        try {
+            await register(user);
+            setUser({ email: "", firstName: "", lastName: "", password: "" });
+            setMessage("User registered successfully");
+        } catch (error) {
+            setErrMessage("Cannot register user");
+        }
     }
 
     return (

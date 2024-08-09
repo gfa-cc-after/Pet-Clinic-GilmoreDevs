@@ -2,17 +2,14 @@ package com.greenfoxacademy.backend.controller;
 
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-
 
 /**
  * REST controller where endpoints are handled.
@@ -63,8 +60,6 @@ public class UserController {
    * @param profileUpdateRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
-  @CrossOrigin(origins = "http://localhost:5173")
   @PatchMapping("/profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(Principal principal, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) {
     try {

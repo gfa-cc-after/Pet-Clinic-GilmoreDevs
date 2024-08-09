@@ -1,77 +1,52 @@
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
-import validator from "validator";
-import {jwtDecode} from "jwt-decode";
-import {PasswordStrengthValidator} from "../components/PasswordStrengthValidator";
-import axios, {AxiosRequestConfig} from "axios";
-import {App} from "../App.tsx";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { usePetClinicState } from '../state';
+import { updateProfile } from '../httpClient'
 
-type User = { firstName: string; lastName: string; sub: string }
-
-const decodeToken = (): User | null => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        const decodeToken = jwtDecode<User>(token);
-        console.log(decodeToken);
-        return decodeToken;
-    }
-    return null;
-};
+type UpdateUserForm = {
+    firstName: string;
+    lastName: string;
+    sub: string
+}
 
 export function Profile() {
-    const userFromToken = decodeToken();
+    const { auth } = usePetClinicState();
+    const { token, user } = auth;
     const [password, setPassword] = useState("");
-    const [user, setUser] = useState<User | null>(userFromToken);
+
+    const [updateUser, setUpdateUser] = useState<UpdateUserForm>(
+        {
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
+            sub: user?.email || ""
+        });
     const [errMessage, setErrMessage] = useState<string | null>(null);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
-    const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setUser({...user!, [name]: value})
-    }
+    const handleUserChange = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) =>
+        setUpdateUser({ ...updateUser, [name]: value })
+
+
     const routChange = () => {
         const path = '/';
         navigate(path);
     }
 
-    const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (!validator.isEmail(String(user?.sub))) {
-            setErrMessage("Please, enter valid email!");
-            return;
-        }
-        const config: AxiosRequestConfig = {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}};
-
-        fetch('http://localhost:8080/profile-update',
-            {
-                method: 'patch',
-                body: JSON.stringify(
-                    {
-                        email: user?.sub,
-                        firstName: user?.firstName,
-                        lastName: user?.lastName,
-                        password
-                    }),
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Content-Type': 'application/json'
-                }
-            })
-            // axios.post('http://localhost:8080/profile-update', {
-            //         email: user?.sub,
-            //         firstName: user?.firstName,
-            //         lastName: user?.lastName,
-            //         password,
-            //     },config)
-            .then((_response) => {
-                setMessage("Successful profile change!");
-            })
-            .catch((error) => {
-                setErrMessage(error.response.data.error);
+        try {
+            await updateProfile({
+                email: updateUser.sub,
+                firstName: updateUser.firstName,
+                lastName: updateUser.lastName,
+                password
             });
-
-
+            setMessage("Successful profile change!");
+        } catch (error) {
+            setErrMessage("Cannot update profile");
+        }
     }
 
     return (
@@ -83,8 +58,8 @@ export function Profile() {
                     type="email"
                     name="sub"
                     id="sub"
-                    autoComplete={"email"}
-                    value={user?.sub}
+                    autoComplete="email"
+                    value={updateUser.sub}
                     onChange={handleUserChange}
                     required
                 />
@@ -93,8 +68,8 @@ export function Profile() {
                     type="text"
                     name="firstName"
                     id="firstName"
-                    autoComplete={"given-name"}
-                    value={user?.firstName}
+                    autoComplete="given-name"
+                    value={updateUser.firstName}
                     onChange={handleUserChange}
                     required
                 />
@@ -103,8 +78,8 @@ export function Profile() {
                     type="text"
                     name="lastName"
                     id="lastName"
-                    autoComplete={"family-name"}
-                    value={user?.lastName}
+                    autoComplete="family-name"
+                    value={updateUser.lastName}
                     onChange={handleUserChange}
                     required
                 />
@@ -120,12 +95,12 @@ export function Profile() {
                     autoComplete="new-password"
                     required
                 />
-                <PasswordStrengthValidator password={password}></PasswordStrengthValidator>
+                <PasswordStrengthValidator password={password} />
                 <button type="submit">Save</button>
                 <button type="button" onClick={routChange}>Discard</button>
             </form>
-            <span style={{fontWeight: "bold", color: "red"}}>{errMessage}</span>
-            <span style={{fontWeight: "bold", color: "green"}}>{message}</span>
+            <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
+            <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>
         </>
     );
 }

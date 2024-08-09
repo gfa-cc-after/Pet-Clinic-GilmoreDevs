@@ -36,15 +36,4 @@ public class ApplicationConfig {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  JwtDecoder jwtDecoder() {
-    return NimbusJwtDecoder.withPublicKey(this.rsaSecretKeys.getPublicKey()).build();
-  }
-
-  @Bean
-  JwtEncoder jwtEncoder() {
-    JWK jwk = new RSAKey.Builder(this.rsaSecretKeys.getPublicKey()).privateKey(this.rsaSecretKeys.getPrivateKey()).build();
-    JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-    return new NimbusJwtEncoder(jwks);
-  }
 }

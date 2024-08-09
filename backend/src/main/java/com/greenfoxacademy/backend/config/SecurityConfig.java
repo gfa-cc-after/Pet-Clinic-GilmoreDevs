@@ -8,6 +8,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
@@ -43,7 +45,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtDecoder jwtDecoder;
+  @Autowired
+  private RSASecretKeys rsaSecretKeys;
+  private final Logger LOG = Logger.getLogger(SecurityConfig.class.getName());
 
   private final String[] ALLOWED_URLS = {"/register", "/login", "/health-check", "/swagger-ui", "/v3/api-docs"};
 
@@ -54,13 +58,13 @@ public class SecurityConfig {
               .authorizeHttpRequests((authorize) -> authorize
                       .requestMatchers(ALLOWED_URLS).permitAll()
                       .requestMatchers("/profile-update").authenticated()
+                      .requestMatchers("/me").authenticated()
                       .anyRequest().authenticated()
               )
+              .cors(cors -> cors.configurationSource(corsConfigurationSource()))
               .csrf((csrf) -> csrf.ignoringRequestMatchers("/login", "/register"))
               .httpBasic(Customizer.withDefaults())
-              .oauth2ResourceServer((oauth2) -> oauth2
-                      .jwt((jwt) -> jwt.decoder(jwtDecoder))
-              )
+              .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder())))
               .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
               .exceptionHandling((exceptions) -> exceptions
@@ -71,13 +75,25 @@ public class SecurityConfig {
     return http.build();
   }
 
+  @Bean
+  JwtEncoder jwtEncoder() {
+    JWK jwk = new RSAKey.Builder(this.rsaSecretKeys.getPublicKey()).privateKey(this.rsaSecretKeys.getPrivateKey()).build();
+    JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+    return new NimbusJwtEncoder(jwks);
+  }
+
+  @Bean
+  public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withPublicKey(rsaSecretKeys.getPublicKey()).build();
+  }
+
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
-    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

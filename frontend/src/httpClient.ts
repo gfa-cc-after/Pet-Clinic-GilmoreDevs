@@ -34,9 +34,22 @@ type LoginResponse = {
 
 const login = async (request: LoginRequest) => {
     const response = await httpClient.post<LoginResponse>("/login", request);
-    // Add the token to the default headers
     httpClient.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
     return response;
+}
+
+type UpdateProfileRequest = {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+}
+
+type UpdateProfileResponse = {}
+
+const updateProfile = async (request: UpdateProfileRequest) => {
+    const response = await httpClient.patch<UpdateProfileResponse>("/profile-update", request);
+    return response.data;
 }
 
 // the logout functin does not communicate with the server
@@ -45,5 +58,4 @@ const logout = () => {
     delete httpClient.defaults.headers.common["Authorization"];
 }
 
-
-export { login, register, logout }
+export { login, register, logout, updateProfile }

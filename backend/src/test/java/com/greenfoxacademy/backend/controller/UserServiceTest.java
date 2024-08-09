@@ -29,11 +29,12 @@ public class UserServiceTest {
 
   @Test
   public void registerMethodIsSuccessfullyCalled() throws Exception, UserAlreadyExistsError {
-    RegisterRequestDto registerRequestDto = new RegisterRequestDto();
-    registerRequestDto.setFirstName("John");
-    registerRequestDto.setLastName("Doe");
-    registerRequestDto.setEmail("john.doe@gmail.com");
-    registerRequestDto.setPassword("password");
+    RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+            "John",
+            "Doe",
+            "john.doe@gmail.com",
+            "password"
+    );
 
     userService.register(registerRequestDto);
 

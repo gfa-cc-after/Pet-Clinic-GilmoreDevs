@@ -1,6 +1,5 @@
 package com.greenfoxacademy.backend.services.user;
 
-import com.greenfoxacademy.backend.config.SecurityConfig;
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
@@ -9,7 +8,6 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,28 +20,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
-  private final ModelMapper modelMapper;
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
 
   @Override
-  public RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError {
-    User user = mapToEntity(userDto);
-    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+  public RegisterResponseDto register(RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
+
+    User user = User.builder()
+            .email(registerRequestDto.email())
+            .firstName(registerRequestDto.firstName())
+            .lastName(registerRequestDto.lastName())
+            .password(passwordEncoder.encode(registerRequestDto.password()))
+            .build();
     try {
-      return mapToRegisterResponseDto(userRepository.save(user));
+      return new RegisterResponseDto(userRepository.save(user).getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
 
-  private RegisterResponseDto mapToRegisterResponseDto(User user) {
-    return new RegisterResponseDto(user.getId());
-  }
-
-  private User mapToEntity(RegisterRequestDto userDto) {
-    return modelMapper.map(userDto, User.class);
-  }
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {

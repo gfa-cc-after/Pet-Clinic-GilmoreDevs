@@ -1,7 +1,8 @@
 package com.greenfoxacademy.backend.services.auth;
 
+import com.greenfoxacademy.backend.config.JWTConfig;
 import com.greenfoxacademy.backend.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -12,16 +13,16 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 class AuthServiceImpl implements AuthService {
-
-  @Autowired
-  private JwtEncoder jwtEncoder;
+  private final JwtEncoder jwtEncoder;
+  private final JWTConfig jwtConfig;
 
   @Override
   public String generateToken(User user) {
     Instant now = Instant.now();
 
-    long expiry = 36000L;
+    long expiry = jwtConfig.getExpirationTime();
     // @formatter:off
     String scope = user.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)

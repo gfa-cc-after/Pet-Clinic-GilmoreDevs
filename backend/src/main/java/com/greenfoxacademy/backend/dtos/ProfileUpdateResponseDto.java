@@ -1,8 +1,6 @@
 package com.greenfoxacademy.backend.dtos;
 
 public record ProfileUpdateResponseDto(
-    Integer id
+        Integer id
 ) {
-  public ProfileUpdateResponseDto {
-  }
 }

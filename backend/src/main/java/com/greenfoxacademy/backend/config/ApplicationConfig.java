@@ -1,6 +1,5 @@
 package com.greenfoxacademy.backend.config;
 
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Configuration class for setting up application-wide beans.
  */
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfig {
 
   @Bean

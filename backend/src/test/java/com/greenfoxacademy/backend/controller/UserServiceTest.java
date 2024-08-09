@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-import com.greenfoxacademy.backend.services.UserService;
+import com.greenfoxacademy.backend.services.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

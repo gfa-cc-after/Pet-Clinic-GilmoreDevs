@@ -1,6 +1,6 @@
 package com.greenfoxacademy.backend.dtos;
 
-import com.greenfoxacademy.backend.services.ValidPassword;
+import com.greenfoxacademy.backend.validators.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

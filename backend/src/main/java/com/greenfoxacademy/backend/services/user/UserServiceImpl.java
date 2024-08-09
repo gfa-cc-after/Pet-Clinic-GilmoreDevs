@@ -1,12 +1,13 @@
-package com.greenfoxacademy.backend.services;
+package com.greenfoxacademy.backend.services.user;
 
+import com.greenfoxacademy.backend.config.SecurityConfig;
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-import com.greenfoxacademy.backend.services.jwt.JwtServiceImpl;
 
 
+import com.greenfoxacademy.backend.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
-  private final JwtServiceImpl jwtService;
+  private final PasswordEncoder passwordEncoder;
+  private final AuthService authService;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError {
@@ -50,20 +51,19 @@ public class UserServiceImpl implements UserService {
     if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
-    return new LoginResponseDto(jwtService.generateToken(user));
+    return new LoginResponseDto(authService.generateToken(user));
   }
 
   @Override
-  public ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto, User user) throws Exception {
+  public ProfileUpdateResponseDto profileUpdate(String email, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception {
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     user.setEmail(profileUpdateRequestDto.email());
     user.setFirstName(profileUpdateRequestDto.firstName());
     user.setLastName(profileUpdateRequestDto.lastName());
     user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
-    return mapToProfileUpdateResponseDto(userRepository.save(user));
-  }
 
-  private ProfileUpdateResponseDto mapToProfileUpdateResponseDto(User user) {
-    return new ProfileUpdateResponseDto(user.getId());
+    User updatedUser = userRepository.save(user);
+    return new ProfileUpdateResponseDto(updatedUser.getId());
   }
 
   @Override

@@ -4,6 +4,7 @@ import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 
 import axios from "axios";
+import {register} from "../HTTPclient.ts";
 
 
 function Register() {
@@ -19,12 +20,8 @@ function Register() {
 setMessage (" ");
         if (validator.isEmail(email)) {
             setErrMessage("");
-            axios.post('http://localhost:8080/register', {
-                firstName,
-                lastName,
-                email,
-                password,
-            })
+
+            register({firstName, lastName, email, password})
                 .then((_response) => {
                     setMessage("Successful registration!");
                     setFirstName("");

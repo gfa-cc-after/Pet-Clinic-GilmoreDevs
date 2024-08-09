@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {login} from "../HTTPclient.ts";
+
 type LoginResponse = {
     token : string
 }
@@ -13,14 +15,7 @@ export function Login() {
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
+        login({email, password})
             .then(async res => {
 
                 if (!res.ok) {

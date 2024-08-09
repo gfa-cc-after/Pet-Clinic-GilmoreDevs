@@ -12,15 +12,14 @@ type UpdateUserForm = {
 
 export function Profile() {
     const { auth } = usePetClinicState();
-    const { token, user } = auth;
+    const { user } = auth;
     const [password, setPassword] = useState("");
 
-    const [updateUser, setUpdateUser] = useState<UpdateUserForm>(
-        {
-            firstName: user?.firstName || "",
-            lastName: user?.lastName || "",
-            sub: user?.email || ""
-        });
+    const [updateUser, setUpdateUser] = useState<UpdateUserForm>({
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        sub: user?.email || ""
+    });
     const [errMessage, setErrMessage] = useState<string | null>(null);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();

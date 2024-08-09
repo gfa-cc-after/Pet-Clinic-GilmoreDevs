@@ -9,6 +9,12 @@ type LoginForm = {
     password: string;
 }
 
+type UserFromToken = {
+    sub: string;
+    firstName: string;
+    lastName: string;
+}
+
 export function Login() {
     const { setToken, setAuth } = usePetClinicState();
     const [loginFormData, setLoginFormData] = useState<LoginForm>({
@@ -25,9 +31,8 @@ export function Login() {
             const { data } = await login(loginFormData)
             setToken(data.token);
             try {
-
-                const user = jwtDecode<User>(data.token);
-                setAuth({ user, token: data.token });
+                const user = jwtDecode<UserFromToken>(data.token);
+                setAuth({ user: { ...user, email: user.sub }, token: data.token });
             } catch (error) {
                 setError("Cannot decode token");
             }

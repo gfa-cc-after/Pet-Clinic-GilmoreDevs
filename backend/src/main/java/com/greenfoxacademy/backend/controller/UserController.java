@@ -25,7 +25,6 @@ public class UserController {
    * @param registerRequestDto the user to be registered
    * @return a response entity with the status code and the location of the new user
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
@@ -40,8 +39,6 @@ public class UserController {
    * @param loginRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
     try {

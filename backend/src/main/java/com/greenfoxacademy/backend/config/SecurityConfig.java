@@ -50,7 +50,6 @@ public class SecurityConfig {
               .authorizeHttpRequests((authorize) -> authorize
                       .requestMatchers(ALLOWED_URLS).permitAll()
                       .requestMatchers("/profile-update").authenticated()
-                      .requestMatchers("/me").authenticated()
                       .anyRequest().authenticated()
               )
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))

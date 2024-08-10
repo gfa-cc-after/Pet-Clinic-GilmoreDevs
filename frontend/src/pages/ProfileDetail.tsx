@@ -1,11 +1,11 @@
-import { usePetClinicState } from "../state"
+// import { usePetClinicState } from "../state"
 
-const prof = () => {
-
-    const state = usePetClinicState()
-
-
-    return <div>
-        
-    </div>
-}
+// const prof = () => {
+//
+//     const state = usePetClinicState()
+//
+//
+//     return <div>
+//
+//     </div>
+// }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Data
-public class JWTConfig {
+public class JwtConfig {
   @Value("${jwt.expiration-time}")
   private Long expirationTime;
 }

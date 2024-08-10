@@ -36,10 +36,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
   @Autowired
-  private RSASecretKeys rsaSecretKeys;
-  private final Logger LOG = Logger.getLogger(SecurityConfig.class.getName());
+  private RsaSecretKeys rsaSecretKeys;
+  private final Logger Log = Logger.getLogger(SecurityConfig.class.getName());
 
-  private final String[] ALLOWED_URLS = {
+  private final String[] Allowed_Urls = {
       "/register",
       "/login",
       "/health-check",
@@ -55,7 +55,7 @@ public class SecurityConfig {
       // @formatter:off
       http
               .authorizeHttpRequests((authorize) -> authorize
-                      .requestMatchers(ALLOWED_URLS).permitAll()
+                      .requestMatchers(Allowed_Urls).permitAll()
                       .requestMatchers("/profile-update").authenticated()
                       .anyRequest().authenticated()
               )
@@ -70,7 +70,7 @@ public class SecurityConfig {
                       .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                       .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
               );
-    // @formatter:on
+      // @formatter:on
     return http.build();
   }
 

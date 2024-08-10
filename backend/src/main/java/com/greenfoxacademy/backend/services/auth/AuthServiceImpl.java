@@ -1,6 +1,6 @@
 package com.greenfoxacademy.backend.services.auth;
 
-import com.greenfoxacademy.backend.config.JWTConfig;
+import com.greenfoxacademy.backend.config.JwtConfig;
 import com.greenfoxacademy.backend.models.User;
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class AuthServiceImpl implements AuthService {
   private final JwtEncoder jwtEncoder;
-  private final JWTConfig jwtConfig;
+  private final JwtConfig jwtConfig;
 
   @Override
   public String generateToken(User user) {

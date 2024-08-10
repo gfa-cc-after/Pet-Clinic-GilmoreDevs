@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Getter
 @Configuration
-public class RSASecretKeys {
+public class RsaSecretKeys {
 
   private final RSAPublicKey publicKey;
   private final RSAPrivateKey privateKey;
@@ -23,7 +23,7 @@ public class RSASecretKeys {
    * To give RSASecretKeys function.
    */
 
-  public RSASecretKeys() throws NoSuchAlgorithmException {
+  public RsaSecretKeys() throws NoSuchAlgorithmException {
     KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
     KeyPair keyPair = generator.generateKeyPair();
     this.publicKey = (RSAPublicKey) keyPair.getPublic();

@@ -12,7 +12,7 @@
     "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
   },
   "formatter": {
-    "indentSize": 2,
+    "indentWidth": 2,
     "indentStyle": "space",
     "enabled": true,
     "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]

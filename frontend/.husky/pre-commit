@@ -1,1 +1,3 @@
+echo "Running pre-commit hook"
 npm run check
+echo "Pre-commit hook finished"

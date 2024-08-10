@@ -1,92 +1,95 @@
 package com.greenfoxacademy.backend.config;
 
-import com.greenfoxacademy.backend.services.UserService;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 /**
  * To give security permission to all endpoints.
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
-  private final UserService userService;
-  private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private RSASecretKeys rsaSecretKeys;
+  private final Logger LOG = Logger.getLogger(SecurityConfig.class.getName());
 
-  /**
-   * To give security permission to all endpoints.
-   */
+  private final String[] ALLOWED_URLS = {"/register", "/login", "/health-check", "/swagger-ui", "/v3/api-docs"};
+
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity
-        .csrf(AbstractHttpConfigurer::disable)
-        .cors(config -> config.configurationSource(corsConfigurationSource()) )
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register").permitAll()
-            .requestMatchers("/login").permitAll()
-            .requestMatchers("/health-check").permitAll()
-            .requestMatchers("/swagger-ui").permitAll()
-            .requestMatchers("/profile-update").authenticated()
-        )
-        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    // @formatter:off
+      http
+              .authorizeHttpRequests((authorize) -> authorize
+                      .requestMatchers(ALLOWED_URLS).permitAll()
+                      .requestMatchers("/profile-update").authenticated()
+                      .anyRequest().authenticated()
+              )
+              .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+              .csrf((csrf) -> csrf.ignoringRequestMatchers("/login", "/register"))
+              .httpBasic(Customizer.withDefaults())
+              .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder())))
+              .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+              .exceptionHandling((exceptions) -> exceptions
+                      .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                      .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+              );
+      // @formatter:on
+    return http.build();
   }
 
   @Bean
-  public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setUserDetailsService(getUserDetailService());
-    provider.setPasswordEncoder(passwordEncoder);
-    return provider;
+  JwtEncoder jwtEncoder() {
+    JWK jwk = new RSAKey.Builder(this.rsaSecretKeys.getPublicKey()).privateKey(this.rsaSecretKeys.getPrivateKey()).build();
+    JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+    return new NimbusJwtEncoder(jwks);
   }
 
   @Bean
-  public AuthenticationManager authenticationManager() {
-    return new ProviderManager(authenticationProvider());
+  public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withPublicKey(rsaSecretKeys.getPublicKey()).build();
   }
+
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH"));
-    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+    configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
-  }
-
-  @Bean
-  public UserDetailsService getUserDetailService() {
-    return userService;
   }
 }
 

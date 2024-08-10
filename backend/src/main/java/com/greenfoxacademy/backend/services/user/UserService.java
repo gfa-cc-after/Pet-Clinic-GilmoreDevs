@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services;
+package com.greenfoxacademy.backend.services.user;
 
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
@@ -15,5 +15,5 @@ public interface UserService extends UserDetailsService {
 
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;
 
-  ProfileUpdateResponseDto profileUpdate(ProfileUpdateRequestDto profileUpdateRequestDto, User userFromToken) throws Exception;
+  ProfileUpdateResponseDto profileUpdate(String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
 }

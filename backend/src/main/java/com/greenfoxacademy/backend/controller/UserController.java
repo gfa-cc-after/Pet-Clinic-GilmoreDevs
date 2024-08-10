@@ -2,15 +2,14 @@ package com.greenfoxacademy.backend.controller;
 
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.models.User;
-import com.greenfoxacademy.backend.services.UserService;
+import com.greenfoxacademy.backend.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 
 /**
  * REST controller where endpoints are handled.
@@ -26,11 +25,8 @@ public class UserController {
    * @param registerRequestDto the user to be registered
    * @return a response entity with the status code and the location of the new user
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponseDto> registerUser(
-        @Validated @RequestBody RegisterRequestDto registerRequestDto) 
-          throws UserAlreadyExistsError {
+  public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
@@ -43,12 +39,8 @@ public class UserController {
    * @param loginRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> loginUser(
-          @RequestBody LoginRequestDto loginRequestDto
-  ) {
+  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
     try {
       return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
     } catch (Exception e) {
@@ -65,15 +57,10 @@ public class UserController {
    * @param profileUpdateRequestDto the user to be logged in
    * @return a response entity with the status code and the token
    */
-  //TODO: add validation for the LoginRequestDto after that re-add the @Validated annotation
-  @CrossOrigin(origins = "http://localhost:5173")
   @PatchMapping("/profile-update")
-  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
-      @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
-  ) {
+  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(Principal principal, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) {
     try {
-      User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(profileUpdateRequestDto, user));
+      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

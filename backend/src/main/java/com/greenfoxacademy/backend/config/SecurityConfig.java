@@ -40,9 +40,9 @@ public class SecurityConfig {
 
   @Autowired
   private RsaSecretKeys rsaSecretKeys;
-  private final Logger Log = Logger.getLogger(SecurityConfig.class.getName());
+  private final Logger log = Logger.getLogger(SecurityConfig.class.getName());
 
-  private final String[] Allowed_Urls = {
+  private final String[] allowedUrls = {
       "/register",
       "/login",
       "/health-check",
@@ -55,10 +55,10 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-      // @formatter:off
-      http
+    // @formatter:off
+    http
               .authorizeHttpRequests((authorize) -> authorize
-                      .requestMatchers(Allowed_Urls).permitAll()
+                      .requestMatchers(allowedUrls).permitAll()
                       .requestMatchers("/profile-update").authenticated()
                       .anyRequest().authenticated()
               )
@@ -72,8 +72,8 @@ public class SecurityConfig {
               .exceptionHandling((exceptions) -> exceptions
                       .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                       .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-              );
-      // @formatter:on
+        );
+    // @formatter:on
     return http.build();
   }
 

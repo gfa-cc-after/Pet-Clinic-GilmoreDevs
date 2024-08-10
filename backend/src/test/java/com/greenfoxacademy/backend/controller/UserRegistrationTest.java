@@ -27,7 +27,12 @@ public class UserRegistrationTest {
 
   @Test
   public void userIsSuccessfulRegisteredInDatabase() throws Exception, UserAlreadyExistsError {
-    RegisterRequestDto newUser = new RegisterRequestDto("John", "Doe", "john.doe@example.com", "password");
+    RegisterRequestDto newUser = new RegisterRequestDto(
+        "John",
+        "Doe",
+        "john.doe@example.com",
+        "password"
+    );
 
     RegisterResponseDto registeredUserDto = userService.register(newUser);
 

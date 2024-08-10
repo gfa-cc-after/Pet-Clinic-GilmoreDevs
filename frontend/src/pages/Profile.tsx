@@ -1,6 +1,6 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {jwtDecode} from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 type User = { firstName: string; lastName: string; sub: string }
 
@@ -20,25 +20,25 @@ export function Profile() {
     const user = useState<User | null>(userFromToken);
     const [errMessage, setErrMessage] = useState<string | null>(null);
     const navigate = useNavigate();
-}
 
-return (
-    <>
-        <h1>Profile detail:</h1>
-        <table>
-            <tr>
-                <td htmlFor="firstName">FirstName:</td>
-                <td>${Profile.userFromToken.firtName}</td>
-            </tr>
-            <tr>
-                <td htmlFor="lastName">LastName:</td>
-                <td>${Profile.userFromToken.lastName}</td>
-            </tr>
-            <tr>
-                <td htmlFor="email">Email:</td>
-                <td>${Profile.userFromToken.email}</td>
-            </tr>
-        </table>
-        <Link className={"links"} to='/profile-update'>Profile update</Link>
-    </>);
+
+    return (
+        <>
+            <h1>Profile detail:</h1>
+            <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td>{userFromToken?.firstName}</td>
+                </tr>
+                <tr>
+                    <td>LastName:</td>
+                    <td>{userFromToken?.lastName}</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{userFromToken?.sub}</td>
+                </tr>
+            </table>
+            <Link className={"links"} to='/profile-update'>Profile update</Link>
+        </>);
 }

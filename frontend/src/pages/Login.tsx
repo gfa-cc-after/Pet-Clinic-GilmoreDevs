@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../httpClient";
-import { usePetClinicState, User } from "../state";
+import { usePetClinicState } from "../state";
 import { jwtDecode } from "jwt-decode";
 
 type LoginForm = {

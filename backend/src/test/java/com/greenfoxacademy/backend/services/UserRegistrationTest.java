@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.controller;
+package com.greenfoxacademy.backend.services;
 
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;

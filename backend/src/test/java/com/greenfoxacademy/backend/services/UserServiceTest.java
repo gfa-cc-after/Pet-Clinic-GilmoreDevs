@@ -1,8 +1,9 @@
-package com.greenfoxacademy.backend.controller;
+package com.greenfoxacademy.backend.services;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.greenfoxacademy.backend.controller.UserController;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;

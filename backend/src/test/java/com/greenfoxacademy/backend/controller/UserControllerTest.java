@@ -188,7 +188,7 @@ class UserControllerTest {
                     jsonPath(
                             "$.password",
                             is("Invalid password: must be at least 8 characters long,"
-                                    + " must not contain whitespace, must contain at least one digit,"
+                                    + " must not contain whitespace, must contain at least 1 digit,"
                                     + " must contain at least one uppercase letter,"
                                     + " must contain at least one lowercase letter")));
   }
@@ -343,7 +343,9 @@ class UserControllerTest {
             })
             .andReturn();
 
-    LoginResponseDto loginResponseDto = jacksonObjectMapper.readValue(response.getResponse().getContentAsString(), LoginResponseDto.class);
+    LoginResponseDto loginResponseDto = jacksonObjectMapper
+        .readValue(response.getResponse().getContentAsString(),
+            LoginResponseDto.class);
 
     String content = """
             {
@@ -357,10 +359,6 @@ class UserControllerTest {
                     .header("Authorization", "Bearer " + loginResponseDto.token())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content))
-            .andExpectAll(
-                    status().isOk()
-            );
-
+                    .andExpectAll(status().isOk());
   }
-
 }

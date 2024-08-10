@@ -1,14 +1,6 @@
-// import { usePetClinicState } from "../state"
+import { usePetClinicState } from "../state"
 
-// const prof = () => {
-//
-//     const state = usePetClinicState()
-//
-//
-//     return <div>
-//
-//     </div>
-// }
+
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -25,6 +17,15 @@ const decodeToken = (): User | null => {
     }
     return null;
 };
+
+/*const prof = () => {
+
+    const state = usePetClinicState()
+
+    return <div>
+
+    </div>
+}*/
 
 export function ProfileDetail() {
     const userFromToken = decodeToken();

@@ -7,6 +7,7 @@ import com.greenfoxacademy.backend.controller.UserController;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.services.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,11 +30,12 @@ public class UserServiceTest {
 
   @Test
   public void registerMethodIsSuccessfullyCalled() throws Exception, UserAlreadyExistsError {
-    RegisterRequestDto registerRequestDto = new RegisterRequestDto();
-    registerRequestDto.setFirstName("John");
-    registerRequestDto.setLastName("Doe");
-    registerRequestDto.setEmail("john.doe@gmail.com");
-    registerRequestDto.setPassword("password");
+    RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+            "John",
+            "Doe",
+            "john.doe@gmail.com",
+            "password"
+    );
 
     userService.register(registerRequestDto);
 

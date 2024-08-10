@@ -1,7 +1,4 @@
 import { usePetClinicState } from "../state"
-
-
-
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -17,15 +14,6 @@ const decodeToken = (): User | null => {
     }
     return null;
 };
-
-/*const prof = () => {
-
-    const state = usePetClinicState()
-
-    return <div>
-
-    </div>
-}*/
 
 export function ProfileDetail() {
     const userFromToken = decodeToken();

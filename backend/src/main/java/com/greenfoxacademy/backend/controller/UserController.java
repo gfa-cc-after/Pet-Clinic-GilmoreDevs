@@ -1,6 +1,11 @@
 package com.greenfoxacademy.backend.controller;
 
-import com.greenfoxacademy.backend.dtos.*;
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
+import com.greenfoxacademy.backend.dtos.LoginResponseDto;
+import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
+import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
+import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
+import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
 import java.security.Principal;
@@ -8,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller where endpoints are handled.

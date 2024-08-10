@@ -33,7 +33,7 @@ describe("Register component", () => {
         const passwordField = screen.getByLabelText(/password:/i)
         const button = screen.getByRole('button', { name: /login/i });
         userEvent.setup();
-        const spy = vi.spyOn(global, "fetch");
+        //const spy = vi.spyOn(global, "fetch");
 
 
         //Act

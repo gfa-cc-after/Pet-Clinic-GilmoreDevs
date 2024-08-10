@@ -4,12 +4,12 @@ import com.greenfoxacademy.backend.validators.ValidPassword;
 import jakarta.validation.constraints.Email;
 
 /**
- * This class is responsible for the request of the login endpoint.
- *
- * @param email the email of the user
- * @param password the password of the user
+ * To create ProfileUpdateRequestDto class.
  */
-public record LoginRequestDto(
+
+public record ProfileUpdateRequestDto(
+        String firstName,
+        String lastName,
         @Email
         String email,
         @ValidPassword

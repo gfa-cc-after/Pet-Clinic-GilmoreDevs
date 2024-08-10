@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class HealthCheckControllerTest {
   @Autowired
   private MockMvc mockMvc;
-  
+
   @Test
   public void healthCheckShouldReturnOk() throws Exception {
     mockMvc.perform(get("/health-check"))

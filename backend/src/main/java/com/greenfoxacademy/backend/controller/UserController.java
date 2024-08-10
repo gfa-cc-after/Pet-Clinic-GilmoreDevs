@@ -3,13 +3,12 @@ package com.greenfoxacademy.backend.controller;
 import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 /**
  * REST controller where endpoints are handled.
@@ -26,7 +25,8 @@ public class UserController {
    * @return a response entity with the status code and the location of the new user
    */
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponseDto> registerUser(@Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
+  public ResponseEntity<RegisterResponseDto> registerUser(
+      @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
@@ -58,9 +58,12 @@ public class UserController {
    * @return a response entity with the status code and the token
    */
   @PatchMapping("/profile-update")
-  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(Principal principal, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) {
+  public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
+      Principal principal, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) {
     try {
-      return ResponseEntity.status(HttpStatus.OK).body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+      return ResponseEntity
+          .status(HttpStatus.OK)
+          .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

@@ -6,6 +6,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,17 +19,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 
 /**
  * To give security permission to all endpoints.
@@ -41,11 +39,20 @@ public class SecurityConfig {
   private RSASecretKeys rsaSecretKeys;
   private final Logger LOG = Logger.getLogger(SecurityConfig.class.getName());
 
-  private final String[] ALLOWED_URLS = {"/register", "/login", "/health-check", "/swagger-ui", "/v3/api-docs"};
+  private final String[] ALLOWED_URLS = {
+      "/register",
+      "/login",
+      "/health-check",
+      "/swagger-ui",
+      "/v3/api-docs"};
+
+  /**
+   * To create securityFilterChange.
+   */
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    // @formatter:off
+      // @formatter:off
       http
               .authorizeHttpRequests((authorize) -> authorize
                       .requestMatchers(ALLOWED_URLS).permitAll()
@@ -56,19 +63,23 @@ public class SecurityConfig {
               .csrf((csrf) -> csrf.ignoringRequestMatchers("/login", "/register"))
               .httpBasic(Customizer.withDefaults())
               .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder())))
-              .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .sessionManagement((session) -> session
+                  .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
               .exceptionHandling((exceptions) -> exceptions
                       .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                       .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
               );
-      // @formatter:on
+    // @formatter:on
     return http.build();
   }
 
   @Bean
   JwtEncoder jwtEncoder() {
-    JWK jwk = new RSAKey.Builder(this.rsaSecretKeys.getPublicKey()).privateKey(this.rsaSecretKeys.getPrivateKey()).build();
+    JWK jwk = new RSAKey
+        .Builder(this.rsaSecretKeys.getPublicKey())
+        .privateKey(this.rsaSecretKeys.getPrivateKey())
+        .build();
     JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
     return new NimbusJwtEncoder(jwks);
   }
@@ -78,12 +89,24 @@ public class SecurityConfig {
     return NimbusJwtDecoder.withPublicKey(rsaSecretKeys.getPublicKey()).build();
   }
 
+  /**
+   * To give security permission to all endpoints.
+   */
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+    configuration
+        .setAllowedMethods(Arrays.asList(
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+            "HEAD"
+        ));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 

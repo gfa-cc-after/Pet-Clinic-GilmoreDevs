@@ -15,5 +15,6 @@ public interface UserService extends UserDetailsService {
 
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;
 
-  ProfileUpdateResponseDto profileUpdate(String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
+  ProfileUpdateResponseDto profileUpdate(
+      String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
 }

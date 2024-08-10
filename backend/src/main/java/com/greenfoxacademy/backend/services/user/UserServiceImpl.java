@@ -4,8 +4,6 @@ import com.greenfoxacademy.backend.dtos.*;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-
-
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +22,8 @@ public class UserServiceImpl implements UserService {
   private final AuthService authService;
 
   @Override
-  public RegisterResponseDto register(RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
+  public RegisterResponseDto register(
+      RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
 
     User user = User.builder()
             .email(registerRequestDto.email())
@@ -41,8 +40,10 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
-  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
-    User user = userRepository.findByEmail(loginRequestDto.email()).orElseThrow(() -> new Exception("User not found"));
+  public LoginResponseDto login(
+      LoginRequestDto loginRequestDto) throws Exception {
+    User user = userRepository
+        .findByEmail(loginRequestDto.email()).orElseThrow(() -> new Exception("User not found"));
     if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
@@ -50,8 +51,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public ProfileUpdateResponseDto profileUpdate(String email, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception {
-    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+  public ProfileUpdateResponseDto profileUpdate(
+      String email, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception {
+    User user = userRepository
+        .findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     user.setEmail(profileUpdateRequestDto.email());
     user.setFirstName(profileUpdateRequestDto.firstName());
     user.setLastName(profileUpdateRequestDto.lastName());
@@ -63,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
+    return userRepository
+        .findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 }

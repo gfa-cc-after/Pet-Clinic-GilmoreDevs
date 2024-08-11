@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../httpClient";
 import { usePetClinicState } from "../state";
 
+const a: any = null;
+
 type LoginForm = {
   email: string;
   password: string;

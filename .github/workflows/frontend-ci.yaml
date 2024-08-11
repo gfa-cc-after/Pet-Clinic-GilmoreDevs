@@ -15,6 +15,9 @@ jobs:
   build:
     # what should it run on
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     # default values for all the steps
     defaults:
       run:

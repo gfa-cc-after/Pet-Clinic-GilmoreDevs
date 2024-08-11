@@ -30,14 +30,9 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npm test
       - name: Run build
         run: npm run build
-      - uses: mongolyy/reviewdog-action-biome@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          fail_on_error: true
-          workdir: frontend
-          biome_flags: -c biome.json
+      - name: Run tests
+        run: npm test
+      - name: Run formatter + linter
+        run: npm run check

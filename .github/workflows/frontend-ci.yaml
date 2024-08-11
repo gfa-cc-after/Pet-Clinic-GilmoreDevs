@@ -33,3 +33,8 @@ jobs:
         run: npm run check
       - name: Run build
         run: npm run build
+      - uses: mongolyy/reviewdog-action-biome@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          fail_on_error: true

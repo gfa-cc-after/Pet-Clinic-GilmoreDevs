@@ -29,8 +29,6 @@ jobs:
         run: npm install
       - name: Run tests
         run: npm test
-      - name: Run lint + formatter
-        run: npm run check
       - name: Run build
         run: npm run build
       - uses: mongolyy/reviewdog-action-biome@v1
@@ -38,3 +36,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           fail_on_error: true
+          workdir: .

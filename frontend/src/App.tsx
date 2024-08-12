@@ -1,13 +1,10 @@
-import './App.css'
+import "./App.css";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import { Register } from './pages/Register';
-import { Login } from './pages/Login';
-import { Main } from './pages/Main';
-import { Profile } from './pages/Profile';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { Main } from "./pages/Main";
+import { Profile } from "./pages/Profile";
+import { Register } from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -20,20 +17,20 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: <Login />
-  }  ,
+    element: <Login />,
+  },
   {
     path: "profile",
-    element: <Profile />
-  }
+    element: <Profile />,
+  },
 ]);
 
 function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export { App }
+export { App };

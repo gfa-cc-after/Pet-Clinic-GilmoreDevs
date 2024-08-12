@@ -22,8 +22,7 @@
     "esModuleInterop": true,
 
     /* Needed for the Vitest */
-    "types":  ["vitest/globals"],
-
+    "types": ["vitest/globals"]
   },
   "include": ["src", "src/tests/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

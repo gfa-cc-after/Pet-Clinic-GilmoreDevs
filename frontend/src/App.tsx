@@ -1,4 +1,4 @@
-import './App.css'
+import "./App.css";
 
 import {
   createBrowserRouter,
@@ -35,10 +35,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export { App }
+export { App };

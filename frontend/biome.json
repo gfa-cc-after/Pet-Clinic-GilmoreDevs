@@ -1,0 +1,20 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "organizeImports": {
+    "enabled": true,
+    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "all": true
+    },
+    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+  },
+  "formatter": {
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "enabled": true,
+    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+  }
+}

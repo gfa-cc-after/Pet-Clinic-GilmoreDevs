@@ -1,14 +1,11 @@
 import "./App.css";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import { Register } from './pages/Register';
-import { Login } from './pages/Login';
-import { Main } from './pages/Main';
-import { ProfileDetail } from './pages/ProfileDetail.tsx';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { Main } from "./pages/Main";
 import { Profile } from "./pages/Profile.tsx";
+import { ProfileDetail } from "./pages/ProfileDetail.tsx";
+import { Register } from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -21,16 +18,16 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "profile-update",
-    element: <Profile />
+    element: <Profile />,
   },
   {
     path: "profile",
-    element: <ProfileDetail />
-  }
+    element: <ProfileDetail />,
+  },
 ]);
 
 function App() {

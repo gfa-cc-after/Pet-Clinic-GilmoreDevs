@@ -5,17 +5,28 @@ import validator from "validator";
 import {PasswordStrengthValidator} from "../components/PasswordStrengthValidator";
 import {usePetClinicState} from "../state.ts";
 
+type User = {
+    firstName: string;
+    lastName: string;
+    email: string;
+};
 export function ProfileUpdate() {
     const {auth} = usePetClinicState();
     const [password, setPassword] = useState("");
-    const [user, setUser] = useState(auth.user);
+    const [user, setUser] = useState<User>({
+        email: auth.user?.email || "",
+        firstName: auth.user?.firstName || "",
+        lastName: auth.user?.lastName || ""
+    });
     const [errMessage, setErrMessage] = useState<string | null>(null);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        setUser({...user, [name]: value});
+        if (name != undefined && value != undefined) {
+            setUser({...user, [name]: value});
+        }
     };
     const routChange = () => {
         const path = "/";

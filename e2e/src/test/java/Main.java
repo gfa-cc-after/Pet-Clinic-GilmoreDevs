@@ -1,9 +1,9 @@
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.AriaRole;
 
 public class Main {
+
+
   public static void main(String[] args) {
     try (Playwright playwright = Playwright.create()) {
       BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
@@ -13,6 +13,17 @@ public class Main {
       Page page = browser.newPage();
       page.navigate("http://localhost:5173");
       System.out.println(page.title());
+      Page.GetByRoleOptions getByRoleOptions = new Page.GetByRoleOptions();
+      getByRoleOptions.setName("Register");
+      Locator registerButtonLocator = page.getByRole(AriaRole.LINK, getByRoleOptions);
+      registerButtonLocator.click();
+      //getByRole('textbox', { name: /firstname/i })
+
+      Page.GetByRoleOptions getByRoleOptionsFirstname = new Page.GetByRoleOptions();
+      getByRoleOptionsFirstname.setName("firstname");
+      Locator firstnameInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsFirstname);
+      firstnameInputLocator.fill("Mark");
+
     }
   }
 }

@@ -1,53 +1,59 @@
-import type { ChangeEvent, FormEvent } from "react";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
-import { updateProfile } from "../httpClient";
-import { usePetClinicState } from "../state";
 
-type UpdateUserForm = {
-  firstName: string;
-  lastName: string;
-  sub: string;
+type User = { firstName: string; lastName: string; sub: string };
+
+const decodeToken = (): User | null => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    const decodeToken = jwtDecode<User>(token);
+    return decodeToken;
+  }
+  return null;
 };
 
 export function Profile() {
-  const { auth } = usePetClinicState();
-  const { user } = auth;
+  const userFromToken = decodeToken();
   const [password, setPassword] = useState("");
-
-  const [updateUser, setUpdateUser] = useState<UpdateUserForm>({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    sub: user?.email || "",
-  });
+  const [user, setUser] = useState<User | null>(userFromToken);
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleUserChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement>) =>
-    setUpdateUser({ ...updateUser, [name]: value });
-
+  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (user != null) {
+      setUser({ ...user, [name]: value });
+    }
+  };
   const routChange = () => {
     const path = "/";
     navigate(path);
   };
 
-  const handleProfile = async (event: FormEvent<HTMLFormElement>) => {
+  const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      await updateProfile({
-        email: updateUser.sub,
-        firstName: updateUser.firstName,
-        lastName: updateUser.lastName,
-        password,
-      });
-      setMessage("Successful profile change!");
-    } catch (_error) {
-      setErrMessage("Cannot update profile");
+    if (!validator.isEmail(String(user?.sub))) {
+      setErrMessage("Please, enter valid email!");
+      return;
     }
+    axios
+      .post("http://localhost:8080/profile", {
+        email: user?.sub,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        password,
+      })
+      .then((_response) => {
+        setMessage("Successful profile change!");
+      })
+      .catch((error) => {
+        setErrMessage(error.response.data.error);
+      });
   };
 
   return (
@@ -59,8 +65,8 @@ export function Profile() {
           type="email"
           name="sub"
           id="sub"
-          autoComplete="email"
-          value={updateUser.sub}
+          autoComplete={"email"}
+          value={user?.sub}
           onChange={handleUserChange}
           required={true}
         />
@@ -69,8 +75,8 @@ export function Profile() {
           type="text"
           name="firstName"
           id="firstName"
-          autoComplete="given-name"
-          value={updateUser.firstName}
+          autoComplete={"given-name"}
+          value={user?.firstName}
           onChange={handleUserChange}
           required={true}
         />
@@ -79,8 +85,8 @@ export function Profile() {
           type="text"
           name="lastName"
           id="lastName"
-          autoComplete="family-name"
-          value={updateUser.lastName}
+          autoComplete={"family-name"}
+          value={user?.lastName}
           onChange={handleUserChange}
           required={true}
         />

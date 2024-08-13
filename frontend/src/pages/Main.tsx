@@ -10,14 +10,14 @@ export function Main() {
       <h1>Home</h1>
       <p>Welcome to Gilmore Devs Pet Clinic!</p>
       {!isAuthenticated && (
-          <>
-        <Link className={"links"} to="/login">
-        Login
-      </Link>
-      <Link className={"links"} to="/register">
-        Register
-      </Link>
-          </>
+        <>
+          <Link className={"links"} to="/login">
+            Login
+          </Link>
+          <Link className={"links"} to="/register">
+            Register
+          </Link>
+        </>
       )}
       {isAuthenticated && (
         <Link className={"links"} to="/profile">

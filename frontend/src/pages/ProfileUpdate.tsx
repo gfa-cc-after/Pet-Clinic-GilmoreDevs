@@ -1,32 +1,31 @@
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import axios, { type AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { usePetClinicState } from "../state.ts";
 
-type User = { firstName: string; lastName: string; sub: string };
-
-const decodeToken = (): User | null => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    const decodeToken = jwtDecode<User>(token);
-    return decodeToken;
-  }
-  return null;
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
 };
 
-export function Profile() {
-  const userFromToken = decodeToken();
+export function ProfileUpdate() {
+  const { auth } = usePetClinicState();
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState<User | null>(userFromToken);
+  const [user, setUser] = useState<User>({
+    email: auth.user?.email || "",
+    firstName: auth.user?.firstName || "",
+    lastName: auth.user?.lastName || "",
+  });
   const [errMessage, setErrMessage] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (user != null) {
+    if (name !== undefined && value !== undefined) {
       setUser({ ...user, [name]: value });
     }
   };
@@ -37,17 +36,24 @@ export function Profile() {
 
   const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!validator.isEmail(String(user?.sub))) {
+    if (!validator.isEmail(String(user?.email))) {
       setErrMessage("Please, enter valid email!");
       return;
     }
+    const config: AxiosRequestConfig = {
+      headers: { Authorization: `Bearer·${auth.token}` },
+    };
     axios
-      .post("http://localhost:8080/profile", {
-        email: user?.sub,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        password,
-      })
+      .post(
+        "http://localhost:8080/profile-update",
+        {
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          password,
+        },
+        config,
+      )
       .then((_response) => {
         setMessage("Successful profile change!");
       })
@@ -63,10 +69,10 @@ export function Profile() {
         <label htmlFor="email">Email:</label>
         <input
           type="email"
-          name="sub"
-          id="sub"
+          name="email"
+          id="email"
           autoComplete={"email"}
-          value={user?.sub}
+          value={user?.email}
           onChange={handleUserChange}
           required={true}
         />

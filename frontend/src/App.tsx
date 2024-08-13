@@ -3,8 +3,8 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
-import { Profile } from "./pages/Profile.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
+import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
 
 const router = createBrowserRouter([
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "profile-update",
-    element: <Profile />,
+    element: <ProfileUpdate />,
   },
   {
     path: "profile",

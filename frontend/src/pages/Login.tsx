@@ -31,12 +31,8 @@ export function Login() {
     try {
       const { data } = await login(loginFormData);
       setToken(data.token);
-      try {
-        const user = jwtDecode<UserFromToken>(data.token);
-        setAuth({ user: { ...user, email: user.sub }, token: data.token });
-      } catch (_error) {
-        setError("Cannot decode token");
-      }
+      const user = jwtDecode<UserFromToken>(data.token);
+      setAuth({ user: { ...user, email: user.sub }, token: data.token });
       navigate("/");
     } catch (_error) {
       setError("Cannot login user");

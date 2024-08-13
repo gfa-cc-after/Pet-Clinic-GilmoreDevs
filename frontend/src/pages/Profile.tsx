@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosHeaders, AxiosRequestConfig} from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,13 +41,14 @@ export function Profile() {
       setErrMessage("Please, enter valid email!");
       return;
     }
+    const config: AxiosRequestConfig = {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
     axios
-      .post("http://localhost:8080/profile", {
+      .post("http://localhost:8080/profile-update", {
         email: user?.sub,
         firstName: user?.firstName,
         lastName: user?.lastName,
         password,
-      })
+      }, config)
       .then((_response) => {
         setMessage("Successful profile change!");
       })

@@ -1,37 +1,27 @@
-import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
-
-type User = { firstName: string; lastName: string; sub: string };
-
-const decodeToken = (): User | null => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    const decodeToken = jwtDecode<User>(token);
-    console.log(decodeToken);
-    return decodeToken;
-  }
-  return null;
-};
+import {usePetClinicState} from "../state.ts";
 
 export function ProfileDetail() {
-  const userFromToken = decodeToken();
+  const auth = usePetClinicState().auth;
 
   return (
     <>
       <h1>Profile detail:</h1>
       <table>
+        <tbody>
         <tr>
           <td>FirstName:</td>
-          <td>{userFromToken?.firstName}</td>
+          <td>{auth.user?.firstName}</td>
         </tr>
         <tr>
           <td>LastName:</td>
-          <td>{userFromToken?.lastName}</td>
+          <td>{auth.user?.lastName}</td>
         </tr>
         <tr>
           <td>Email:</td>
-          <td>{userFromToken?.sub}</td>
+          <td>{auth.user?.email}</td>
         </tr>
+        </tbody>
       </table>
       <Link className={"links"} to="/profile-update">
         Profile update

@@ -1,8 +1,9 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { updateProfile } from "../httpClient.ts";
 import { usePetClinicState } from "../state.ts";
 
 type User = {
@@ -12,7 +13,7 @@ type User = {
 };
 
 export function ProfileUpdate() {
-  const { auth } = usePetClinicState();
+  const { auth, setAuth } = usePetClinicState();
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<User>({
     email: auth.user?.email || "",
@@ -20,7 +21,7 @@ export function ProfileUpdate() {
     lastName: auth.user?.lastName || "",
   });
   const [errMessage, setErrMessage] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,32 +35,24 @@ export function ProfileUpdate() {
     navigate(path);
   };
 
-  const handleProfile = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validator.isEmail(String(user?.email))) {
       setErrMessage("Please, enter valid email!");
       return;
     }
-    const config: AxiosRequestConfig = {
-      headers: { Authorization: `Bearer·${auth.token}` },
-    };
-    axios
-      .post(
-        "http://localhost:8080/profile-update",
-        {
-          email: user?.email,
-          firstName: user?.firstName,
-          lastName: user?.lastName,
-          password,
-        },
-        config,
-      )
-      .then((_response) => {
-        setMessage("Successful profile change!");
-      })
-      .catch((error) => {
-        setErrMessage(error.response.data.error);
-      });
+
+    try {
+      const { token } = await updateProfile({ ...user, password });
+      setAuth(token);
+      routChange();
+      setErrMessage(null);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        setErrMessage(e.response?.data?.error || "Cannot update profile");
+        setMessage(null);
+      }
+    }
   };
 
   return (

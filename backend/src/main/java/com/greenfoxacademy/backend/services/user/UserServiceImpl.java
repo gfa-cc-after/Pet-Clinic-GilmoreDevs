@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
 
     User updatedUser = userRepository.save(user);
-    return new ProfileUpdateResponseDto(updatedUser.getId());
+    return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
   @Override

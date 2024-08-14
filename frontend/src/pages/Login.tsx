@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,14 +9,8 @@ type LoginForm = {
   password: string;
 };
 
-type UserFromToken = {
-  sub: string;
-  firstName: string;
-  lastName: string;
-};
-
 export function Login() {
-  const { setToken, setAuth } = usePetClinicState();
+  const { setAuth } = usePetClinicState();
   const [loginFormData, setLoginFormData] = useState<LoginForm>({
     email: "",
     password: "",
@@ -30,9 +23,7 @@ export function Login() {
     event.preventDefault();
     try {
       const { data } = await login(loginFormData);
-      setToken(data.token);
-      const user = jwtDecode<UserFromToken>(data.token);
-      setAuth({ user: { ...user, email: user.sub }, token: data.token });
+      setAuth(data.token);
       navigate("/");
     } catch (_error) {
       setError("Cannot login user");

@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
@@ -24,7 +24,7 @@ export function ProfileUpdate() {
   const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUserChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name !== undefined && value !== undefined) {
       setUser({ ...user, [name]: value });
@@ -35,7 +35,7 @@ export function ProfileUpdate() {
     navigate(path);
   };
 
-  const handleProfile = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleProfile = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validator.isEmail(String(user?.email))) {
       setErrMessage("Please, enter valid email!");

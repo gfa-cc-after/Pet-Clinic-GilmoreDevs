@@ -80,7 +80,14 @@ function Register() {
         />
         <PasswordStrengthValidator password={user.password} />
         <button type="submit">Register</button>
-        {message && <span data-testid="register-success-message" style={{ fontWeight: "bold", color: "green" }}>{message}</span>}
+        {message && (
+          <span
+            data-testid="register-success-message"
+            style={{ fontWeight: "bold", color: "green" }}
+          >
+            {message}
+          </span>
+        )}
       </form>
       <Link className={"links"} to="/login">
         Login

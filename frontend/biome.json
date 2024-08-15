@@ -16,5 +16,17 @@
     "indentStyle": "space",
     "enabled": true,
     "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
-  }
+  },
+  "overrides": [
+    {
+      "include": ["*.test.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    }
+  ]
 }

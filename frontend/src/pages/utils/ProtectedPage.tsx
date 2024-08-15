@@ -1,12 +1,16 @@
-import type { PropsWithChildren } from 'react';
-import { usePetClinicState } from '../../state';
-import { Login } from '../Login';
+import type { PropsWithChildren } from "react";
+import { usePetClinicState } from "../../state";
+import { Login } from "../Login";
 
-type ProtectedPageProps = PropsWithChildren
+type ProtectedPageProps = PropsWithChildren;
 
 const ProtectedPage = ({ children }: ProtectedPageProps) => {
-    const { auth: { user } } = usePetClinicState();
-    if (user) { return <>{children}</> }
-    return <Login />;
-}
-export { ProtectedPage }
+  const {
+    auth: { user },
+  } = usePetClinicState();
+  if (user) {
+    return <>{children}</>;
+  }
+  return <Login />;
+};
+export { ProtectedPage };

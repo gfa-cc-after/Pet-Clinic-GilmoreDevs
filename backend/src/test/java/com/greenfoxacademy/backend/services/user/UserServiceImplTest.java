@@ -1,5 +1,8 @@
 package com.greenfoxacademy.backend.services.user;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
@@ -8,6 +11,7 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +22,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {

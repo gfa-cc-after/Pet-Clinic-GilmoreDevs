@@ -57,10 +57,15 @@ const updateProfile = async (request: UpdateProfileRequest) => {
   return response.data;
 };
 
+const deleteProfile = async () => {
+  const response = await httpClient.delete("delete-profile");
+  return response.data;
+};
+
 // the logout functin does not communicate with the server
 // it just deletes the token from the default headers
 const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile };
+export { login, register, logout, updateProfile, deleteProfile };

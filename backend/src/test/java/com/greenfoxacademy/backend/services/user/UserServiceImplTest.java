@@ -49,7 +49,11 @@ class UserServiceImplTest {
   void register() {
     // Given
     User asSaved = User.builder().id(1).build();
-    RegisterRequestDto registerRequestDto = new RegisterRequestDto("fistName", "lastName", "some@email.com", "SomePassword123");
+    RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+            "fistName",
+            "lastName",
+            "some@email.com",
+            "SomePassword123");
 
     // When
     when(userRepository.save(any())).thenReturn(asSaved);
@@ -63,12 +67,20 @@ class UserServiceImplTest {
   @Test
   void registerFails() {
     // Given
-    RegisterRequestDto registerRequestDto = new RegisterRequestDto("fistName", "lastName", "some@email.com", "SomePassword123");
+    RegisterRequestDto registerRequestDto = new RegisterRequestDto(
+            "fistName",
+            "lastName",
+            "some@email.com",
+            "SomePassword123");
 
     // When
-    when(userRepository.save(any())).thenThrow(new UserAlreadyExistsError("Email is already taken!"));
+    when(userRepository.save(any()))
+            .thenThrow(new UserAlreadyExistsError("Email is already taken!"));
 
-    Assertions.assertThrows(UserAlreadyExistsError.class, () -> userService.register(registerRequestDto));
+    Assertions.assertThrows(
+            UserAlreadyExistsError.class,
+            () -> userService.register(registerRequestDto)
+    );
 
   }
 
@@ -76,7 +88,11 @@ class UserServiceImplTest {
   @Test
   void login() throws Exception {
     // Given
-    User user = User.builder().id(1).email("email").password(passwordEncoder.encode("password")).build();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .build();
     LoginRequestDto userLoginRequestDto = new LoginRequestDto("email", "password");
 
     // When
@@ -86,15 +102,25 @@ class UserServiceImplTest {
     userService.login(userLoginRequestDto);
 
     // Then
-    Mockito.verify(userRepository, Mockito.times(1)).findByEmail(anyString());
+    Mockito.verify(
+            userRepository,
+            Mockito.times(1)).findByEmail(anyString()
+    );
   }
 
   @DisplayName("Login a user unsuccessfully")
   @Test
   void loginUnsuccessful() throws Exception {
     // Given
-    User user = User.builder().id(1).email("email").password(passwordEncoder.encode("passwordNOOP")).build();
-    LoginRequestDto userLoginRequestDto = new LoginRequestDto("email", "password");
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("passwordNOOP"))
+            .build();
+    LoginRequestDto userLoginRequestDto = new LoginRequestDto(
+            "email",
+            "password"
+    );
 
     // When
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
@@ -102,16 +128,27 @@ class UserServiceImplTest {
     Assertions.assertThrows(Exception.class, () -> userService.login(userLoginRequestDto));
 
     // Then
-    Mockito.verify(userRepository, Mockito.times(1)).findByEmail(anyString());
+    Mockito.verify(
+            userRepository,
+            Mockito.times(1)).findByEmail(anyString()
+    );
   }
 
   @DisplayName("Update a user profile successfully")
   @Test
   void profileUpdate() throws Exception {
     // Given
-    User user = User.builder().id(1).email("email").password(passwordEncoder.encode("password")).build();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .build();
     String email = "email";
-    ProfileUpdateRequestDto profileUpdateRequestDto = new ProfileUpdateRequestDto("newEmail", "newFirstName", "newLastName", "newPassword");
+    ProfileUpdateRequestDto profileUpdateRequestDto = new ProfileUpdateRequestDto(
+            "newEmail",
+            "newFirstName",
+            "newLastName",
+            "newPassword");
 
     // When
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
@@ -120,34 +157,55 @@ class UserServiceImplTest {
     userService.profileUpdate(email, profileUpdateRequestDto);
 
     // Then
-    Mockito.verify(userRepository, Mockito.times(1)).findByEmail(anyString());
+    Mockito
+            .verify(userRepository, Mockito.times(1))
+            .findByEmail(anyString());
   }
 
   @DisplayName("Update a user profile unsuccessfully")
   @Test
   void profileUpdateUnsuccessful() throws Exception {
     // Given
-    User user = User.builder().id(1).email("email").password(passwordEncoder.encode("password")).build();
+    User user = User.builder().id(1).email("email")
+            .password(passwordEncoder.encode("password"))
+            .build();
     String email = "email";
-    ProfileUpdateRequestDto profileUpdateRequestDto = new ProfileUpdateRequestDto("newEmail", "newFirstName", "new@email.com", "newPassword");
+    // @formatter:off
+
+    ProfileUpdateRequestDto profileUpdateRequestDto = new ProfileUpdateRequestDto(
+            "newEmail",
+            "newFirstName",
+            "new@email.com",
+            "newPassword");
+    // @formatter:on
 
     // When
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
     when(userRepository.existsByEmail("new@email.com")).thenReturn(true);
 
     // Then
-    Assertions.assertThrows(UserAlreadyExistsError.class, () -> userService.profileUpdate(email, profileUpdateRequestDto));
+    Assertions.assertThrows(
+            UserAlreadyExistsError.class,
+            () -> userService.profileUpdate(email, profileUpdateRequestDto)
+    );
   }
 
   @Test
   void loadUserByUsername() {
     // Given
-    User user = User.builder().id(1).email("email").password(passwordEncoder.encode("password")).build();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .build();
     String email = "email";
     // When
     when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
     userService.loadUserByUsername(email);
     // Then
-    Mockito.verify(userRepository, Mockito.times(1)).findByEmail(anyString());
+    Mockito.verify(
+            userRepository,
+            Mockito.times(1)
+    ).findByEmail(anyString());
   }
 }

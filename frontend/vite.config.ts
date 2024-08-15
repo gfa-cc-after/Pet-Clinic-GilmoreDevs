@@ -15,6 +15,15 @@ export default defineConfig({
     setupFiles: ["./setup-tests.ts"],
     css: true,
     coverage: {
+      exclude: [
+        "src/main.tsx",
+        "vite.config.ts",
+        "dist/**/*",
+        "node_modules/**/*",
+        "coverage/**/*",
+        ".eslintrc.cjs",
+        "src/**/*.d.ts",
+      ],
       provider: "v8",
       reporter: ["text", "json", "html"],
       thresholds: {

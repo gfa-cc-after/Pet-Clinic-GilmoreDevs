@@ -3,6 +3,8 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 
+const threshold: number = 70 as const;
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -12,5 +14,17 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./setup-tests.ts"],
     css: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      thresholds: {
+        "src/**/*.{ts,tsx}": {
+          functions: threshold,
+          branches: threshold,
+          statements: threshold,
+          lines: threshold,
+        },
+      },
+    },
   },
 });

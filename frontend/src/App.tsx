@@ -6,6 +6,7 @@ import { Main } from "./pages/Main";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
+import {ProfileDeletion} from "./pages/ProfileDeletion.tsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "profile",
     element: <ProfileDetail />,
+  },
+  {
+    path: "delete-profile",
+    element: <ProfileDeletion />,
   },
 ]);
 

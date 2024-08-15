@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePetClinicState } from "../state.ts";
 
 export function ProfileDetail() {
@@ -31,7 +31,11 @@ export function ProfileDetail() {
       <Link className={"links"} to="/profile-update">
         Profile update
       </Link>
-      <button style={{backgroundColor: 'red'}} type="button" onClick={routChange}>
+      <button
+        style={{ backgroundColor: "red" }}
+        type="button"
+        onClick={routChange}
+      >
         Delete Profile
       </button>
     </>

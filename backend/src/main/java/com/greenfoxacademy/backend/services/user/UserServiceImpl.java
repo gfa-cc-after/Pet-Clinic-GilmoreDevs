@@ -74,4 +74,12 @@ public class UserServiceImpl implements UserService {
     return userRepository
         .findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
+
+  @Override
+  public void deleteProfile(String username) {
+    User user = userRepository
+            .findByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    userRepository.delete(user);
+  }
 }

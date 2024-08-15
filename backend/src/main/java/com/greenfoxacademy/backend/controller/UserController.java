@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,5 +76,26 @@ public class UserController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+  }
+
+  /**
+   * This method delete a user from the database.
+   *
+   * @param principal the user that is authenticated
+   * @return a response entity with the status code
+   */
+  @DeleteMapping("/delete-profile")
+  public ResponseEntity<?> deleteProfile(Principal principal) {
+    try {
+      if (principal == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+      }
+      String username = principal.getName();
+      userService.deleteProfile(username);
+      return ResponseEntity.ok("User deleted successfully");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unable to delete profile");
+    }
+
   }
 }

@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePetClinicState } from "../state.ts";
 
 export function ProfileDetail() {
   const auth = usePetClinicState().auth;
+  const navigate = useNavigate();
+  const routChange = () => {
+    const path = "/delete-profile";
+    navigate(path);
+  };
 
   return (
     <>
@@ -26,6 +31,13 @@ export function ProfileDetail() {
       <Link className={"links"} to="/profile-update">
         Profile update
       </Link>
+      <button
+        style={{ backgroundColor: "red" }}
+        type="button"
+        onClick={routChange}
+      >
+        Delete Profile
+      </button>
     </>
   );
 }

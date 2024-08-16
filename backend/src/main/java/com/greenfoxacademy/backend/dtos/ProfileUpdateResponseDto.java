@@ -5,6 +5,6 @@ package com.greenfoxacademy.backend.dtos;
  */
 
 public record ProfileUpdateResponseDto(
-        Integer id
+        String token
 ) {
 }

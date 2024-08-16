@@ -73,13 +73,21 @@ function Register() {
         <input
           type="password"
           aria-label="pass"
+          data-testid="pass-testid"
           name="password"
           value={user.password}
           onChange={handleUserChange}
         />
         <PasswordStrengthValidator password={user.password} />
         <button type="submit">Register</button>
-        <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>
+        {message && (
+          <span
+            data-testid="register-success-message"
+            style={{ fontWeight: "bold", color: "green" }}
+          >
+            {message}
+          </span>
+        )}
       </form>
       <Link className={"links"} to="/login">
         Login

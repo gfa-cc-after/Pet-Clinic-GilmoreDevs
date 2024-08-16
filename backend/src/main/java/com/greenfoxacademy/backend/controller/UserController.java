@@ -6,6 +6,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
 import java.security.Principal;
@@ -85,14 +86,9 @@ public class UserController {
    * @return a response entity with the status code
    */
   @DeleteMapping("/delete-profile")
-  public ResponseEntity<?> deleteProfile(Principal principal) {
-    try {
+  public ResponseEntity<?> deleteProfile(Principal principal) throws UnableToDeleteProfileError {
       String username = principal.getName();
       userService.deleteProfile(username);
       return ResponseEntity.ok("User deleted successfully");
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unable to delete profile");
-    }
-
   }
 }

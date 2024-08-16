@@ -1,10 +1,12 @@
 package com.greenfoxacademy.backend.config;
 
+import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,6 +49,14 @@ public class ResponseEntityErrorHandler {
       String errorMessage = error.getDefaultMessage();
       errors.put(fieldName, errorMessage);
     });
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(UnableToDeleteProfileError.class)
+  public ResponseEntity<?> handleUnableToDeleteProfileError( UnableToDeleteProfileError ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", "Unable to delete profile");
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 }

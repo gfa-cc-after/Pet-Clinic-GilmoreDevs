@@ -1,21 +1,20 @@
-import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import { ProfileUpdate } from './ProfileUpdate.tsx';
+import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { describe, expect, it } from "vitest";
+import { ProfileUpdate } from "./ProfileUpdate.tsx";
 
-describe('ProfileUpdate', () => {
-  it('should render successfully', () => {
+describe("ProfileUpdate", () => {
+  it("should render successfully", () => {
     const component = render(<ProfileUpdate />, {
-      wrapper: BrowserRouter
+      wrapper: BrowserRouter,
     });
     expect(component).not.toBeNull();
   });
 
-  it('should call ', () => {
+  it("should call ", () => {
     const component = render(<ProfileUpdate />, {
-      wrapper: BrowserRouter
+      wrapper: BrowserRouter,
     });
     expect(component).not.toBeNull();
   });
-
 });

@@ -63,4 +63,4 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile };
+export { login, logout, register, updateProfile };

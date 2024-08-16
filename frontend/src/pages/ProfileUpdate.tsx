@@ -1,22 +1,29 @@
-import { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
-import { useProfileUpdateState, ProfileUpdateForm } from "../hooks/useProfileUpdate.ts";
+import {
+  type ProfileUpdateForm,
+  useProfileUpdateState,
+} from "../hooks/useProfileUpdate.ts";
 
 export function ProfileUpdate() {
   const {
     state: { user, message, errorMessage },
     updateUserField,
     updateUserProfile,
-    navigate
+    navigate,
   } = useProfileUpdateState();
 
-  const handleFormChange = ({ target: { value, name } }: ChangeEvent<HTMLInputElement>) =>
+  const handleFormChange = ({
+    target: { value, name },
+  }: ChangeEvent<HTMLInputElement>) =>
     updateUserField(name as keyof ProfileUpdateForm, value);
 
-  const handleProfileUpdateSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleProfileUpdateSubmit = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     await updateUserProfile();
-  }
+  };
 
   return (
     <>
@@ -69,8 +76,12 @@ export function ProfileUpdate() {
           Discard
         </button>
       </form>
-      {errorMessage && <span style={{ fontWeight: "bold", color: "red" }}>{errorMessage}</span>}
-      {message && <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>}
+      {errorMessage && (
+        <span style={{ fontWeight: "bold", color: "red" }}>{errorMessage}</span>
+      )}
+      {message && (
+        <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>
+      )}
     </>
   );
 }

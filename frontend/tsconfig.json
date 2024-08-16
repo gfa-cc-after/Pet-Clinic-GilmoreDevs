@@ -29,7 +29,7 @@
     "node_modules",
     "src/tests/setup.ts",
     "src/**/*.test.ts",
-    "src/**/*.test.tsx",
+    "src/**/*.test.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -52,7 +52,7 @@ describe("useProfileUpdate", () => {
         const { result } = renderHook(() => useProfileUpdateState(), {
             wrapper: BrowserRouter,
         });
-        act(async () => {
+        await act(async () => {
             await result.current.updateUserProfile();
         });
         expect(updateProfile).toHaveBeenCalledTimes(1);

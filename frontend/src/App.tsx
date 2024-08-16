@@ -3,6 +3,7 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
+import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "profile",
     element: <ProfileDetail />,
+  },
+  {
+    path: "delete-profile",
+    element: <ProfileDeletion />,
   },
 ]);
 

@@ -53,3 +53,4 @@ jobs:
           tool_name: 'testtool'
           fail_on_error: true
           level: warning,error
+          workdir: backend

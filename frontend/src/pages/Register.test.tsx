@@ -3,7 +3,6 @@ import { userEvent } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import { Register } from "./Register";
-import "@testing-library/jest-dom";
 
 describe("Register component", () => {
   test("has a heading 'Register'", () => {

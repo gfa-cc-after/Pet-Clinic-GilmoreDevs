@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { usePetClinicState } from "../state.ts";
 
 export function ProfileDetail() {
-  const auth = usePetClinicState().auth;
+  const { auth } = usePetClinicState();
   const navigate = useNavigate();
   const routChange = () => {
     const path = "/delete-profile";

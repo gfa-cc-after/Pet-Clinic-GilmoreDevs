@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Login } from "./Login";
-import "@testing-library/jest-dom";
 import { describe, expect, test, vi } from "vitest";
+import { Login } from "./Login";
 
 describe("Register component", () => {
   test("has a heading 'Register'", () => {

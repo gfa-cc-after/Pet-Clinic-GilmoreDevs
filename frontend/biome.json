@@ -9,13 +9,23 @@
     "rules": {
       "all": true
     },
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+    "ignore": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "tsconfig.*.json"
+    ]
   },
   "formatter": {
     "indentWidth": 2,
     "indentStyle": "space",
     "enabled": true,
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
+    "ignore": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/coverage/**",
+      "tsconfig.*.json"
+    ]
   },
   "overrides": [
     {

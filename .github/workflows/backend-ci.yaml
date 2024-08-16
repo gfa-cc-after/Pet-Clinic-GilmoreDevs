@@ -6,6 +6,8 @@ name: Backend CI
 # when should it run
 on:
   pull_request:
+    paths:
+      - backend
     branches:
       - main
 
@@ -53,3 +55,4 @@ jobs:
           tool_name: 'testtool'
           fail_on_error: true
           level: warning,error
+          workdir: backend

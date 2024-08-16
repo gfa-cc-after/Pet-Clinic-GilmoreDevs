@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 const threshold: number = 70 as const;
 
 // https://vitejs.dev/config/
+// biome-ignore lint: viteconfig signature
 export default defineConfig({
   plugins: [react()],
   test: {

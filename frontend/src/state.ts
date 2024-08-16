@@ -41,7 +41,7 @@ const usePetClinicState = create<PetClinicState>()((set) => ({
           token,
         },
       }));
-    } catch (e) {
+    } catch (_e) {
       return set((state) => ({ ...state, auth: { token: null, user: null } }));
     }
   },

@@ -28,16 +28,11 @@ describe("state", () => {
       state.result.current.auth.user = null;
     });
     expect(state.result.current.auth.token).toBeNull();
+    const exampleValidToken =
+      // biome-ignore lint
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" as const;
     act(() => {
-      state.result.current.setToken("testTOKEN");
-      state.result.current.setAuth({
-        user: {
-          email: "email",
-          firstName: "firstName",
-          lastName: "lastName",
-        },
-        token: "testTOKEN",
-      });
+      state.result.current.setAuth(exampleValidToken);
     });
     expect(state.result.current.auth.token).not.toBeNull();
   });

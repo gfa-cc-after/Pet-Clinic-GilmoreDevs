@@ -10,12 +10,14 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    include: ["**/*.test.tsx"],
+    include: ["**/*.test.ts", "**/*.test.tsx"],
     environment: "jsdom",
     setupFiles: ["./setup-tests.ts"],
     css: true,
     coverage: {
       exclude: [
+        "src/**/*.test.tsx",
+        "src/**/*.test.ts",
         "src/main.tsx",
         "vite.config.ts",
         "dist/**/*",

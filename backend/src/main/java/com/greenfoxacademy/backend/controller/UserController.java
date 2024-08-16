@@ -87,9 +87,6 @@ public class UserController {
   @DeleteMapping("/delete-profile")
   public ResponseEntity<?> deleteProfile(Principal principal) {
     try {
-      if (principal == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
-      }
       String username = principal.getName();
       userService.deleteProfile(username);
       return ResponseEntity.ok("User deleted successfully");

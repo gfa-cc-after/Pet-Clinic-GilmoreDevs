@@ -6,8 +6,6 @@ name: Backend CI
 # when should it run
 on:
   pull_request:
-    paths:
-      - backend
     branches:
       - main
 

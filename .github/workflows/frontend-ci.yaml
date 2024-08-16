@@ -6,8 +6,6 @@ name: Frontend CI
 # when should it run
 on:
   pull_request:
-    paths:
-      - frontend
     branches:
       - main
 

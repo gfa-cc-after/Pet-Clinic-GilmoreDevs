@@ -52,9 +52,14 @@ public class ResponseEntityErrorHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 
+  /**
+   * Handle UnableToDeleteProfileError error globally in controllers.
+   * @param ex UnableToDeleteProfileError instance
+   * @return ResponseEntity with BAD_REQUEST and error key-value pair
+   */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(UnableToDeleteProfileError.class)
-  public ResponseEntity<?> handleUnableToDeleteProfileError( UnableToDeleteProfileError ex) {
+  public ResponseEntity<?> handleUnableToDeleteProfileError(UnableToDeleteProfileError ex) {
     HashMap<String, String> errors = new HashMap<>();
     errors.put("error", "Unable to delete profile");
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);

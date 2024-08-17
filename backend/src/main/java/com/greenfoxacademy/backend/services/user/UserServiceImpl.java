@@ -83,9 +83,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteProfile(String username) {
-    User user = userRepository
-            .findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    userRepository.delete(user);
+    userRepository.deleteByEmail(username);
   }
 }

@@ -87,8 +87,7 @@ public class UserController {
    */
   @DeleteMapping("/delete-profile")
   public ResponseEntity<?> deleteProfile(Principal principal) throws UnableToDeleteProfileError {
-      String username = principal.getName();
-      userService.deleteProfile(username);
-      return ResponseEntity.ok("User deleted successfully");
+    userService.deleteProfile(principal.getName());
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 }

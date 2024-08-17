@@ -130,7 +130,8 @@ class UserControllerTest {
                     status().isBadRequest(),
                     jsonPath(
                             "$.password",
-                            is("Invalid password: must contain at least one uppercase letter")));
+                            is("Invalid password: must contain at least one uppercase letter")
+                    ));
   }
 
   @DisplayName("Should return password has no lowercase when password has no lowercase")
@@ -380,15 +381,18 @@ class UserControllerTest {
                             .lastName("Doe")
                             .password(passwordEncoder.encode(loginRequestDto.password()))
                             .build()
-                    )
-            );
+                    ));
 
-    MvcResult result = mockMvc.perform(post("/login")
-                    .content(jacksonObjectMapper.writeValueAsString(loginRequestDto))
-                    .contentType(MediaType.APPLICATION_JSON))
+    MvcResult result = mockMvc.perform(
+                    post("/login")
+                            .content(jacksonObjectMapper.writeValueAsString(loginRequestDto))
+                            .contentType(MediaType.APPLICATION_JSON)
+            )
             .andReturn();
 
-    LoginResponseDto loginResponseDto = jacksonObjectMapper.readValue(result.getResponse().getContentAsString(), LoginResponseDto.class);
+    LoginResponseDto loginResponseDto = jacksonObjectMapper.readValue(
+            result.getResponse().getContentAsString(),
+            LoginResponseDto.class);
 
     mockMvc.perform(delete("/delete-profile")
                     .contentType(MediaType.APPLICATION_JSON)

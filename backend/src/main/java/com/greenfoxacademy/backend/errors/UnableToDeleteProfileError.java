@@ -6,10 +6,12 @@ package com.greenfoxacademy.backend.errors;
  * The class has two constructors, one with a message and one without.
  * The message is passed to the super class.
  */
+
 public class UnableToDeleteProfileError extends RuntimeException {
   public UnableToDeleteProfileError(String message) {
     super(message);
   }
+
   public UnableToDeleteProfileError() {
     super();
   }

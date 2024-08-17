@@ -6,6 +6,10 @@ export function ProfileDeletion() {
     const path = "/profile";
     navigate(path);
   };
+  const goMain = () => {
+    const path = "/";
+    navigate(path);
+  };
 
   return (
     <>
@@ -15,7 +19,9 @@ export function ProfileDeletion() {
         profile? We're sad to see you go! Please remember, this action is
         permanent and you'll lose all your data."
       </p>
-      <button type="button" style={{ backgroundColor: "red", margin: "10px" }}>
+      <button type="button" style={{ backgroundColor: "red", margin: "10px" }}
+      onClick={goMain}
+      >
         Yes, delete it!
       </button>
       <button

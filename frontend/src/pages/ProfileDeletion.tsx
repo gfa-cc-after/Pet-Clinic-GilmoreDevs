@@ -31,11 +31,14 @@ export function ProfileDeletion() {
         profile? We're sad to see you go! Please remember, this action is
         permanent and you'll lose all your data."
       </p>
-      {errMessage &&
-        <span data-testid="delete-profile-error" style={{ fontWeight: "bold", color: "red", display: "block" }}>
+      {errMessage && (
+        <span
+          data-testid="delete-profile-error"
+          style={{ fontWeight: "bold", color: "red", display: "block" }}
+        >
           {errMessage}
         </span>
-      }
+      )}
       <button
         type="button"
         data-testid="delete-profile-button"

@@ -3,14 +3,14 @@ import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { ProfileDeletion } from "./ProfileDeletion";
-import React from "react";
 import "vitest-dom/extend-expect";
 
 vi.mock("../httpClient", () => ({
-  deleteProfile: vi.fn()
-}))
+  deleteProfile: vi.fn(),
+}));
 
-import * as httpClient from '../httpClient';
+// biome-ignore lint: used it for mocking purposes
+import * as httpClient from "../httpClient";
 
 describe("ProfileDeletion", () => {
   it("should render successfully", () => {
@@ -40,7 +40,7 @@ describe("ProfileDeletion", () => {
     expect(window.location.pathname).toBe("/profile");
   });
 
-  it('should call the deleteProfile function', async () => {
+  it("should call the deleteProfile function", async () => {
     const component = render(<ProfileDeletion />, {
       wrapper: BrowserRouter,
     });
@@ -53,7 +53,7 @@ describe("ProfileDeletion", () => {
     expect(httpClientSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should show error message if delete was unsuccessfull', async () => {
+  it("should show error message if delete was unsuccessfull", async () => {
     const component = render(<ProfileDeletion />, {
       wrapper: BrowserRouter,
     });

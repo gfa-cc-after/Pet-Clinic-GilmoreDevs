@@ -55,6 +55,7 @@ public class ResponseEntityErrorHandler {
   /**
    * Handle UnableToDeleteProfileError error globally in controllers.
    * @param ex UnableToDeleteProfileError instance
+   *
    * @return ResponseEntity with BAD_REQUEST and error key-value pair
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)

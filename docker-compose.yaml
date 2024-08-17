@@ -7,3 +7,9 @@ services:
        - 5432:5432
     environment:
       POSTGRES_PASSWORD: example
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 5173:80
+          

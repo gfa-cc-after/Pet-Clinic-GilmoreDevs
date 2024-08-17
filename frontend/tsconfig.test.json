@@ -24,12 +24,7 @@
     /* Needed for the Vitest */
     "types": ["vitest/globals"]
   },
-  "include": ["src", "src/tests/setup.ts"],
-  "exclude": [
-    "node_modules",
-    "src/tests/setup.ts",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx"
-  ],
+  "include": ["src", "src/tests/setup.ts", "src/tests/**/*.ts", "src/**/*.test.tsx"],
+  
   "references": [{ "path": "./tsconfig.node.json" }]
 }

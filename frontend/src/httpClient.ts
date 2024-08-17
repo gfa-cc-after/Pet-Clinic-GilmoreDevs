@@ -47,13 +47,16 @@ type UpdateProfileRequest = {
   lastName: string;
 };
 
-type UpdateProfileResponse = unknown;
+type UpdateProfileResponse = {
+  token: string;
+};
 
 const updateProfile = async (request: UpdateProfileRequest) => {
   const response = await httpClient.patch<UpdateProfileResponse>(
     "/profile-update",
     request,
   );
+  httpClient.defaults.headers.common.Authorization = response.data.token;
   return response.data;
 };
 
@@ -62,7 +65,7 @@ const deleteProfile = async () => {
   return response.data;
 };
 
-// the logout functin does not communicate with the server
+// the logout function does not communicate with the server
 // it just deletes the token from the default headers
 const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;

@@ -25,4 +25,5 @@ public interface UserService extends UserDetailsService {
       String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
 
   void deleteProfile(String username) throws UnableToDeleteProfileError;
+          
 }

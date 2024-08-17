@@ -1,9 +1,16 @@
+import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
 export type User = {
   firstName: string;
   lastName: string;
   email: string;
+};
+
+type JwtPayload = {
+  firstName: string;
+  lastName: string;
+  sub: string;
 };
 
 type Auth = {
@@ -13,17 +20,31 @@ type Auth = {
 
 interface PetClinicState {
   auth: Auth;
-  setAuth: (auth: Auth) => void;
+  setAuth: (token: string) => void;
   logout: () => void;
-  setToken: (token: string) => void;
 }
 
 const usePetClinicState = create<PetClinicState>()((set) => ({
   auth: { token: null, user: null },
   logout: () => set({ auth: { token: null, user: null } }),
-  setAuth: (auth) => set({ auth }),
-  setToken: (token: string) =>
-    set((state) => ({ ...state, auth: { ...state.auth, token } })),
+  setAuth: (token: string) => {
+    try {
+      const { firstName, lastName, sub } = jwtDecode<JwtPayload>(token);
+      return set((state) => ({
+        ...state,
+        auth: {
+          user: {
+            email: sub,
+            firstName,
+            lastName,
+          },
+          token,
+        },
+      }));
+    } catch (_e) {
+      return set((state) => ({ ...state, auth: { token: null, user: null } }));
+    }
+  },
 }));
 
 export { usePetClinicState };

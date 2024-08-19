@@ -25,7 +25,7 @@ export function ProfileUpdate() {
     await updateUserProfile();
     setTimeout(() => {
       navigate("/login");
-    },1000);
+    }, 1000);
   };
 
   return (

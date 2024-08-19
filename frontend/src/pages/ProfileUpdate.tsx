@@ -23,6 +23,7 @@ export function ProfileUpdate() {
   ) => {
     event.preventDefault();
     await updateUserProfile();
+    setTimeout(() => {navigate('/login')},1000);
   };
 
   return (
@@ -65,7 +66,7 @@ export function ProfileUpdate() {
           aria-label={"pass"}
           name="password"
           id="password"
-          value={user.password}
+          value={user?.password}
           onChange={handleFormChange}
           autoComplete="new-password"
           required={true}

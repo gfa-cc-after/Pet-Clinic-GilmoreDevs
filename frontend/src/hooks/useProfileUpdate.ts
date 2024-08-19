@@ -57,7 +57,7 @@ const useProfileUpdateState = () => {
         email: state.user.email,
         firstName: state.user.firstName,
         lastName: state.user.lastName,
-        password: state.password,
+        password: state.user.password,
       });
       updateMessage(successMessage);
       updateErrorMessage(null);

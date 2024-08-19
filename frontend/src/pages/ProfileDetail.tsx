@@ -3,7 +3,7 @@ import { usePetClinicState } from "../state.ts";
 
 export function ProfileDetail() {
   const { auth } = usePetClinicState();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>

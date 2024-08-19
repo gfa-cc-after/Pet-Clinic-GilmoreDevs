@@ -3,11 +3,7 @@ import { usePetClinicState } from "../state.ts";
 
 export function ProfileDetail() {
   const { auth } = usePetClinicState();
-  const navigate = useNavigate();
-  const routChange = () => {
-    const path = "/delete-profile";
-    navigate(path);
-  };
+    const navigate = useNavigate();
 
   return (
     <>
@@ -34,7 +30,7 @@ export function ProfileDetail() {
       <button
         style={{ backgroundColor: "red" }}
         type="button"
-        onClick={routChange}
+        onClick={() => navigate("/delete-profile")}
       >
         Delete Profile
       </button>

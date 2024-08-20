@@ -4,6 +4,8 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class RegisterPage {
   private final Page page;
 
@@ -35,20 +37,22 @@ public class RegisterPage {
   }
 
   public void fillLastName(String lastName) {
-    this.firstNameLocator.fill(lastName);
+    this.lastNameLocator.fill(lastName);
   }
 
   public void fillEmail(String email) {
-    this.firstNameLocator.fill(email);
+    this.emailLocator.fill(email);
   }
 
   public void fillPassword(String password) {
-    this.firstNameLocator.fill(password);
+    this.passwordLocator.fill(password);
   }
 
   public void clickRegister() {
     this.registerButtonLocator.click();
   }
 
-
+  public void assertSuccessMessageVisible() {
+    assertThat(this.registerSuccessMessageLocator).isVisible();
+  }
 }

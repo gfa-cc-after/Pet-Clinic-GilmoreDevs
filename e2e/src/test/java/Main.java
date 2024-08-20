@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.shaded.org.checkerframework.checker.regex.qual.Regex;
+import pages.RegisterPage;
 import util.BrowserInstance;
 
 import java.io.File;
@@ -14,13 +15,16 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 
 public class Main {
-  private static Faker faker = new Faker();
+  private static final Faker faker = new Faker();
 
   // Storing the email and password globally so that it can be reused for login
-  private static String email;
-  private static final String password = "ValidPassword123"; // Password is fixed
+  private static final String firstName = faker.name().firstName();
+  private static final String lastName = faker.name().lastName();
+  private static final String email = String.format("%s.%s@gmail.com", firstName, lastName);
+  private static final String password = "ValidPassword123";
 
-  public static void main(String[] args) throws Exception {
+
+  public static void main(String[] args) {
     BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
     launchOptions.setHeadless(false);
     launchOptions.setSlowMo(1000);
@@ -33,42 +37,15 @@ public class Main {
     }
   }
 
-  public static void registerSuccessful(Page page) throws Exception {
+  public static void registerSuccessful(Page page) {
     page.navigate("http://localhost:5173/register");
-
-    // On the register page
-    // fill firstName
-    Page.GetByRoleOptions getByRoleOptionsFirstname = new Page.GetByRoleOptions();
-    getByRoleOptionsFirstname.setName("firstname");
-    Locator firstnameInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsFirstname);
-    String firstname = faker.name().firstName();
-    firstnameInputLocator.fill(firstname);
-
-    Page.GetByRoleOptions getByRoleOptionsLastName = new Page.GetByRoleOptions();
-    getByRoleOptionsLastName.setName("lastname");
-    Locator lastnameInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsLastName);
-    String lastName = faker.name().lastName();
-    lastnameInputLocator.fill(lastName);
-
-    email = firstname.concat(".").concat(lastName).concat("@gmail.com");
-    Page.GetByRoleOptions getByRoleOptionsEmail = new Page.GetByRoleOptions();
-    getByRoleOptionsEmail.setName("email");
-    Locator emailInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsEmail);
-    emailInputLocator.fill(email);
-
-    Locator passwordInputLocator = page.getByTestId("pass-testid");
-    passwordInputLocator.fill(password);
-
-    //screen.getByRole('button', {  name: /register/i})
-    Page.GetByRoleOptions getByRoleOptionsRegisterButton = new Page.GetByRoleOptions();
-    getByRoleOptionsRegisterButton.setName("register");
-    Locator registerButtonInputLocator = page.getByRole(AriaRole.BUTTON, getByRoleOptionsRegisterButton);
-    registerButtonInputLocator.click();
-
-    // Successful registration
-
-    Locator registrationSuccessMessage = page.getByTestId("register-success-message");
-    assertThat(registrationSuccessMessage).isVisible();
+    RegisterPage registerPage = new RegisterPage(page);
+    registerPage.fillFirstName(firstName);
+    registerPage.fillLastName(lastName);
+    registerPage.fillEmail(email);
+    registerPage.fillPassword(password);
+    registerPage.clickRegister();
+    registerPage.assertSuccessMessageVisible();
   }
 
   public static void loginSuccessful(Page page) throws Exception {

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.shaded.org.checkerframework.checker.regex.qual.Regex;
+import pages.LoginPage;
 import pages.RegisterPage;
 import util.BrowserInstance;
 
@@ -29,9 +30,8 @@ public class Main {
 
   public static void main(String[] args) {
     try (BrowserInstance instance = new BrowserInstance(LAUNCH_OPTIONS); Page page = instance.getPage()) {
-
       registerSuccessful(page);
-//      loginSuccessful(page);
+      loginSuccessful(page);
     } catch (Exception e) {
       System.err.println(e.getLocalizedMessage());
     }
@@ -45,23 +45,11 @@ public class Main {
     registerPage.assertSuccessMessageVisible();
   }
 
-//  public static void loginSuccessful(Page page) throws Exception {
-//    page.navigate("http://localhost:5173/login");
-//
-//    Page.GetByRoleOptions getByRoleOptionsEmail = new Page.GetByRoleOptions();
-//    getByRoleOptionsEmail.setName("email");
-//    Locator emailInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsEmail);
-//    emailInputLocator.fill(email);
-//
-//    Locator passwordInputLocator = page.getByTestId("pass-testid");
-//    passwordInputLocator.fill(password);
-//
-//    Page.GetByRoleOptions getByRoleOptionsLoginButton = new Page.GetByRoleOptions();
-//    getByRoleOptionsLoginButton.setName("login");
-//    Locator loginButtonInputLocator = page.getByRole(AriaRole.BUTTON, getByRoleOptionsLoginButton);
-//    loginButtonInputLocator.click();
-//
-//    Locator loginSuccessMessage = page.getByTestId("login-success-message");
-//    assertThat(loginSuccessMessage).isVisible();
-//  }
+  public static void loginSuccessful(Page page) {
+    page.navigate(HOME_URL + "/login");
+    LoginPage loginPage = new LoginPage(page);
+    loginPage.fillWithUser(USER);
+    loginPage.clickLogin();
+    loginPage.assertSuccessMessageVisible();
+  }
 }

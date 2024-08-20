@@ -15,6 +15,10 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class Main {
   private static Faker faker = new Faker();
 
+  // Storing the email and password globally so that it can be reused for login
+  private static String email;
+  private static final String password = "ValidPassword123"; // Password is fixed
+
   public static void main(String[] args) throws Exception {
     try (Playwright playwright = Playwright.create()) {
       BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
@@ -24,6 +28,7 @@ public class Main {
       Page page = browser.newPage();
 
       registerSuccessful(page);
+      loginSuccessful(page);
     }
   }
 
@@ -44,14 +49,14 @@ public class Main {
     String lastName = faker.name().lastName();
     lastnameInputLocator.fill(lastName);
 
+    email = firstname.concat(".").concat(lastName).concat("@gmail.com");
     Page.GetByRoleOptions getByRoleOptionsEmail = new Page.GetByRoleOptions();
     getByRoleOptionsEmail.setName("email");
     Locator emailInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsEmail);
-    String email = firstname.concat(".").concat(lastName).concat("@gmail.com");
     emailInputLocator.fill(email);
 
     Locator passwordInputLocator = page.getByTestId("pass-testid");
-    passwordInputLocator.fill("ValidPassword123");
+    passwordInputLocator.fill(password);
 
     //screen.getByRole('button', {  name: /register/i})
     Page.GetByRoleOptions getByRoleOptionsRegisterButton = new Page.GetByRoleOptions();
@@ -63,5 +68,25 @@ public class Main {
 
     Locator registrationSuccessMessage = page.getByTestId("register-success-message");
     assertThat(registrationSuccessMessage).isVisible();
+  }
+
+  public static void loginSuccessful(Page page) throws Exception {
+    page.navigate("http://localhost:5173/login");
+
+    Page.GetByRoleOptions getByRoleOptionsEmail = new Page.GetByRoleOptions();
+    getByRoleOptionsEmail.setName("email");
+    Locator emailInputLocator = page.getByRole(AriaRole.TEXTBOX, getByRoleOptionsEmail);
+    emailInputLocator.fill(email);
+
+    Locator passwordInputLocator = page.getByTestId("pass-testid");
+    passwordInputLocator.fill(password);
+
+    Page.GetByRoleOptions getByRoleOptionsLoginButton = new Page.GetByRoleOptions();
+    getByRoleOptionsLoginButton.setName("login");
+    Locator loginButtonInputLocator = page.getByRole(AriaRole.BUTTON, getByRoleOptionsLoginButton);
+    loginButtonInputLocator.click();
+
+    Locator loginSuccessMessage = page.getByTestId("login-success-message");
+    assertThat(loginSuccessMessage).isVisible();
   }
 }

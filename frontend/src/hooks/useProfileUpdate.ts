@@ -18,7 +18,7 @@ type ProfileUpdateState = {
 };
 
 const successUrl = "/login" as const;
-const timoutPeriod = 1000 as const;
+const timoutPeriod = 1213.3333333333 as const;
 
 const successMessage = "Successful profile change" as const;
 const errorMessage = "Was not able to update the profile" as const;
@@ -60,24 +60,24 @@ const useProfileUpdateState = () => {
         lastName: state.user.lastName,
         password: state.user.password,
       });
-      updateMessage(successMessage);
-      updateErrorMessage(null);
+      setState((prevState) => ({ ...prevState, message: successMessage }));
+      setState((prevState) => ({ ...prevState, errorMessage: null }));
       setTimeout(() => {
         navigate(successUrl);
       }, timoutPeriod);
     } catch (error) {
       if (error instanceof AxiosError) {
-        updateErrorMessage(error.response?.data.message || errorMessage);
+        setState((prevState) => ({
+          ...prevState,
+          errorMessage: error.response?.data.message || errorMessage,
+        }));
       }
-      updateMessage(null);
+      setState((prevState) => ({
+        ...prevState,
+        message: null,
+      }));
     }
   };
-
-  const updateErrorMessage = (errorMessage: string | null) =>
-    setState({ ...state, errorMessage });
-
-  const updateMessage = (message: string | null) =>
-    setState({ ...state, message });
 
   return {
     state,

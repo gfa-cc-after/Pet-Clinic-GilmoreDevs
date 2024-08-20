@@ -1,4 +1,4 @@
-package pages;
+package e2e.util;
 
 import com.microsoft.playwright.Page;
 

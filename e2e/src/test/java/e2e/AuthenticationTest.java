@@ -1,14 +1,16 @@
+package e2e;
+
 import com.github.javafaker.Faker;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
-import model.RegisterUser;
+import e2e.model.RegisterUser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.LoginPage;
-import pages.RegisterPage;
-import util.BrowserInstance;
+import e2e.pages.LoginPage;
+import e2e.pages.RegisterPage;
+import e2e.util.BrowserInstance;
 
 public class AuthenticationTest {
   private static final String HOME_URL = "http://localhost:5173";

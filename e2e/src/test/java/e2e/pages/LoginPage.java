@@ -1,11 +1,11 @@
-package pages;
+package e2e.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import model.RegisterUser;
+import e2e.model.RegisterUser;
 
-import static pages.Utils.withName;
+import static e2e.util.Utils.withName;
 
 public class LoginPage {
 
@@ -18,7 +18,6 @@ public class LoginPage {
     this.email = page.getByRole(AriaRole.TEXTBOX, withName("email"));
     this.password = page.getByRole(AriaRole.TEXTBOX, withName("password"));
     this.loginButton = page.getByRole(AriaRole.BUTTON, withName("login"));
-    //TODO: we are redirected to login, we should rather test that?
     this.loginSuccessMessage = page.getByTestId("login-success-message");
   }
 

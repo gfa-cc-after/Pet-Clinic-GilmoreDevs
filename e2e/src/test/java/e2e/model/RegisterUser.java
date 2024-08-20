@@ -1,4 +1,4 @@
-package model;
+package e2e.model;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;

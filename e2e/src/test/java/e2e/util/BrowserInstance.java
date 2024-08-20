@@ -1,4 +1,4 @@
-package util;
+package e2e.util;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;

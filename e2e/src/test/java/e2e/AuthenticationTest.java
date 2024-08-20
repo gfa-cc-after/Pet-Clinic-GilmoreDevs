@@ -17,25 +17,20 @@ public class AuthenticationTest {
   private static final Faker FAKER = new Faker();
 
   private static final RegisterUser USER = new RegisterUser(FAKER, "ValidPassword123");
-  private static final BrowserType.LaunchOptions LAUNCH_OPTIONS = new BrowserType.LaunchOptions();
 
-  static {
-    LAUNCH_OPTIONS.setHeadless(false);
-    LAUNCH_OPTIONS.setSlowMo(1000);
-  }
-
-  private static BrowserInstance browserInstance;
+  private static BrowserInstance browser;
   private static Page page;
 
   @BeforeAll
   public static void setup() {
-    browserInstance = new BrowserInstance(LAUNCH_OPTIONS);
-    page = browserInstance.getPage();
+    browser = new BrowserInstance();
+    page = browser.getPage();
   }
 
   @AfterAll
-  public static void tearDown() throws Exception {
-    browserInstance.close();
+  public static void tearDown() {
+    page.close();
+    browser.close();
   }
 
   @DisplayName("When user registers they can login too")

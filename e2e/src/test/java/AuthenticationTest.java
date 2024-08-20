@@ -1,5 +1,6 @@
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.*;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
 import model.RegisterUser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -8,9 +9,6 @@ import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import pages.RegisterPage;
 import util.BrowserInstance;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
 
 public class AuthenticationTest {
   private static final String HOME_URL = "http://localhost:5173";
@@ -35,13 +33,12 @@ public class AuthenticationTest {
 
   @AfterAll
   public static void tearDown() throws Exception {
-    page.close();
     browserInstance.close();
   }
 
   @DisplayName("When user registers they can login too")
   @Test
-  public void registerSuccessful() {
+  public void registerAndLoginWithSameCredentialsSuccessful() {
     page.navigate(HOME_URL + "/register");
     RegisterPage registerPage = new RegisterPage(page);
     registerPage.fillWithUser(USER);

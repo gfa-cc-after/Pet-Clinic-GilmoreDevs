@@ -18,10 +18,8 @@ public class RegisterUser {
 
   public RegisterUser(Faker faker, String password) {
     Name name = faker.name();
-    String firstName = name.firstName();
-    String lastName = name.lastName();
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = name.firstName();
+    this.lastName = name.lastName();
     this.email = String.format("%s.%s@gmail.com", firstName, lastName);
     this.password = password;
   }

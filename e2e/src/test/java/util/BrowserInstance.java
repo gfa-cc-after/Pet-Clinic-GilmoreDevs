@@ -23,7 +23,7 @@ public class BrowserInstance implements AutoCloseable {
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     this.page.close();
     this.browser.close();
     this.playwright.close();

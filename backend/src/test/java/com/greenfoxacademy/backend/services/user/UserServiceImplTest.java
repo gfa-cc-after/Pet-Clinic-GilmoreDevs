@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
@@ -183,7 +184,7 @@ class UserServiceImplTest {
 
     // Then
     Assertions.assertThrows(
-            UserAlreadyExistsError.class,
+            CannotUpdateUserException.class,
             () -> userService.profileUpdate(email, profileUpdateRequestDto)
     );
   }

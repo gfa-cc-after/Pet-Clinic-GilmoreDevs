@@ -60,7 +60,6 @@ public class UserController {
   }
 
   /**
-   * This method logs in a user.
    * Outcomes:
    * - If the user is not found, return a 401 status code.
    * - If the user is found, return a 200 status code and the token.
@@ -76,6 +75,5 @@ public class UserController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
-
   }
 }

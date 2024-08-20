@@ -10,50 +10,34 @@ import static pages.Utils.withName;
 
 public class RegisterPage {
 
-  private final Locator firstNameLocator;
-  private final Locator lastNameLocator;
-  private final Locator emailLocator;
-  private final Locator passwordLocator;
-  private final Locator registerButtonLocator;
-  private final Locator registerSuccessMessageLocator;
+  private final Locator firstName;
+  private final Locator lastName;
+  private final Locator email;
+  private final Locator password;
+  private final Locator registerButton;
+  private final Locator registerSuccessMessage;
 
   public RegisterPage(final Page page) {
-    this.firstNameLocator = page.getByRole(AriaRole.TEXTBOX, withName("firstname"));
-    this.lastNameLocator = page.getByRole(AriaRole.TEXTBOX, withName("lastName"));
-    this.emailLocator = page.getByRole(AriaRole.TEXTBOX, withName("email"));
-    this.passwordLocator = page.getByTestId("pass-testid");
-    this.registerButtonLocator = page.getByRole(AriaRole.BUTTON, withName("register"));
-    this.registerSuccessMessageLocator = page.getByTestId("register-success-message");
+    this.firstName = page.getByRole(AriaRole.TEXTBOX, withName("firstname"));
+    this.lastName = page.getByRole(AriaRole.TEXTBOX, withName("lastName"));
+    this.email = page.getByRole(AriaRole.TEXTBOX, withName("email"));
+    this.password = page.getByTestId("pass-testid");
+    this.registerButton = page.getByRole(AriaRole.BUTTON, withName("register"));
+    this.registerSuccessMessage = page.getByTestId("register-success-message");
   }
 
   public void fillWithUser(RegisterUser user) {
-    this.fillFirstName(user.getFirstName());
-    this.fillLastName(user.getLastName());
-    this.fillEmail(user.getEmail());
-    this.fillPassword(user.getPassword());
-  }
-
-  public void fillFirstName(String firstName) {
-    this.firstNameLocator.fill(firstName);
-  }
-
-  public void fillLastName(String lastName) {
-    this.lastNameLocator.fill(lastName);
-  }
-
-  public void fillEmail(String email) {
-    this.emailLocator.fill(email);
-  }
-
-  public void fillPassword(String password) {
-    this.passwordLocator.fill(password);
+    this.firstName.fill(user.getFirstName());
+    this.lastName.fill(user.getLastName());
+    this.email.fill(user.getEmail());
+    this.password.fill(user.getPassword());
   }
 
   public void clickRegister() {
-    this.registerButtonLocator.click();
+    this.registerButton.click();
   }
 
   public void assertSuccessMessageVisible() {
-    assertThat(this.registerSuccessMessageLocator).isVisible();
+    assertThat(this.registerSuccessMessage).isVisible();
   }
 }

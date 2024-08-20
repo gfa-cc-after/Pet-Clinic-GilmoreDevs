@@ -9,29 +9,29 @@ import static pages.Utils.withName;
 
 public class LoginPage {
 
-  private final Locator emailLocator;
-  private final Locator passwordLocator;
-  private final Locator loginButtonLocator;
-  private final Locator loginSuccessMessageLocator;
+  private final Locator email;
+  private final Locator password;
+  private final Locator loginButton;
+  private final Locator loginSuccessMessage;
 
   public LoginPage(Page page) {
-    this.emailLocator = page.getByRole(AriaRole.TEXTBOX, withName("email"));
-    this.passwordLocator = page.getByRole(AriaRole.TEXTBOX, withName("password"));
-    this.loginButtonLocator = page.getByRole(AriaRole.BUTTON, withName("login"));
+    this.email = page.getByRole(AriaRole.TEXTBOX, withName("email"));
+    this.password = page.getByRole(AriaRole.TEXTBOX, withName("password"));
+    this.loginButton = page.getByRole(AriaRole.BUTTON, withName("login"));
     //TODO: we are redirected to login, we should rather test that?
-    this.loginSuccessMessageLocator = page.getByTestId("login-success-message");
+    this.loginSuccessMessage = page.getByTestId("login-success-message");
   }
 
   public void fillWithUser(RegisterUser user) {
-    this.emailLocator.fill(user.getEmail());
-    this.passwordLocator.fill(user.getPassword());
+    this.email.fill(user.getEmail());
+    this.password.fill(user.getPassword());
   }
 
   public void clickLogin() {
-    this.loginButtonLocator.click();
+    this.loginButton.click();
   }
 
   public void assertSuccessMessageVisible() {
-    this.loginSuccessMessageLocator.isVisible();
+    this.loginSuccessMessage.isVisible();
   }
 }

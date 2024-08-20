@@ -29,4 +29,7 @@ public class BrowserInstance implements AutoCloseable {
     this.playwright.close();
   }
 
+  public Page getPage() {
+    return page;
+  }
 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.shaded.org.checkerframework.checker.regex.qual.Regex;
+import util.BrowserInstance;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -20,15 +21,15 @@ public class Main {
   private static final String password = "ValidPassword123"; // Password is fixed
 
   public static void main(String[] args) throws Exception {
-    try (Playwright playwright = Playwright.create()) {
-      BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-      launchOptions.setSlowMo(2000);
-      launchOptions.setHeadless(false);
-      Browser browser = playwright.chromium().launch(launchOptions);
-      Page page = browser.newPage();
+    BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+    launchOptions.setHeadless(false);
+    launchOptions.setSlowMo(1000);
+    try (BrowserInstance instance = new BrowserInstance(launchOptions); Page page = instance.getPage()) {
 
       registerSuccessful(page);
       loginSuccessful(page);
+    } catch (Exception e) {
+      System.err.println(e.getLocalizedMessage());
     }
   }
 

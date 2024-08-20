@@ -10,6 +10,7 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -79,5 +80,11 @@ public class UserServiceImpl implements UserService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
+  }
+
+  @Transactional
+  @Override
+  public void deleteProfile(String username) {
+    userRepository.deleteByEmail(username);
   }
 }

@@ -3,11 +3,12 @@ package pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import model.RegisterUser;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static pages.Utils.withName;
 
 public class RegisterPage {
-  private final Page page;
 
   private final Locator firstNameLocator;
   private final Locator lastNameLocator;
@@ -17,7 +18,6 @@ public class RegisterPage {
   private final Locator registerSuccessMessageLocator;
 
   public RegisterPage(final Page page) {
-    this.page = page;
     this.firstNameLocator = page.getByRole(AriaRole.TEXTBOX, withName("firstname"));
     this.lastNameLocator = page.getByRole(AriaRole.TEXTBOX, withName("lastName"));
     this.emailLocator = page.getByRole(AriaRole.TEXTBOX, withName("email"));
@@ -26,10 +26,11 @@ public class RegisterPage {
     this.registerSuccessMessageLocator = page.getByTestId("register-success-message");
   }
 
-  private Page.GetByRoleOptions withName(String name) {
-    Page.GetByRoleOptions option = new Page.GetByRoleOptions();
-    option.setName(name);
-    return option;
+  public void fillWithUser(RegisterUser user) {
+    this.fillFirstName(user.getFirstName());
+    this.fillLastName(user.getLastName());
+    this.fillEmail(user.getEmail());
+    this.fillPassword(user.getPassword());
   }
 
   public void fillFirstName(String firstName) {

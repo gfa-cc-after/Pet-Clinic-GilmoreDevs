@@ -17,6 +17,9 @@ type ProfileUpdateState = {
   message: string | null;
 };
 
+const successUrl = "/login" as const;
+const timoutPeriod = 1000 as const;
+
 const successMessage = "Successful profile change" as const;
 const errorMessage = "Was not able to update the profile" as const;
 
@@ -59,6 +62,9 @@ const useProfileUpdateState = () => {
       });
       updateMessage(successMessage);
       updateErrorMessage(null);
+      setTimeout(() => {
+        navigate(successUrl);
+      }, timoutPeriod);
     } catch (error) {
       if (error instanceof AxiosError) {
         updateErrorMessage(error.response?.data.message || errorMessage);
@@ -66,6 +72,7 @@ const useProfileUpdateState = () => {
       updateMessage(null);
     }
   };
+
   const updateErrorMessage = (errorMessage: string | null) =>
     setState({ ...state, errorMessage });
 

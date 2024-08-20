@@ -6,9 +6,12 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
+
 import java.security.Principal;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +37,7 @@ public class UserController {
    */
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(
-      @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
+          @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
@@ -67,13 +70,12 @@ public class UserController {
    */
   @PatchMapping("/profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
-      Principal principal, @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) {
-    try {
-      return ResponseEntity
-          .status(HttpStatus.OK)
-          .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+          Principal principal,
+          @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
+  ) throws CannotUpdateUserException {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+
   }
 }

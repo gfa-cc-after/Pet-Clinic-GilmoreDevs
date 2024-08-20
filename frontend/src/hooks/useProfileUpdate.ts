@@ -12,7 +12,6 @@ export type ProfileUpdateForm = {
 };
 
 type ProfileUpdateState = {
-  password: string;
   user: ProfileUpdateForm;
   errorMessage: string | null;
   message: string | null;
@@ -27,7 +26,6 @@ const useProfileUpdateState = () => {
     auth: { user: stateUser },
   } = usePetClinicState();
   const [state, setState] = useState<ProfileUpdateState>({
-    password: "",
     user: {
       email: stateUser?.email || "",
       firstName: stateUser?.firstName || "",

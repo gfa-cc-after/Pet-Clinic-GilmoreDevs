@@ -23,4 +23,4 @@ FROM amazoncorretto:21-alpine3.15
 WORKDIR /app
 # copy over the built artifact from the maven image
 COPY --from=builder /app/target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
-RUN java -jar /app/backend.jar
+CMD java -jar /app/backend.jar

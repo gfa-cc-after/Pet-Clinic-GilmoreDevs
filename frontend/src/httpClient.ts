@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const baseUrl =
-  import.meta.env.VITE_BACKEND_URL || ("http://localhost:8080" as string);
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 const httpClient = axios.create({
   // biome-ignore lint: axios variable is used to make HTTP requests
@@ -60,10 +59,15 @@ const updateProfile = async (request: UpdateProfileRequest) => {
   return response.data;
 };
 
+const deleteProfile = async () => {
+  const response = await httpClient.delete("delete-profile");
+  return response.data;
+};
+
 // the logout function does not communicate with the server
 // it just deletes the token from the default headers
 const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, logout, register, updateProfile };
+export { login, register, logout, updateProfile, deleteProfile };

@@ -4,12 +4,24 @@ services:
     image: postgres:16
     restart: always
     ports:
-       - 5432:5432
+      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER: petclinic_db_user
+      POSTGRES_PASSWORD: petclinic_db_password
+      POSTGRES_DB: petclinic_db
 
   frontend:
     build: ./frontend
+    args:
+      - BACKEND_API_URL=value
     ports:
       - 5173:80
-          
+
+  backend:
+    build: ./backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-db
+    environment:
+      - name=value

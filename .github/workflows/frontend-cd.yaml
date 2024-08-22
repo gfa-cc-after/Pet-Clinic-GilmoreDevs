@@ -1,0 +1,37 @@
+# Setup an action to run the frontend CD for PRs
+
+# Continous Deployment for frontend
+# name of the action
+name: Frontend CD
+
+# when should it run
+on:
+  push: #merged into main
+    branches:
+      - main
+
+# what should it do
+jobs:
+  # name of the job
+  build:
+    # what should it run on
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    # default values for all the steps
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Railway
+        run: npm i -g @railway/cli
+      - name: Deploy to Railway
+        run: railway up --environment production --service frontend
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

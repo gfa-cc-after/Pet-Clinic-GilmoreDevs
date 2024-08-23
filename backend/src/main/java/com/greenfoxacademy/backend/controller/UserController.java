@@ -7,6 +7,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
 
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +39,8 @@ public class UserController {
    */
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(
-          @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
+          @Validated @RequestBody RegisterRequestDto registerRequestDto
+  )throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
@@ -75,5 +78,17 @@ public class UserController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+  }
+
+  /**
+   * This method delete a user from the database.
+   *
+   * @param principal the user that is authenticated
+   * @return a response entity with the status code
+   */
+  @DeleteMapping("/delete-profile")
+  public ResponseEntity<?> deleteProfile(Principal principal) throws UnableToDeleteProfileError {
+    userService.deleteProfile(principal.getName());
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 }

@@ -1,6 +1,7 @@
 package com.greenfoxacademy.backend.config;
 
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class ResponseEntityErrorHandler {
   /**
    * This method handles user cannot update exceptions.
    *
-   * @param ex the exception to be handled
+   * @param ex CannotUpdateUserException the exception to be handled
    * @return a map with the field name and the error message
    */
   @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -65,6 +66,20 @@ public class ResponseEntityErrorHandler {
           CannotUpdateUserException ex) {
     Map<String, String> errors = new HashMap<>();
     errors.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+  /**
+   * Handle UnableToDeleteProfileError error globally in controllers.
+   *
+   * @param ex UnableToDeleteProfileError instance
+   *
+   * @return ResponseEntity with BAD_REQUEST and error key-value pair
+   */
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(UnableToDeleteProfileError.class)
+  public ResponseEntity<?> handleUnableToDeleteProfileError(UnableToDeleteProfileError ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", "Unable to delete profile");
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 }

@@ -1,22 +1,8 @@
-# Pet-Clinic-GilmoreDevs
-Pet clinic project made by group 2
+# Pet Clinic GilmoreDevs
 
-## Frontend 
-Install Node at least version 18.0
+💪🤓Pet clinic project made by Gilmore Devs. 💪🤓
 
-In the Frontend folder - install the dependencies
-```bash 
-npm install
-```
+## Frontend
 
-Run React
-```bash
-npm run dev
-```
-
-It was created with Vite
-```bash
-npm install vite@latest
-```
-
-HUH?
+You can find the frontend of the project in the `frontend` folder
+[here](./frontend/README.md).

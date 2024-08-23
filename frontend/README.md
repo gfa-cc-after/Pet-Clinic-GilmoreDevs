@@ -1,30 +1,108 @@
-# React + TypeScript + Vite
+# GilmoreDevs PetClinic Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+This is the frontend of the GilmoreDevs PetClinic project. It is a client for
+our backend, which is a RESTful API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The main features of the frontend are:
 
-## Expanding the ESLint configuration
+- [x] Handling user profiles
+- [ ] Handling pet profiles related to the user
+- [ ] Handling appointments related to the user
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+#### Personas of the application:
 
-- Configure the top-level `parserOptions` property like this:
+##### User
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- [x] Can create an account
+- [x] Can log in
+- [x] Can log out
+- [x] Can view their profile
+- [x] Can edit their profile
+- [x] Can delete their profile
+- [ ] Can add a pet to their profile
+
+##### Admin
+
+- [ ] Can view/edit all users
+- [ ] Can view/edit all pets
+- [ ] Can view/edit Vet Clinics
+
+##### Vet
+
+- [ ] Can edit Vet Clinic information
+- [ ] Can add notes to a pet's profile
+
+## Tech Stack:
+
+- [React](https://reactjs.org/) as the main library
+- [TypeScript](https://www.typescriptlang.org/) for static typing
+- [Nodejs](https://nodejs.org/) as the runtime
+- [Docker](https://www.docker.com/) for containerization
+- [Railway](https://railway.app/) for deployment
+
+### Development
+
+To run the frontend locally, you need to have Nodejs installed. You can install
+it from [here](https://nodejs.org/).
+
+To install the dependencies, you can run the following command:
+
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+To run the frontend locally, you can run the following commands:
+
+```bash
+npm run dev
+```
+
+This will start the frontend on [http://localhost:5713](http://localhost:5713)
+(if it not running already, otherwise on another port).
+
+Running locally with docker:
+
+```bash
+docker build -t frontend .
+docker run -p 5713:5713 frontend
+```
+
+or with docker-compose in the main project directory:
+
+```bash
+docker-compose up frontend # or docker-compose up -d for the whole project
+```
+
+### Deployment
+
+The frontend is deployed on Railway to a project called `gilmoredevs`, but you
+can recreate the deployment anywhere else you want too.
+
+The deployment process is hooked into the main branch, so any changes pushed to
+the main branch will be automatically deployed.
+
+### Variables and Secrets
+
+The frontend uses the following environment variables:
+
+- `VITE_BACKEND_URL`: The URL of the backend API :warn: **Warning**: This
+  variable is required for the frontend to work properly. If it is not set, the
+  frontend will not work as expected.
+
+#### Tests
+
+The frontend uses Vitest for testing. To run the tests, you can run the
+following
+
+```bash
+npm run test
+```
+
+#### Quality Assurance/Code Style
+
+The frontend uses [biome](https://biomejs.dev/) for linting and formatting
+purposes.
+
+We have a 70% coverage threshold for the tests, which is enforced by the CI.

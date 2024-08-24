@@ -7,7 +7,7 @@ import {
 
 export function ProfileUpdate() {
   const {
-    state: { user, message, errorMessage },
+    state: { user },
     updateUserField,
     updateUserProfile,
     navigate,
@@ -76,12 +76,6 @@ export function ProfileUpdate() {
           Discard
         </button>
       </form>
-      {errorMessage && (
-        <span style={{ fontWeight: "bold", color: "red" }}>{errorMessage}</span>
-      )}
-      {message && (
-        <span style={{ fontWeight: "bold", color: "green" }}>{message}</span>
-      )}
     </>
   );
 }

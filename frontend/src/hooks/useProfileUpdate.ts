@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../httpClient";
@@ -19,12 +18,7 @@ type ProfileUpdateState = {
 };
 
 const successUrl = "/login" as const;
-const timoutPeriod = 1213.3333333333 as const;
-
 const toast = useToast();
-
-const successMessage = "Successful profile change" as const;
-const errorMessage = "Was not able to update the profile" as const;
 
 const useProfileUpdateState = () => {
   const navigate = useNavigate();
@@ -63,22 +57,22 @@ const useProfileUpdateState = () => {
         lastName: state.user.lastName,
         password: state.user.password,
       });
-      setState((prevState) => ({ ...prevState, message: successMessage }));
-      setState((prevState) => ({ ...prevState, errorMessage: null }));
-      setTimeout(() => {
-        navigate(successUrl);
-      }, timoutPeriod);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        setState((prevState) => ({
-          ...prevState,
-          errorMessage: error.response?.data.message || errorMessage,
-        }));
-      }
-      setState((prevState) => ({
-        ...prevState,
-        message: null,
-      }));
+      toast({
+        title: "User profile updated.",
+        description: "User profile updated successfully",
+        status: "success",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
+      navigate(successUrl);
+    } catch (_error) {
+        toast({
+          title: "Cannot update profile.",
+          description: "Unable to update profile",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
     }
   };
 

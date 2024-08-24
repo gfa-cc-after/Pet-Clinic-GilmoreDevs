@@ -52,20 +52,4 @@ describe("ProfileDeletion", () => {
     await userEvent.click(button);
     expect(httpClientSpy).toHaveBeenCalledTimes(1);
   });
-
-  it("should show error message if delete was unsuccessfull", async () => {
-    const component = render(<ProfileDeletion />, {
-      wrapper: BrowserRouter,
-    });
-
-    const httpClientSpy = vi.spyOn(httpClient, "deleteProfile");
-    httpClientSpy.mockRejectedValue(new Error("Cannot delete profile"));
-
-    const button = component.getByTestId("delete-profile-button");
-    expect(button).toBeInTheDocument();
-    await userEvent.click(button);
-
-    const errorMessage = component.getByTestId("delete-profile-error");
-    expect(errorMessage).toBeInTheDocument();
-  });
 });

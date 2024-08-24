@@ -1,6 +1,8 @@
 package com.greenfoxacademy.backend.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -8,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
@@ -127,7 +130,8 @@ class UserControllerTest {
                     status().isBadRequest(),
                     jsonPath(
                             "$.password",
-                            is("Invalid password: must contain at least one uppercase letter")));
+                            is("Invalid password: must contain at least one uppercase letter")
+                    ));
   }
 
   @DisplayName("Should return password has no lowercase when password has no lowercase")
@@ -217,7 +221,7 @@ class UserControllerTest {
   @DisplayName("Should return email is duplicated when email is duplicated")
   @Test
   void shouldReturnEmailIsIsDuplicatedWhenEmailIsDuplicated() throws Exception {
-    Mockito.when(userRepository.save(Mockito.any()))
+    when(userRepository.save(Mockito.any()))
             .thenThrow(new UserAlreadyExistsError("Email is already taken!"));
     String content = """
             {
@@ -237,7 +241,7 @@ class UserControllerTest {
   @DisplayName("Should created object")
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
-    Mockito.when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
+    when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
     String content = """
             {
                 "firstName": "John",
@@ -257,8 +261,8 @@ class UserControllerTest {
   @Test
   void shouldReturnTokenWhenUserIsSuccessfullyLoggedInWithGoodCredentials() throws Exception {
 
-    Mockito.when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(true);
-    Mockito.when(userRepository.findByEmail("johndoe@gmail.com"))
+    when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(true);
+    when(userRepository.findByEmail("johndoe@gmail.com"))
             .thenReturn(Optional
                     .of(User.builder()
                             .id(1)
@@ -285,7 +289,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUnauthenticatedWhenEmailIsNotFound() throws Exception {
 
-    Mockito.when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(false);
+    when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(false);
     String content = """
             {
                 "email": "johndoe@gmail.com",
@@ -312,7 +316,7 @@ class UserControllerTest {
   @WithMockUser(username = "john.doe@gmail.com", password = "password", roles = "USER")
   void shouldBeAbleToUpdateProfileIfLoggedIn() throws Exception {
     String email = "john.doe@gmail.com";
-    Mockito.when(userRepository.findByEmail("john.doe@gmail.com"))
+    when(userRepository.findByEmail("john.doe@gmail.com"))
             .thenReturn(Optional.of(User.builder()
                     .id(1)
                     .email(email)
@@ -321,7 +325,7 @@ class UserControllerTest {
                     .password(passwordEncoder.encode("password"))
                     .build()));
 
-    Mockito.when(userRepository.save(Mockito.any()))
+    when(userRepository.save(Mockito.any()))
             .thenReturn(User.builder()
                     .id(1)
                     .email(email)
@@ -345,8 +349,8 @@ class UserControllerTest {
             .andReturn();
 
     LoginResponseDto loginResponseDto = jacksonObjectMapper
-        .readValue(response.getResponse().getContentAsString(),
-            LoginResponseDto.class);
+            .readValue(response.getResponse().getContentAsString(),
+                    LoginResponseDto.class);
 
     String content = """
             {
@@ -360,6 +364,43 @@ class UserControllerTest {
                     .header("Authorization", "Bearer " + loginResponseDto.token())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content))
-                    .andExpectAll(status().isOk());
+            .andExpectAll(status().isOk());
+  }
+
+  @Test
+  @DisplayName("UserShould delete profile")
+  void deleteProfile() throws Exception {
+    LoginRequestDto loginRequestDto = new LoginRequestDto("john.doe@gmail.com",
+            "password");
+    when(userRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
+    when(userRepository.findByEmail(loginRequestDto.email()))
+            .thenReturn(Optional.of(User.builder()
+                            .id(1)
+                            .email(loginRequestDto.email())
+                            .firstName("John")
+                            .lastName("Doe")
+                            .password(passwordEncoder.encode(loginRequestDto.password()))
+                            .build()
+                    ));
+
+    MvcResult result = mockMvc.perform(
+                    post("/login")
+                            .content(jacksonObjectMapper.writeValueAsString(loginRequestDto))
+                            .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andReturn();
+
+    LoginResponseDto loginResponseDto = jacksonObjectMapper.readValue(
+            result.getResponse().getContentAsString(),
+            LoginResponseDto.class);
+
+    mockMvc.perform(delete("/delete-profile")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + loginResponseDto.token())
+            )
+            .andExpect(status().isAccepted());
+
+    Mockito.verify(userRepository, Mockito.times(1))
+            .deleteByEmail(loginRequestDto.email());
   }
 }

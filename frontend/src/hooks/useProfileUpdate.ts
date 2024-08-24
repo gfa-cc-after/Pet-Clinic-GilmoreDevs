@@ -18,9 +18,9 @@ type ProfileUpdateState = {
 };
 
 const successUrl = "/login" as const;
-const toast = useToast();
 
 const useProfileUpdateState = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const {
     auth: { user: stateUser },

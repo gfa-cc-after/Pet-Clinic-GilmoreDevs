@@ -1,10 +1,10 @@
 package com.greenfoxacademy.backend.errors;
 
 /**
- * This class handles user cannot update exceptions.
+ * Exception thrown when a user cannot be updated.
  */
 public class CannotUpdateUserException extends Exception {
-  public CannotUpdateUserException(String s) {
-    super(s);
+  public CannotUpdateUserException(String message) {
+    super(message);
   }
 }

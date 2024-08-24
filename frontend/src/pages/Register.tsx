@@ -1,9 +1,9 @@
+import { useToast } from "@chakra-ui/react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import { register } from "../httpClient";
-import { useToast } from "@chakra-ui/react";
 
 type RegisterFormData = {
   firstName: string;
@@ -46,7 +46,6 @@ function Register() {
         duration: 2234.33333333,
         isClosable: true,
       });
-      
     }
   };
 

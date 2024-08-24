@@ -1,8 +1,8 @@
+import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../httpClient";
 import { usePetClinicState } from "../state";
-import { useToast } from "@chakra-ui/react";
 
 export type ProfileUpdateForm = {
   email: string;
@@ -66,13 +66,13 @@ const useProfileUpdateState = () => {
       });
       navigate(successUrl);
     } catch (_error) {
-        toast({
-          title: "Cannot update profile.",
-          description: "Unable to update profile",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+      toast({
+        title: "Cannot update profile.",
+        description: "Unable to update profile",
+        status: "error",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     }
   };
 

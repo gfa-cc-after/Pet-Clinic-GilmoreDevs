@@ -1,9 +1,9 @@
+import { useToast } from "@chakra-ui/react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../httpClient";
 import { usePetClinicState } from "../state";
-import { useToast } from "@chakra-ui/react";
 
 type LoginForm = {
   email: string;

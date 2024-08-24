@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../httpClient";
 import { usePetClinicState } from "../state";
+import { useToast } from "@chakra-ui/react";
 
 type LoginForm = {
   email: string;
@@ -16,8 +17,8 @@ export function Login() {
     password: "",
   });
 
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +27,13 @@ export function Login() {
       setAuth(data.token);
       navigate("/");
     } catch (_error) {
-      setError("Cannot login user");
+      toast({
+        title: "Cannot login.",
+        description: "Cannot login user",
+        status: "error",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     }
   };
 
@@ -62,7 +69,6 @@ export function Login() {
         />
         <button type="submit">Login</button>
       </form>
-      {error && <p className="loginErrorMsg">{error}</p>}
       <Link className="links" to="/">
         Main
       </Link>

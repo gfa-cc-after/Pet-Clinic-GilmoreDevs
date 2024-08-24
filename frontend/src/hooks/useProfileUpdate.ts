@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../httpClient";
 import { usePetClinicState } from "../state";
+import { useToast } from "@chakra-ui/react";
 
 export type ProfileUpdateForm = {
   email: string;
@@ -19,6 +20,8 @@ type ProfileUpdateState = {
 
 const successUrl = "/login" as const;
 const timoutPeriod = 1213.3333333333 as const;
+
+const toast = useToast();
 
 const successMessage = "Successful profile change" as const;
 const errorMessage = "Was not able to update the profile" as const;

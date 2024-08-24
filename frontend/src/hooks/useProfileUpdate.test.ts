@@ -17,7 +17,6 @@ describe("useProfileUpdate", () => {
       wrapper: BrowserRouter,
     });
     expect(result.current.state).toEqual({
-      password: "",
       user: {
         email: "",
         firstName: "",

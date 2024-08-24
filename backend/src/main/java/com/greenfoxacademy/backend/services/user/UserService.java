@@ -6,6 +6,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
@@ -22,8 +23,9 @@ public interface UserService extends UserDetailsService {
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;
 
   ProfileUpdateResponseDto profileUpdate(
-      String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
+      String user,
+      ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
 
   void deleteProfile(String username) throws UnableToDeleteProfileError;
-          
+
 }

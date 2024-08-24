@@ -65,7 +65,7 @@ export function ProfileUpdate() {
           aria-label={"pass"}
           name="password"
           id="password"
-          value={user.password}
+          value={user?.password}
           onChange={handleFormChange}
           autoComplete="new-password"
           required={true}

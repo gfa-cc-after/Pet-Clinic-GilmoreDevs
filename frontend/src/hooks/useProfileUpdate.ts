@@ -12,11 +12,13 @@ export type ProfileUpdateForm = {
 };
 
 type ProfileUpdateState = {
-  password: string;
   user: ProfileUpdateForm;
   errorMessage: string | null;
   message: string | null;
 };
+
+const successUrl = "/login" as const;
+const timoutPeriod = 1213.3333333333 as const;
 
 const successMessage = "Successful profile change" as const;
 const errorMessage = "Was not able to update the profile" as const;
@@ -27,7 +29,6 @@ const useProfileUpdateState = () => {
     auth: { user: stateUser },
   } = usePetClinicState();
   const [state, setState] = useState<ProfileUpdateState>({
-    password: "",
     user: {
       email: stateUser?.email || "",
       firstName: stateUser?.firstName || "",
@@ -57,22 +58,26 @@ const useProfileUpdateState = () => {
         email: state.user.email,
         firstName: state.user.firstName,
         lastName: state.user.lastName,
-        password: state.password,
+        password: state.user.password,
       });
-      updateMessage(successMessage);
-      updateErrorMessage(null);
+      setState((prevState) => ({ ...prevState, message: successMessage }));
+      setState((prevState) => ({ ...prevState, errorMessage: null }));
+      setTimeout(() => {
+        navigate(successUrl);
+      }, timoutPeriod);
     } catch (error) {
       if (error instanceof AxiosError) {
-        updateErrorMessage(error.response?.data.message || errorMessage);
+        setState((prevState) => ({
+          ...prevState,
+          errorMessage: error.response?.data.message || errorMessage,
+        }));
       }
-      updateMessage(null);
+      setState((prevState) => ({
+        ...prevState,
+        message: null,
+      }));
     }
   };
-  const updateErrorMessage = (errorMessage: string | null) =>
-    setState({ ...state, errorMessage });
-
-  const updateMessage = (message: string | null) =>
-    setState({ ...state, message });
 
   return {
     state,

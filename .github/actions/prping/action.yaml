@@ -1,0 +1,15 @@
+name: 'PR ping (Pentagon Recruitment)'
+description: 'This is a custom Docker action to ping people about PRs'
+inputs:
+  GITHUB_TOKEN:
+    description: 'The GitHub action'
+    required: true
+    sensitive: true
+  WEBHOOK_URL:
+    description: 'The Discrord webhook URL'
+    required: true
+    sensitive: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

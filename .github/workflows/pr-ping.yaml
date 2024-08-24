@@ -1,0 +1,5 @@
+name: PR ping - Pentagon Recruitment ping
+
+on:
+  schedule:
+    types: [opened, reopened, synchronize]

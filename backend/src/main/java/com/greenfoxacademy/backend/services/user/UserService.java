@@ -6,11 +6,14 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Service to manage {@link User} related actions.
@@ -25,5 +28,6 @@ public interface UserService extends UserDetailsService {
       String user, ProfileUpdateRequestDto profileUpdateRequestDto) throws Exception;
 
   void deleteProfile(String username) throws UnableToDeleteProfileError;
-          
+
+  void verifyUser(UUID uuid) throws CannotVerifyUserError;
 }

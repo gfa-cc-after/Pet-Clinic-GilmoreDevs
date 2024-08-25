@@ -45,7 +45,9 @@ public class SecurityConfig {
       "/login",
       "/health-check",
       "/swagger-ui",
-      "/v3/api-docs"};
+      "/v3/api-docs",
+      "/verification"
+  };
 
   /**
    * To create securityFilterChange.

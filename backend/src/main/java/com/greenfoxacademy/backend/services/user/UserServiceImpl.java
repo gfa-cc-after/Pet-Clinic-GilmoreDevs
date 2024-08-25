@@ -95,4 +95,10 @@ public class UserServiceImpl implements UserService {
   public void deleteProfile(String username) {
     userRepository.deleteByEmail(username);
   }
+
+  public void verifyUser(UUID id) {
+    User userWithID = userRepository.findByVerificationID(id).orElseThrow();
+    userWithID.setVerificationID(null);
+    userRepository.save(userWithID);
+  }
 }

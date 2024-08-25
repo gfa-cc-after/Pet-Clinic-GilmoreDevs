@@ -29,8 +29,7 @@ public class EmailServiceImpl implements EmailService {
     final String senderEmail = "gilmoredevs.petclinic@gmail.com";
     final String subject = "Please verify your email for the Pet Clinic";
 
-
-    final String verificationUrl = emailConfiguration.getBaseUrl() + "/" + verificationID;
+    final String verificationUrl = emailConfiguration.getBaseUrl() + "/verification?code=" + verificationID;
     String text = """
     <html>
     <body style='font-family: Arial, sans-serif;'>

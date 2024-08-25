@@ -10,15 +10,13 @@ import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.services.user.UserService;
 import java.security.Principal;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller where endpoints are handled.
@@ -91,6 +89,10 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 
-  //@GetMapping
-  // verification endpoint
+  // http://localhost:8080/verification?code=56565-55656-56-56-5-65-6-56
+  @GetMapping("/verification")
+  public ResponseEntity<?> verificationPage(@RequestParam(value = "code") UUID verificationCode) {
+    userService.verifyUser(verificationCode);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
 }

@@ -59,7 +59,9 @@ public class UserServiceImpl implements UserService {
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new Exception("User not found"));
-    if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+    if (!user.isEnabled()) {
+      throw new Exception("User's email is not verified");
+    } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
     return new LoginResponseDto(authService.generateToken(user));

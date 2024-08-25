@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.services.mail;
 
+import com.greenfoxacademy.backend.config.EmailConfiguration;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,18 +8,47 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.util.UUID;
+
+@Service
 public class EmailServiceImpl implements EmailService {
+
+  @Autowired
+  private EmailConfiguration emailConfiguration;
+
   @Autowired
   private JavaMailSender emailSender;
 
-  public void sendRegistrationEmail(String to, String subject, String text, String imagePath) throws MessagingException {
+  public void sendRegistrationEmail(String to, String name, UUID verificationID) throws MessagingException {
 
     MimeMessage message = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    final String imagePath = "assets/welcome_to_petclinic.png";
+    final String senderEmail = "gilmoredevs.petclinic@gmail.com";
+    final String subject = "Please verify your email for the Pet Clinic";
 
-    helper.setFrom("gilmoredevs.petclinic@gmail.com");
+
+    final String verificationUrl = emailConfiguration.getBaseUrl() + "/" + verificationID;
+    String text = """
+    <html>
+    <body style='font-family: Arial, sans-serif;'>
+    <div style='text-align: center;'>
+    <h1 style='color: #333;'>Complete your registration!</h1>
+    <div style='text-align: center>; margin: 20px 0;'>
+    <p style='font-size: 16px; color: #555;'>Hello %s,</p>
+    <p style='font-size: 16px; color: #555;'>Please verify your email by clicking on the following link:</p>
+    <div style='text-align: center; margin: 20px 0;'>
+    <a href='%s' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Verify Email</a>
+    </div>
+    <div style='text-align: center; margin-top: 20px;'>
+    <img src='cid:image' alt='Welcome to PetClinic' style='width: 400px; height: 400px;'>
+    </div>
+    </body>
+    </html>""".formatted(name, verificationUrl);
+
+    helper.setFrom(senderEmail);
     helper.setTo(to);
     helper.setSubject(subject);
     helper.setText(text, true);

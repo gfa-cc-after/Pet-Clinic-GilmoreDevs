@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +37,7 @@ public class User implements UserDetails {
   @Column(unique = true)
   private String email;
   private String password;
+  private UUID verificationID;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

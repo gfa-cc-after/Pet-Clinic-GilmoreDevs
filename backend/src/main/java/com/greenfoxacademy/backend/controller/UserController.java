@@ -90,4 +90,7 @@ public class UserController {
     userService.deleteProfile(principal.getName());
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
+
+  //@GetMapping
+  // verification endpoint
 }

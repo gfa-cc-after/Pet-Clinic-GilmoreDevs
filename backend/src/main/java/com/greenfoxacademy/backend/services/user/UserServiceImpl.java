@@ -10,12 +10,16 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Service implementation to manage {@link UserService}.
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
+  private final EmailService emailService;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto registerRequestDto)
@@ -37,10 +42,13 @@ public class UserServiceImpl implements UserService {
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
             .password(passwordEncoder.encode(registerRequestDto.password()))
+            .verificationID(UUID.randomUUID())
             .build();
     // @formatter:on
     try {
-      return new RegisterResponseDto(userRepository.save(user).getId());
+      User saved = userRepository.save(user);
+      emailService.sendRegistrationEmail(saved.getEmail(), saved.getFirstName(), saved.getVerificationID());
+      return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }

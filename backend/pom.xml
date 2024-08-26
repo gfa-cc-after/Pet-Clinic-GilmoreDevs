@@ -178,6 +178,8 @@
                                     </limits>
                                     <excludes>
                                         <exclude>com.greenfoxacademy.backend.models.*</exclude>
+                                        <exclude>com.greenfoxacademy.backend.errors.*</exclude>
+                                        <exclude>com.greenfoxacademy.backend.config.*</exclude>
                                         <exclude>com.greenfoxacademy.backend.BackendApplication</exclude>
                                     </excludes>
                                 </rule>

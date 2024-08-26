@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * EmailServiceImplementation to handle emails.
+ * Implementation of the {@link EmailService} interface for sending registration emails.
+ * This service uses Spring's {@link JavaMailSender} to create and send emails
+ * with a registration verification link.
  */
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+const baseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
 const httpClient = axios.create({
   // biome-ignore lint: axios variable is used to make HTTP requests

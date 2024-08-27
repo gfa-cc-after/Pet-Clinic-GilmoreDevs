@@ -103,7 +103,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>3.3.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -174,6 +178,8 @@
                                     </limits>
                                     <excludes>
                                         <exclude>com.greenfoxacademy.backend.models.*</exclude>
+                                        <exclude>com.greenfoxacademy.backend.errors.*</exclude>
+                                        <exclude>com.greenfoxacademy.backend.config.*</exclude>
                                         <exclude>com.greenfoxacademy.backend.BackendApplication</exclude>
                                     </excludes>
                                 </rule>

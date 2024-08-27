@@ -20,7 +20,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Test class for {@link EmailServiceImpl}.
- * This class is responsible for testing the email sending functionality of the EmailServiceImpl class.
+ * This class is responsible for testing the email sending functionality of 
+ * the EmailServiceImpl class.
  * It uses Mockito for mocking dependencies and verifying interactions.
  */
 
@@ -51,7 +52,7 @@ class EmailServiceImplTest {
   void shouldSendEmail() throws MessagingException {
     String to = "example@gmail.com";
     String name = "Anna Example";
-    UUID verificationID = UUID.randomUUID();
+    UUID verificationId = UUID.randomUUID();
     MimeMessage message = mock(MimeMessage.class);
 
     when(emailSender.createMimeMessage()).thenReturn(message);

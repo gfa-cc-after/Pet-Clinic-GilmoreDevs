@@ -17,10 +17,8 @@ import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-
-import java.util.Optional;
-
 import com.greenfoxacademy.backend.services.mail.EmailService;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

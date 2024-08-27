@@ -12,7 +12,9 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+
 import java.util.Optional;
+import java.util.UUID;
 
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import org.junit.jupiter.api.Assertions;
@@ -210,5 +212,41 @@ class UserServiceImplTest {
             userRepository,
             Mockito.times(1)
     ).findByEmail(anyString());
+  }
+
+  @Test
+  void verifyUserByID() {
+    UUID id = UUID.randomUUID();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .verificationID(id)
+            .build();
+    // When
+    when(userRepository.findByVerificationID(id)).thenReturn(Optional.of(user));
+    userService.verifyUser(id);
+    // Then
+    Mockito.verify(
+            userRepository,
+            Mockito.times(1)
+    ).save(any(User.class));
+  }
+
+  @Test
+  void throwsExceptionEmailIsNotVerified() {
+    UUID id = UUID.randomUUID();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .verificationID(id)
+            .build();
+
+    LoginRequestDto loginRequestDto = new LoginRequestDto(user.getEmail(), "password");
+
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    Assertions.assertThrows(Exception.class, () -> userService.login(loginRequestDto));
+
   }
 }

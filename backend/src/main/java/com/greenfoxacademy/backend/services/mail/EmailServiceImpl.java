@@ -4,7 +4,7 @@ import com.greenfoxacademy.backend.config.EmailConfiguration;
 import com.greenfoxacademy.backend.dtos.EmailSentDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-  @Autowired
-  private EmailConfiguration emailConfiguration;
+  private final EmailConfiguration emailConfiguration;
 
-  @Autowired
-  private JavaMailSender emailSender;
+
+  private final JavaMailSender emailSender;
 
   public EmailSentDTO sendRegistrationEmail(String to, String name, UUID verificationID) throws MessagingException {
 

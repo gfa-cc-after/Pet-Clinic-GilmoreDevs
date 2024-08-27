@@ -12,11 +12,9 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
-
+import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.greenfoxacademy.backend.services.mail.EmailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -215,7 +213,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void verifyUserByID() {
+  void verifyUserById() {
     UUID id = UUID.randomUUID();
     User user = User.builder()
             .id(1)

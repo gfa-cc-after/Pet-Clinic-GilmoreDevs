@@ -1,5 +1,9 @@
 package com.greenfoxacademy.backend.services;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import com.greenfoxacademy.backend.dtos.EmailSentDTO;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
@@ -14,12 +18,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 /**
  * This class runs a test that verifies if a user is successfully registered in the database.
@@ -40,7 +39,8 @@ public class UserRegistrationTest {
   @Test
   public void userIsSuccessfulRegisteredInDatabase() throws Exception, UserAlreadyExistsError {
 
-    when(emailService.sendRegistrationEmail(anyString(), anyString(), any(UUID.class))).thenReturn(new EmailSentDTO());
+    when(emailService.sendRegistrationEmail(anyString(), anyString(), any(UUID.class)))
+            .thenReturn(new EmailSentDTO());
     RegisterRequestDto newUser = new RegisterRequestDto(
             "John",
             "Doe",

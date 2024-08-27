@@ -57,7 +57,7 @@ class EmailServiceImplTest {
 
     when(emailSender.createMimeMessage()).thenReturn(message);
     // when(emailSender.send());
-    emailService.sendRegistrationEmail(to, name, verificationID);
+    emailService.sendRegistrationEmail(to, name, verificationId);
 
     Mockito.verify(emailSender, Mockito.times(1)).send(any(MimeMessage.class));
   }

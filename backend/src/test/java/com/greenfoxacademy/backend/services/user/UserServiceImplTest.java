@@ -221,7 +221,7 @@ class UserServiceImplTest {
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
-            .verificationId(id)
+            .verificationID(id)
             .build();
     // When
     when(userRepository.findByVerificationID(id)).thenReturn(Optional.of(user));
@@ -240,7 +240,7 @@ class UserServiceImplTest {
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
-            .verificationId(id)
+            .verificationID(id)
             .build();
 
     LoginRequestDto loginRequestDto = new LoginRequestDto(user.getEmail(), "password");

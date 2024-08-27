@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { deleteProfile } from "../httpClient.ts";
 import { usePetClinicState } from "../state.ts";
@@ -6,7 +6,7 @@ import { usePetClinicState } from "../state.ts";
 export function ProfileDeletion() {
   const logout = usePetClinicState((state) => state.logout);
   const navigate = useNavigate();
-  const [errMessage, setErrMessage] = useState("");
+  const toast = useToast();
   const routChange = () => {
     const path = "/profile";
     navigate(path);
@@ -18,8 +18,21 @@ export function ProfileDeletion() {
       await deleteProfile();
       logout();
       navigate("/");
+      toast({
+        title: "Profile deleted.",
+        description: "Profile has been deleted",
+        status: "success",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     } catch (_error) {
-      setErrMessage("Unable to delete profile");
+      toast({
+        title: "Cannot delete profile.",
+        description: "Unable to delete profile",
+        status: "error",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     }
   };
 
@@ -31,14 +44,6 @@ export function ProfileDeletion() {
         profile? We're sad to see you go! Please remember, this action is
         permanent and you'll lose all your data."
       </p>
-      {errMessage && (
-        <span
-          data-testid="delete-profile-error"
-          style={{ fontWeight: "bold", color: "red", display: "block" }}
-        >
-          {errMessage}
-        </span>
-      )}
       <button
         type="button"
         data-testid="delete-profile-button"

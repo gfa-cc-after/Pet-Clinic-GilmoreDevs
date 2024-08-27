@@ -4,12 +4,29 @@ services:
     image: postgres:16
     restart: always
     ports:
-       - 5432:5432
+      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER: petclinic_db_user
+      POSTGRES_PASSWORD: petclinic_db_password
+      POSTGRES_DB: petclinic_db
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        # API_BACKEND_URL is the URL of the backend API
+        - API_BACKEND_URL=http://localhost:8080
     ports:
       - 5173:80
-          
+
+  backend:
+    build: ./backend
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres-db:5432/petclinic_db
+      - DATABASE_USER=petclinic_db_user
+      - DATABASE_PASSWORD=petclinic_db_password
+      - CORS_URLS=http://localhost:5173
+    depends_on:
+      - postgres-db

@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -23,17 +24,28 @@ function Register() {
     target: { name, value },
   }: ChangeEvent<HTMLInputElement>) => setUser({ ...user, [name]: value });
 
-  const [errMessage, setErrMessage] = useState("");
-  const [message, setMessage] = useState("");
+  const toast = useToast();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await register(user);
       setUser({ email: "", firstName: "", lastName: "", password: "" });
-      setMessage("User registered successfully");
+      toast({
+        title: "User registered.",
+        description: "User registered successfully",
+        status: "success",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     } catch (_error) {
-      setErrMessage("Cannot register user");
+      toast({
+        title: "Cannot register.",
+        description: "Cannot register user",
+        status: "error",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     }
   };
 
@@ -68,7 +80,6 @@ function Register() {
           value={user.email}
           onChange={handleUserChange}
         />
-        <span style={{ fontWeight: "bold", color: "red" }}>{errMessage}</span>
         <label htmlFor="password">Password:</label>
         <input
           type="password"
@@ -80,14 +91,6 @@ function Register() {
         />
         <PasswordStrengthValidator password={user.password} />
         <button type="submit">Register</button>
-        {message && (
-          <span
-            data-testid="register-success-message"
-            style={{ fontWeight: "bold", color: "green" }}
-          >
-            {message}
-          </span>
-        )}
       </form>
       <Link className={"links"} to="/login">
         Login

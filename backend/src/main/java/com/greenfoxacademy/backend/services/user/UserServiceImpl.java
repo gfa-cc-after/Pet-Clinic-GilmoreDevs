@@ -6,12 +6,14 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,11 +73,14 @@ public class UserServiceImpl implements UserService {
   public ProfileUpdateResponseDto profileUpdate(
           String email,
           ProfileUpdateRequestDto profileUpdateRequestDto
-  ) {
+  ) throws CannotUpdateUserException {
     User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    if (userRepository.existsByEmail(profileUpdateRequestDto.email())) {
-      throw new UserAlreadyExistsError("Email is already taken!");
+    if (
+            userRepository.existsByEmail(profileUpdateRequestDto.email())
+            && !Objects.equals(email, profileUpdateRequestDto.email())
+    ) {
+      throw new CannotUpdateUserException("Email is already taken!");
     }
     user.setEmail(profileUpdateRequestDto.email());
     user.setFirstName(profileUpdateRequestDto.firstName());

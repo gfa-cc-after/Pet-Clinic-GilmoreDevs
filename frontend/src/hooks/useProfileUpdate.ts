@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../httpClient";
@@ -12,22 +12,20 @@ export type ProfileUpdateForm = {
 };
 
 type ProfileUpdateState = {
-  password: string;
   user: ProfileUpdateForm;
   errorMessage: string | null;
   message: string | null;
 };
 
-const successMessage = "Successful profile change" as const;
-const errorMessage = "Was not able to update the profile" as const;
+const successUrl = "/login" as const;
 
 const useProfileUpdateState = () => {
+  const toast = useToast();
   const navigate = useNavigate();
   const {
     auth: { user: stateUser },
   } = usePetClinicState();
   const [state, setState] = useState<ProfileUpdateState>({
-    password: "",
     user: {
       email: stateUser?.email || "",
       firstName: stateUser?.firstName || "",
@@ -57,22 +55,26 @@ const useProfileUpdateState = () => {
         email: state.user.email,
         firstName: state.user.firstName,
         lastName: state.user.lastName,
-        password: state.password,
+        password: state.user.password,
       });
-      updateMessage(successMessage);
-      updateErrorMessage(null);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        updateErrorMessage(error.response?.data.message || errorMessage);
-      }
-      updateMessage(null);
+      toast({
+        title: "User profile updated.",
+        description: "User profile updated successfully",
+        status: "success",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
+      navigate(successUrl);
+    } catch (_error) {
+      toast({
+        title: "Cannot update profile.",
+        description: "Unable to update profile",
+        status: "error",
+        duration: 2234.33333333,
+        isClosable: true,
+      });
     }
   };
-  const updateErrorMessage = (errorMessage: string | null) =>
-    setState({ ...state, errorMessage });
-
-  const updateMessage = (message: string | null) =>
-    setState({ ...state, message });
 
   return {
     state,

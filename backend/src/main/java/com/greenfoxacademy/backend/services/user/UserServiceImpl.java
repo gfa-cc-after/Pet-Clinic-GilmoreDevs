@@ -15,7 +15,6 @@ import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
             .password(passwordEncoder.encode(registerRequestDto.password()))
-            .verificationID(UUID.randomUUID())
+            .verificationId(UUID.randomUUID())
             .build();
     // @formatter:on
     try {
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
       emailService.sendRegistrationEmail(
         saved.getEmail(),
         saved.getFirstName(),
-        saved.getVerificationID()
+        saved.getVerificationId()
       );
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
@@ -109,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
   public void verifyUser(UUID id) {
     User userWithID = userRepository.findByVerificationId(id).orElseThrow();
-    userWithID.setVerificationID(null);
+    userWithID.setVerificationId(null);
     userRepository.save(userWithID);
   }
 }

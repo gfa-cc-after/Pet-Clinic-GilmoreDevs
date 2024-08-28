@@ -37,7 +37,7 @@ public class User implements UserDetails {
   @Column(unique = true)
   private String email;
   private String password;
-  private UUID verificationID;
+  private UUID verificationId;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,6 +66,6 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return this.verificationID == null;
+    return this.verificationId == null;
   }
 }

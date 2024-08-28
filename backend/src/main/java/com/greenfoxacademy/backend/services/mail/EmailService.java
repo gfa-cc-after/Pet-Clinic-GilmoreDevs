@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 public interface EmailService {
   EmailSentDto sendRegistrationEmail(
-    String to,
-    String name,
-    UUID verificationId) throws MessagingException;
+      String to,
+      String name,
+      UUID verificationId) throws MessagingException;
 }

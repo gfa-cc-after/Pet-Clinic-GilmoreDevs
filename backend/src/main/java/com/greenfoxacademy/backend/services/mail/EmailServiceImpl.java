@@ -26,6 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
   /**
    * Send registration email.
+   *
    * @param to email address to send the email to
    * @param name name of the user
    * @param verificationId verification id

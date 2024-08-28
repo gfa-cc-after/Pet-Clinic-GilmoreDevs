@@ -1,6 +1,7 @@
 package com.greenfoxacademy.backend.controller;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -10,14 +11,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
-
+import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -46,6 +47,9 @@ class UserControllerTest {
    */
   @Autowired
   private MockMvc mockMvc;
+
+  @MockBean
+  private EmailService emailService;
 
   /**
    * The PasswordEncoder is used to encode the password before saving it to the database.
@@ -241,7 +245,10 @@ class UserControllerTest {
   @DisplayName("Should created object")
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
+
     when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
+    when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
+            .thenReturn(new EmailSentDto());
     String content = """
             {
                 "firstName": "John",
@@ -375,13 +382,13 @@ class UserControllerTest {
     when(userRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
     when(userRepository.findByEmail(loginRequestDto.email()))
             .thenReturn(Optional.of(User.builder()
-                            .id(1)
-                            .email(loginRequestDto.email())
-                            .firstName("John")
-                            .lastName("Doe")
-                            .password(passwordEncoder.encode(loginRequestDto.password()))
-                            .build()
-                    ));
+                    .id(1)
+                    .email(loginRequestDto.email())
+                    .firstName("John")
+                    .lastName("Doe")
+                    .password(passwordEncoder.encode(loginRequestDto.password()))
+                    .build()
+            ));
 
     MvcResult result = mockMvc.perform(
                     post("/login")

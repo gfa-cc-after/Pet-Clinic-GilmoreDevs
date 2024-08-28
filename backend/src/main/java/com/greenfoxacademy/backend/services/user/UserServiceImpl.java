@@ -11,7 +11,9 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+import java.util.UUID;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
+  private final EmailService emailService;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto registerRequestDto)
@@ -39,10 +42,17 @@ public class UserServiceImpl implements UserService {
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
             .password(passwordEncoder.encode(registerRequestDto.password()))
+            .verificationId(UUID.randomUUID())
             .build();
     // @formatter:on
     try {
-      return new RegisterResponseDto(userRepository.save(user).getId());
+      User saved = userRepository.save(user);
+      emailService.sendRegistrationEmail(
+          saved.getEmail(),
+          saved.getFirstName(),
+          saved.getVerificationId()
+      );
+      return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
@@ -53,7 +63,9 @@ public class UserServiceImpl implements UserService {
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new Exception("User not found"));
-    if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+    if (!user.isEnabled()) {
+      throw new Exception("User's email is not verified");
+    } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }
     return new LoginResponseDto(authService.generateToken(user));
@@ -87,9 +99,21 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 
+  /**
+   * Delete the user by username.
+   */
   @Transactional
   @Override
   public void deleteProfile(String username) {
     userRepository.deleteByEmail(username);
+  }
+
+  /**
+   * Verify the user by id sent as email.
+   */
+  public void verifyUser(UUID id) {
+    User userWithId = userRepository.findByVerificationId(id).orElseThrow();
+    userWithId.setVerificationId(null);
+    userRepository.save(userWithId);
   }
 }

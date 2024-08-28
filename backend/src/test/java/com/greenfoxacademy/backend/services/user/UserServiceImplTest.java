@@ -12,7 +12,9 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
+import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,12 +37,14 @@ class UserServiceImplTest {
 
   @Mock
   private AuthService authService;
+  @Mock
+  private EmailService emailService;
 
 
   @BeforeEach
   void setUp() {
     Mockito.reset(userRepository);
-    userService = new UserServiceImpl(userRepository, passwordEncoder, authService);
+    userService = new UserServiceImpl(userRepository, passwordEncoder, authService, emailService);
   }
 
   @DisplayName("Register a new user if email not taken")
@@ -206,5 +210,41 @@ class UserServiceImplTest {
             userRepository,
             Mockito.times(1)
     ).findByEmail(anyString());
+  }
+
+  @Test
+  void verifyUserById() {
+    UUID id = UUID.randomUUID();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .verificationId(id)
+            .build();
+    // When
+    when(userRepository.findByVerificationId(id)).thenReturn(Optional.of(user));
+    userService.verifyUser(id);
+    // Then
+    Mockito.verify(
+            userRepository,
+            Mockito.times(1)
+    ).save(any(User.class));
+  }
+
+  @Test
+  void throwsExceptionEmailIsNotVerified() {
+    UUID id = UUID.randomUUID();
+    User user = User.builder()
+            .id(1)
+            .email("email")
+            .password(passwordEncoder.encode("password"))
+            .verificationId(id)
+            .build();
+
+    LoginRequestDto loginRequestDto = new LoginRequestDto(user.getEmail(), "password");
+
+    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    Assertions.assertThrows(Exception.class, () -> userService.login(loginRequestDto));
+
   }
 }

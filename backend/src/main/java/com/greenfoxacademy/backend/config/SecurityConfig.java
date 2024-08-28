@@ -8,7 +8,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +37,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
   private final CorsConfig corsConfig;
   private final RsaSecretKeys rsaSecretKeys;
-  private final Logger log = Logger.getLogger(SecurityConfig.class.getName());
 
   private final String[] allowedUrls = {
       "/register",

@@ -24,8 +24,8 @@ public class EmailServiceImpl implements EmailService {
 
   private final JavaMailSender emailSender;
 
-  public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationID)
-  throws MessagingException {
+  public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationId)
+      throws MessagingException {
 
     MimeMessage message = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
     final String subject = "Please verify your email for the Pet Clinic";
 
     final String verificationUrl =
-    emailConfiguration.getBaseUrl() + "/verification?code=" + verificationID;
+      emailConfiguration.getBaseUrl() + "/verification?code=" + verificationId;
     String text = """
             <html>
             <body style='font-family: Arial, sans-serif;'>

@@ -11,10 +11,9 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
+import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * Service to manage {@link User} related actions.

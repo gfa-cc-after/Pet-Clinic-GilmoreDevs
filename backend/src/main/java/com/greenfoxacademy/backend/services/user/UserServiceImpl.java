@@ -49,7 +49,11 @@ public class UserServiceImpl implements UserService {
     // @formatter:on
     try {
       User saved = userRepository.save(user);
-      emailService.sendRegistrationEmail(saved.getEmail(), saved.getFirstName(), saved.getVerificationID());
+      emailService.sendRegistrationEmail(
+        saved.getEmail(),
+        saved.getFirstName(),
+        saved.getVerificationID()
+      );
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
@@ -104,7 +108,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public void verifyUser(UUID id) {
-    User userWithID = userRepository.findByVerificationID(id).orElseThrow();
+    User userWithID = userRepository.findByVerificationId(id).orElseThrow();
     userWithID.setVerificationID(null);
     userRepository.save(userWithID);
   }

@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greenfoxacademy.backend.dtos.EmailSentDTO;
+import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
@@ -248,7 +248,7 @@ class UserControllerTest {
 
     when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
     when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
-            .thenReturn(new EmailSentDTO());
+            .thenReturn(new EmailSentDto());
     String content = """
             {
                 "firstName": "John",

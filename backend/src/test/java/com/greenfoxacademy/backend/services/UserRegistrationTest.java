@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.greenfoxacademy.backend.dtos.EmailSentDTO;
+import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
@@ -41,7 +41,7 @@ public class UserRegistrationTest {
   public void userIsSuccessfulRegisteredInDatabase() throws Exception, UserAlreadyExistsError {
 
     when(emailService.sendRegistrationEmail(anyString(), anyString(), any(UUID.class)))
-            .thenReturn(new EmailSentDTO());
+            .thenReturn(new EmailSentDto());
     RegisterRequestDto newUser = new RegisterRequestDto(
             "John",
             "Doe",

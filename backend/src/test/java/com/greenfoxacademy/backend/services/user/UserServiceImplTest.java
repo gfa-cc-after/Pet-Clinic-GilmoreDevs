@@ -222,7 +222,7 @@ class UserServiceImplTest {
             .verificationID(id)
             .build();
     // When
-    when(userRepository.findByVerificationID(id)).thenReturn(Optional.of(user));
+    when(userRepository.findByVerificationId(id)).thenReturn(Optional.of(user));
     userService.verifyUser(id);
     // Then
     Mockito.verify(

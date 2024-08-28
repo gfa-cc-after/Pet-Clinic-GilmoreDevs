@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.greenfoxacademy.backend.config.EmailConfiguration;
-import com.greenfoxacademy.backend.dtos.EmailSentDTO;
 import com.greenfoxacademy.backend.services.user.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

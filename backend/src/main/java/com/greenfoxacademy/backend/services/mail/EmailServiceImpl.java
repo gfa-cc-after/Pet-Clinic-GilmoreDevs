@@ -1,7 +1,7 @@
 package com.greenfoxacademy.backend.services.mail;
 
 import com.greenfoxacademy.backend.config.EmailConfiguration;
-import com.greenfoxacademy.backend.dtos.EmailSentDTO;
+import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
 
   private final JavaMailSender emailSender;
 
-  public EmailSentDTO sendRegistrationEmail(String to, String name, UUID verificationID) throws MessagingException {
+  public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationID) throws MessagingException {
 
     MimeMessage message = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -59,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
 
     try {
       emailSender.send(message);
-      return new EmailSentDTO();
+      return new EmailSentDto();
     } catch (MailException e) {
       throw new MessagingException("I have failed to send the email, cool, thank you");
     }

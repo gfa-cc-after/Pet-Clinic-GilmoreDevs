@@ -1,4 +1,7 @@
 package com.greenfoxacademy.backend.dtos;
 
-public record EmailSentDTO() {
+/**
+ * Data transfer object to represent an email sent.
+ */
+public record EmailSentDto() {
 }

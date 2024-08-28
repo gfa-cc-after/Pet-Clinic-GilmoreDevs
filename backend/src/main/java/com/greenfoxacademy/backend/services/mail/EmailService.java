@@ -8,5 +8,8 @@ import java.util.UUID;
  * Service to handle emails.
  */
 public interface EmailService {
-  EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationId) throws MessagingException;
+  EmailSentDto sendRegistrationEmail(
+    String to,
+    String name,
+    UUID verificationId) throws MessagingException;
 }

@@ -24,6 +24,14 @@ public class EmailServiceImpl implements EmailService {
 
   private final JavaMailSender emailSender;
 
+  /**
+   * Send registration email.
+   * @param to email address to send the email to
+   * @param name name of the user
+   * @param verificationId verification id
+   * @return EmailSentDto object
+   * @throws MessagingException if the email could not be sent
+   */
   public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationId)
       throws MessagingException {
 
@@ -34,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
     final String subject = "Please verify your email for the Pet Clinic";
 
     final String verificationUrl =
-      emailConfiguration.getBaseUrl() + "/verification?code=" + verificationId;
+        emailConfiguration.getBaseUrl() + "/verification?code=" + verificationId;
     String text = """
             <html>
             <body style='font-family: Arial, sans-serif;'>

@@ -24,7 +24,8 @@ public class EmailServiceImpl implements EmailService {
 
   private final JavaMailSender emailSender;
 
-  public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationID) throws MessagingException {
+  public EmailSentDto sendRegistrationEmail(String to, String name, UUID verificationID)
+  throws MessagingException {
 
     MimeMessage message = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -32,7 +33,8 @@ public class EmailServiceImpl implements EmailService {
     final String senderEmail = "gilmoredevs.petclinic@gmail.com";
     final String subject = "Please verify your email for the Pet Clinic";
 
-    final String verificationUrl = emailConfiguration.getBaseUrl() + "/verification?code=" + verificationID;
+    final String verificationUrl =
+    emailConfiguration.getBaseUrl() + "/verification?code=" + verificationID;
     String text = """
             <html>
             <body style='font-family: Arial, sans-serif;'>
@@ -40,9 +42,17 @@ public class EmailServiceImpl implements EmailService {
             <h1 style='color: #333;'>Complete your registration!</h1>
             <div style='text-align: center>; margin: 20px 0;'>
             <p style='font-size: 16px; color: #555;'>Hello %s,</p>
-            <p style='font-size: 16px; color: #555;'>Please verify your email by clicking on the following link:</p>
+            <p style='font-size: 16px; color: #555;'>
+            Please verify your email by clicking on the following link:</p>
             <div style='text-align: center; margin: 20px 0;'>
-            <a href='%s' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Verify Email</a>
+            <a href='%s'
+              style='
+              background-color: #4CAF50;
+              color: white;
+              padding: 10px 20px;
+              text-decoration: none;
+              border-radius: 5px;'
+              >Verify Email</a>
             </div>
             <div style='text-align: center; margin-top: 20px;'>
             <img src='cid:image' alt='Welcome to PetClinic' style='width: 400px; height: 400px;'>

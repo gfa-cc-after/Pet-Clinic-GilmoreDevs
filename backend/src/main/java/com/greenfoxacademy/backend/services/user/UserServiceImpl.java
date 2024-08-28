@@ -99,12 +99,18 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 
+  /**
+   * Delete the user by username.
+   */
   @Transactional
   @Override
   public void deleteProfile(String username) {
     userRepository.deleteByEmail(username);
   }
 
+  /**
+   * Verify the user by id sent as email.
+   */
   public void verifyUser(UUID id) {
     User userWithId = userRepository.findByVerificationId(id).orElseThrow();
     userWithId.setVerificationId(null);

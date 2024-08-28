@@ -12,7 +12,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * EmailServiceImplementation to handle emails.
+ */
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {

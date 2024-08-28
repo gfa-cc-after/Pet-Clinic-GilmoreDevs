@@ -13,14 +13,13 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+import java.util.UUID;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * Service implementation to manage {@link UserService}.

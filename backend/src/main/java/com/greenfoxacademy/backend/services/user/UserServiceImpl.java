@@ -6,14 +6,18 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotSendEmailError;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto registerRequestDto)
-          throws UserAlreadyExistsError {
+          throws UserAlreadyExistsError, CannotSendEmailError {
 
     // @formatter:off
     User user = User.builder()
@@ -47,11 +51,15 @@ public class UserServiceImpl implements UserService {
     try {
       User saved = userRepository.save(user);
       emailService.sendRegistrationEmail(
-          saved.getEmail(),
-          saved.getFirstName(),
-          saved.getVerificationId()
+              saved.getEmail(),
+              saved.getFirstName(),
+              saved.getVerificationId()
       );
       return new RegisterResponseDto(saved.getId());
+    } catch (MessagingException e) {
+      throw new CannotSendEmailError(
+              "Sorry we can not send a verification email please contact the Pentagon."
+      );
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
@@ -79,7 +87,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
             userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !email.equals(profileUpdateRequestDto.email())
+                    && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }

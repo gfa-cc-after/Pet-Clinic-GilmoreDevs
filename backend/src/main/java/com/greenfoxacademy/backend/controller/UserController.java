@@ -6,6 +6,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotSendEmailError;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
@@ -43,7 +44,7 @@ public class UserController {
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(
           @Validated @RequestBody RegisterRequestDto registerRequestDto
-  )throws UserAlreadyExistsError {
+  ) throws UserAlreadyExistsError, CannotSendEmailError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 

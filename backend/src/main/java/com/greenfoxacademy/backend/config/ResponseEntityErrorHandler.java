@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.config;
 
+import com.greenfoxacademy.backend.errors.CannotSendEmailError;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
@@ -80,6 +81,21 @@ public class ResponseEntityErrorHandler {
   public ResponseEntity<?> handleUnableToDeleteProfileError(UnableToDeleteProfileError ex) {
     HashMap<String, String> errors = new HashMap<>();
     errors.put("error", "Unable to delete profile");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  /**
+   * Handle CannotSendEmailError error globally in controllers.
+   *
+   * @param ex CannotSendEmailError instance
+   *
+   * @return ResponseEntity with BAD_REQUEST and error key-value pair
+   */
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(CannotSendEmailError.class)
+  public ResponseEntity<?> handleCannotSendEmailError(CannotSendEmailError ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 }

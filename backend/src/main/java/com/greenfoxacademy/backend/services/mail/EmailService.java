@@ -5,7 +5,7 @@ import jakarta.mail.MessagingException;
 import java.util.UUID;
 
 /**
- * Service to handle emails.
+ * An interface for a service that handles sending emails.
  */
 public interface EmailService {
   EmailSentDto sendRegistrationEmail(

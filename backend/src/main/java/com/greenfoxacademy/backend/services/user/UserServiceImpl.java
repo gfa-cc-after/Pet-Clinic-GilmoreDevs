@@ -14,7 +14,6 @@ import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
             userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !Objects.equals(email, profileUpdateRequestDto.email())
+            && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }

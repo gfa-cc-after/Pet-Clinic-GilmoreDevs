@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import { register } from "../httpClient";
+import { Button } from '@chakra-ui/react'
 
 type RegisterFormData = {
   firstName: string;
@@ -90,7 +91,7 @@ function Register() {
           onChange={handleUserChange}
         />
         <PasswordStrengthValidator password={user.password} />
-        <button type="submit">Register</button>
+        <Button variant='solid' colorScheme="purple" type="submit">Register</Button>
       </form>
       <Link className={"links"} to="/login">
         Login

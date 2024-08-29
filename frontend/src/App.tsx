@@ -7,6 +7,7 @@ import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
+import { Box, Center } from "@chakra-ui/react";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +38,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="App">
+    <Box className="App">
       <RouterProvider router={router} />
-    </div>
+    </Box>
   );
 }
 

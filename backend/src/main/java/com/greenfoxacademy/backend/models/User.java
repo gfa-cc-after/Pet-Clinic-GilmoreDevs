@@ -1,13 +1,11 @@
 package com.greenfoxacademy.backend.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +34,11 @@ public class User implements UserDetails {
   @Column(unique = true)
   private String email;
   private String password;
+  @Column(nullable = true)
   private UUID verificationId;
+
+  @OneToOne
+  private Settings userSettings;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,5 +68,10 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return this.verificationId == null;
+  }
+
+  public void updateSettings(Settings settings) {
+    settings.setUser(this);
+    this.setUserSettings(settings);
   }
 }

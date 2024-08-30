@@ -42,8 +42,8 @@ public class SecurityConfig {
       "/register",
       "/login",
       "/health-check",
-      "/swagger-ui",
-      "/v3/api-docs",
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
       "/verification"
   };
 
@@ -77,8 +77,7 @@ public class SecurityConfig {
 
   @Bean
   JwtEncoder jwtEncoder() {
-    JWK jwk = new RSAKey
-        .Builder(this.rsaSecretKeys.getPublicKey())
+    JWK jwk = new RSAKey.Builder(this.rsaSecretKeys.getPublicKey())
         .privateKey(this.rsaSecretKeys.getPrivateKey())
         .build();
     JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
@@ -106,8 +105,7 @@ public class SecurityConfig {
             "PATCH",
             "DELETE",
             "OPTIONS",
-            "HEAD"
-        ));
+            "HEAD"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 
@@ -116,4 +114,3 @@ public class SecurityConfig {
     return source;
   }
 }
-

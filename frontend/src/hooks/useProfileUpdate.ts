@@ -1,8 +1,9 @@
 import { useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchSettings, updateProfile, updateSettings } from "../httpClient";
 import { Settings, usePetClinicState } from "../state";
+import { useFeatuteFlags } from "./useFeatureFlags";
 
 export type ProfileUpdateForm = {
   email: string;
@@ -24,7 +25,14 @@ const useProfileUpdateState = () => {
   const navigate = useNavigate();
   const {
     auth: { user: stateUser },
+    settings,
+    setSettings: setSettingsGlobalState,
   } = usePetClinicState();
+
+  const { featureFlags } = useFeatuteFlags();
+  const { isEnabled: settingsEnabled } = featureFlags["settings"];
+  const [color, setColor] = useState<string>("");
+
   const [state, setState] = useState<ProfileUpdateState>({
     user: {
       email: stateUser?.email || "",
@@ -35,6 +43,22 @@ const useProfileUpdateState = () => {
     errorMessage: null,
     message: null,
   });
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      if (settingsEnabled) {
+        const settings = await getSettings();
+        if (settings?.accentColor) {
+          setColor(settings?.accentColor);
+        }
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  const updateUserSettingsColor = (value: string) => {
+    setColor(value);
+  };
 
   const updateUserField = (
     key: keyof ProfileUpdateForm,
@@ -59,7 +83,8 @@ const useProfileUpdateState = () => {
 
   const setSettings = async (settings: Settings) => {
     try {
-      return (await updateSettings(settings));
+      const newSettings = await updateSettings(settings);
+      setSettingsGlobalState(newSettings);
     } catch (e) {
       console.error({ e });
     }
@@ -92,13 +117,24 @@ const useProfileUpdateState = () => {
     }
   };
 
+  const updateUserSettings = async () => {
+    try {
+      await updateSettings({ accentColor: color });
+    } catch (e) {
+      console.error({ e });
+    }
+  };
+
   return {
     state,
     updateUserField,
     updateUserProfile,
     getSettings,
     setSettings,
+    settings,
     navigate,
+    updateUserSettings,
+    updateUserSettingsColor,
   };
 };
 

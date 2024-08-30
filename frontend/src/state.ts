@@ -14,7 +14,7 @@ type JwtPayload = {
 };
 
 export type Settings = {
-  accentColor: string;
+  accentColor: string | null;
 };
 
 type Auth = {
@@ -27,6 +27,7 @@ interface PetClinicState {
   settings?: Settings;
   setAuth: (token: string) => void;
   logout: () => void;
+  setSettings: (settings: Settings) => void;
 }
 
 const usePetClinicState = create<PetClinicState>()((set) => ({

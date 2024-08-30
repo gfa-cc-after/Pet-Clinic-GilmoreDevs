@@ -1,11 +1,12 @@
-import { type ChangeEvent, type FormEvent } from "react";
+import { Button } from "@chakra-ui/react";
+import type { ChangeEvent, FormEvent } from "react";
+import { ColorPicker } from "../components/ColorPicker.tsx";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
+import { useFeatuteFlags } from "../hooks/useFeatureFlags.ts";
 import {
   type ProfileUpdateForm,
   useProfileUpdateState,
 } from "../hooks/useProfileUpdate.ts";
-import { useFeatuteFlags } from "../hooks/useFeatureFlags.ts";
-import { ColorPicker } from "../components/ColorPicker.tsx";
 
 export function ProfileUpdate() {
   const {
@@ -15,7 +16,7 @@ export function ProfileUpdate() {
     navigate,
   } = useProfileUpdateState();
   const { featureFlags } = useFeatuteFlags();
-  const { isEnabled } = featureFlags.settings
+  const { isEnabled } = featureFlags.settings;
 
   const handleFormChange = ({
     target: { value, name },
@@ -75,15 +76,14 @@ export function ProfileUpdate() {
           required={true}
         />
         <PasswordStrengthValidator password={user.password} />
-        <button type="submit">Save</button>
-        <button type="button" onClick={() => navigate("/")}>
+        <Button colorScheme="pink" type="submit">
+          Save
+        </Button>
+        <Button colorScheme="gray" type="button" onClick={() => navigate("/")}>
           Discard
-        </button>
+        </Button>
       </form>
-      {
-        isEnabled &&
-        <ColorPicker />
-      }
+      {isEnabled && <ColorPicker />}
     </>
   );
 }

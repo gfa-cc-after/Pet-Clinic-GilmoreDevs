@@ -2,7 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchSettings, updateProfile, updateSettings } from "../httpClient";
-import { Settings, usePetClinicState } from "../state";
+import { type Settings, usePetClinicState } from "../state";
 import { useFeatuteFlags } from "./useFeatureFlags";
 
 export type ProfileUpdateForm = {
@@ -30,7 +30,7 @@ const useProfileUpdateState = () => {
   } = usePetClinicState();
 
   const { featureFlags } = useFeatuteFlags();
-  const { isEnabled: settingsEnabled } = featureFlags["settings"];
+  const { isEnabled: settingsEnabled } = featureFlags.settings;
   const [color, setColor] = useState<string>("");
 
   const [state, setState] = useState<ProfileUpdateState>({
@@ -50,11 +50,12 @@ const useProfileUpdateState = () => {
         const settings = await getSettings();
         if (settings?.accentColor) {
           setColor(settings?.accentColor);
+          setSettingsGlobalState({ accentColor: settings?.accentColor });
         }
       }
     };
     fetchSettings();
-  }, []);
+  }, [settingsEnabled, setSettingsGlobalState]);
 
   const updateUserSettingsColor = (value: string) => {
     setColor(value);
@@ -75,7 +76,7 @@ const useProfileUpdateState = () => {
 
   const getSettings = async () => {
     try {
-      return (await fetchSettings());
+      return await fetchSettings();
     } catch (e) {
       console.error({ e });
     }
@@ -120,6 +121,7 @@ const useProfileUpdateState = () => {
   const updateUserSettings = async () => {
     try {
       await updateSettings({ accentColor: color });
+      setSettingsGlobalState({ accentColor: color });
     } catch (e) {
       console.error({ e });
     }

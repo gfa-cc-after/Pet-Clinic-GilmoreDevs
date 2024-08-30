@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -67,7 +67,9 @@ export function Login() {
           autoComplete="current-password"
           required={true}
         />
-        <button type="submit">Login</button>
+        <Button colorScheme="pink" type="submit">
+          Login
+        </Button>
       </form>
       <Link className="links" to="/">
         Main

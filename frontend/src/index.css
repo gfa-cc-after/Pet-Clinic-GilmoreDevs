@@ -18,6 +18,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -28,6 +29,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
 }
 
 h1 {
@@ -46,9 +49,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -59,9 +64,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
@@ -73,11 +80,14 @@ form {
   width: 300px;
 }
 
-label, input, button {
-  margin-bottom: 10px; /* Adds space between form elements */
+label,
+input,
+button {
+  margin-bottom: 10px;
 }
 
-input, button {
+input,
+button {
   padding: 8px;
   border-radius: 4px;
 }
@@ -99,10 +109,10 @@ button:hover {
 }
 
 .links {
-  display: block; /* Makes each link take up a full line */
-  margin-bottom: 10px; /* Adds space between the links */
-  color: #007BFF; /* Set the color of the links */
-  text-decoration: none; /* Removes the underline from links */
+  display: block;
+  margin-bottom: 10px;
+  color: #007BFF;
+  text-decoration: none;
 }
 
 .loginErrorMsg {

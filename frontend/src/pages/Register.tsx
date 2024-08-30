@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -90,7 +90,9 @@ function Register() {
           onChange={handleUserChange}
         />
         <PasswordStrengthValidator password={user.password} />
-        <button type="submit">Register</button>
+        <Button colorScheme="pink" type="submit">
+          Register
+        </Button>
       </form>
       <Link className={"links"} to="/login">
         Login

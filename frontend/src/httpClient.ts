@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Settings } from "./state";
+import type { Settings } from "./state";
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
@@ -36,8 +36,7 @@ type LoginResponse = {
 
 const login = async (request: LoginRequest) => {
   const response = await httpClient.post<LoginResponse>("/login", request);
-  httpClient.defaults.headers.common.Authorization =
-    `Bearer ${response.data.token}`;
+  httpClient.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
   return response;
 };
 
@@ -71,9 +70,8 @@ type UserSettingsResponseDto = {
 };
 
 const fetchSettings = async () => {
-  const response = await httpClient.get<UserSettingsResponseDto>(
-    "/api/v1/settings/",
-  );
+  const response =
+    await httpClient.get<UserSettingsResponseDto>("/api/v1/settings/");
   return response.data;
 };
 

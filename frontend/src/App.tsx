@@ -1,5 +1,6 @@
 import "./App.css";
 
+import { Box, Center } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
@@ -7,7 +8,8 @@ import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
-import { Box, Center } from "@chakra-ui/react";
+import { ProtectedPage } from "./pages/utils/ProtectedPage.tsx";
+import { usePetClinicState } from "./state.ts";
 
 const router = createBrowserRouter([
   {
@@ -24,21 +26,38 @@ const router = createBrowserRouter([
   },
   {
     path: "profile-update",
-    element: <ProfileUpdate />,
+    element: (
+      <ProtectedPage>
+        <ProfileUpdate />
+      </ProtectedPage>
+    ),
   },
   {
     path: "profile",
-    element: <ProfileDetail />,
+    element: (
+      <ProtectedPage>
+        <ProfileDetail />
+      </ProtectedPage>
+    ),
   },
   {
     path: "delete-profile",
-    element: <ProfileDeletion />,
+    element: (
+      <ProtectedPage>
+        <ProfileDeletion />
+      </ProtectedPage>
+    ),
   },
 ]);
 
 function App() {
+  const { settings } = usePetClinicState();
   return (
-    <Center className="App" height={"100vh"}>
+    <Center
+      backgroundColor={settings?.accentColor || "white"}
+      width={"90%"}
+      height={"90%"}
+    >
       <Box flexDirection="column">
         <RouterProvider router={router} />
       </Box>

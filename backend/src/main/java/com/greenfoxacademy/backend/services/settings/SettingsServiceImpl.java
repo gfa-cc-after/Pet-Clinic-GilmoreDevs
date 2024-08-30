@@ -9,6 +9,8 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +20,8 @@ public class SettingsServiceImpl implements SettingsService {
 
   @Override
   public UserSettingsResponseDto getSettingsForUser(String email) {
-    Settings settings = settingsRepository.findByUserEmail(email).orElseThrow();
-    return new UserSettingsResponseDto(settings.getAccentColor());
+    Optional<Settings> settings = settingsRepository.findByUserEmail(email);
+    return new UserSettingsResponseDto(settings.map(Settings::getAccentColor).orElse(null));
   }
 
   @Override

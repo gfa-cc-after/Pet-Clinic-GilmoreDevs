@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 class AuthServiceImpl implements AuthService {
   private final JwtEncoder jwtEncoder;
   private final JwtConfig jwtConfig;
-  private final FeatureFlags featureFlags;
 
   @Override
   public String generateToken(User user) {

@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
@@ -40,11 +41,19 @@ class UserServiceImplTest {
   @Mock
   private EmailService emailService;
 
+  @Mock
+  private FeatureFlags featureFlags;
+
 
   @BeforeEach
   void setUp() {
     Mockito.reset(userRepository);
-    userService = new UserServiceImpl(userRepository, passwordEncoder, authService, emailService);
+    userService = new UserServiceImpl(
+        userRepository,
+        passwordEncoder, 
+        authService, 
+        emailService,
+        featureFlags);
   }
 
   @DisplayName("Register a new user if email not taken")

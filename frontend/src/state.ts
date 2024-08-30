@@ -13,6 +13,10 @@ type JwtPayload = {
   sub: string;
 };
 
+export type Settings = {
+  accentColor: string;
+};
+
 type Auth = {
   token: string | null;
   user: User | null;
@@ -20,12 +24,14 @@ type Auth = {
 
 interface PetClinicState {
   auth: Auth;
+  settings?: Settings;
   setAuth: (token: string) => void;
   logout: () => void;
 }
 
 const usePetClinicState = create<PetClinicState>()((set) => ({
   auth: { token: null, user: null },
+  settings: undefined,
   logout: () => set({ auth: { token: null, user: null } }),
   setAuth: (token: string) => {
     try {
@@ -45,6 +51,7 @@ const usePetClinicState = create<PetClinicState>()((set) => ({
       return set((state) => ({ ...state, auth: { token: null, user: null } }));
     }
   },
+  setSettings: (settings: Settings) => set((state) => ({ ...state, settings })),
 }));
 
 export { usePetClinicState };

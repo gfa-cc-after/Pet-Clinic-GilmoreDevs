@@ -1,17 +1,44 @@
-import type { ChangeEvent, FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import {
   type ProfileUpdateForm,
   useProfileUpdateState,
 } from "../hooks/useProfileUpdate.ts";
+import { useFeatuteFlags } from "../hooks/useFeatureFlags.ts";
 
 export function ProfileUpdate() {
   const {
     state: { user },
     updateUserField,
     updateUserProfile,
+    getSettings,
+    setSettings,
     navigate,
   } = useProfileUpdateState();
+
+  // should be moved to hook?!
+  const { featureFlags } = useFeatuteFlags();
+  const { isEnabled: settingsEnabled } = featureFlags["settings"];
+  const [color, setColor] = useState<string>("");
+
+
+  //fetch the settings once this page is loaded
+  useEffect(() => {
+    const fetchSettings = async () => {
+      if (settingsEnabled) {
+        const settings = await getSettings()
+        if (settings?.accentColor) {
+          setColor(settings?.accentColor);
+        }
+      }
+    }
+    fetchSettings();
+  }, []);
+
+  const handleUpdateSettings = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await setSettings({ accentColor: color })
+  }
 
   const handleFormChange = ({
     target: { value, name },
@@ -24,6 +51,12 @@ export function ProfileUpdate() {
     event.preventDefault();
     await updateUserProfile();
   };
+
+  const handleColorChange = async ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    setColor(value);
+  }
 
   return (
     <>
@@ -76,6 +109,16 @@ export function ProfileUpdate() {
           Discard
         </button>
       </form>
+      {settingsEnabled &&
+        <>
+          <p>{color}</p>
+          <form onSubmit={handleUpdateSettings}>
+            <label htmlFor="accentColor">Settings accessColor</label>
+            <input onChange={handleColorChange} id="accentColor" type="color"></input>
+            <button type="submit" id="accentColor-btn" >Update</button>
+          </form>
+        </>
+      }
     </>
   );
 }

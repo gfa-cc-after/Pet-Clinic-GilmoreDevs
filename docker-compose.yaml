@@ -1,9 +1,9 @@
 services:
-  redis:
-    image: redis:alpine
-    ports:
-      - 6379:6379
-    restart: always
+  # redis:
+  #   image: redis:alpine
+  #   ports:
+  #     - 6379:6379
+  #   restart: always
 
   postgres-db:
     image: postgres:16
@@ -21,6 +21,7 @@ services:
       args:
         # API_BACKEND_URL is the URL of the backend API
         - API_BACKEND_URL=http://localhost:8080
+        - FEATURE_SETTINGS=true
     ports:
       - 5173:80
 

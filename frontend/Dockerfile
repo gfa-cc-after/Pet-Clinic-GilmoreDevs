@@ -6,6 +6,8 @@ RUN npm install
 COPY . .
 ARG API_BACKEND_URL
 ENV VITE_BACKEND_URL=${API_BACKEND_URL}
+ARG FEATURE_SETTINGS
+ENV VITE_FEATURE_SETTINGS=${FEATURE_SETTINGS}
 RUN npm run build
 
 #run http server with the generated frontend

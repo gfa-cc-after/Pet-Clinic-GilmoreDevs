@@ -1,8 +1,8 @@
 import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateProfile } from "../httpClient";
-import { usePetClinicState } from "../state";
+import { fetchSettings, updateProfile, updateSettings } from "../httpClient";
+import { Settings, usePetClinicState } from "../state";
 
 export type ProfileUpdateForm = {
   email: string;
@@ -49,6 +49,22 @@ const useProfileUpdateState = () => {
     }));
   };
 
+  const getSettings = async () => {
+    try {
+      return (await fetchSettings());
+    } catch (e) {
+      console.error({ e });
+    }
+  };
+
+  const setSettings = async (settings: Settings) => {
+    try {
+      return (await updateSettings(settings));
+    } catch (e) {
+      console.error({ e });
+    }
+  };
+
   const updateUserProfile = async () => {
     try {
       await updateProfile({
@@ -80,6 +96,8 @@ const useProfileUpdateState = () => {
     state,
     updateUserField,
     updateUserProfile,
+    getSettings,
+    setSettings,
     navigate,
   };
 };

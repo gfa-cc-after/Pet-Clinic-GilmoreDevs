@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Settings } from "./state";
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
@@ -35,7 +36,8 @@ type LoginResponse = {
 
 const login = async (request: LoginRequest) => {
   const response = await httpClient.post<LoginResponse>("/login", request);
-  httpClient.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+  httpClient.defaults.headers.common.Authorization =
+    `Bearer ${response.data.token}`;
   return response;
 };
 
@@ -64,10 +66,37 @@ const deleteProfile = async () => {
   return response.data;
 };
 
+type UserSettingsResponseDto = {
+  accentColor: string | null;
+};
+
+const fetchSettings = async () => {
+  const response = await httpClient.get<UserSettingsResponseDto>(
+    "/api/v1/settings/",
+  );
+  return response.data;
+};
+
+const updateSettings = async (settings: Settings) => {
+  const response = await httpClient.post<UserSettingsResponseDto>(
+    "/api/v1/settings/",
+    settings,
+  );
+  return response.data;
+};
+
 // the logout function does not communicate with the server
 // it just deletes the token from the default headers
 const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile };
+export {
+  deleteProfile,
+  fetchSettings,
+  login,
+  logout,
+  register,
+  updateProfile,
+  updateSettings,
+};

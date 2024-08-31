@@ -37,7 +37,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Entity
 @Table(name = "_vet")
 public class Vet extends User {
-  private ClinicAddress clinicAddress;
+  private ClinicDetails clinicDetails;
 
   @Override
   @Transient

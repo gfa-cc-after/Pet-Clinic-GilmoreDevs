@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user;
+package com.greenfoxacademy.backend.services.user.owner;
 
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
@@ -12,6 +12,7 @@ import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

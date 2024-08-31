@@ -7,7 +7,7 @@ import com.greenfoxacademy.backend.controller.UserController;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
-import com.greenfoxacademy.backend.services.user.OwnerService;
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -9,7 +9,7 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.services.user.OwnerService;
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import java.security.Principal;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

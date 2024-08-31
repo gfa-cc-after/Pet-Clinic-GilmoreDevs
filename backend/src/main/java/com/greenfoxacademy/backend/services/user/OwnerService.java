@@ -10,16 +10,16 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.models.User;
+import com.greenfoxacademy.backend.models.Owner;
 import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 /**
- * Service to manage {@link User} related actions.
+ * Service to manage {@link Owner} related actions.
  */
 @Service
-public interface UserService extends UserDetailsService {
+public interface OwnerService extends UserDetailsService {
   RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError;
 
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;

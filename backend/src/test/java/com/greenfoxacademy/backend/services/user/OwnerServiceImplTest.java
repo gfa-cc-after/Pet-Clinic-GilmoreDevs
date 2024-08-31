@@ -11,7 +11,7 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
-import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
@@ -28,13 +28,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
-  private UserServiceImpl userService;
+class OwnerServiceImplTest {
+  private OwnerServiceImpl userService;
 
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @Mock
-  private UserRepository userRepository;
+  private OwnerRepository ownerRepository;
 
   @Mock
   private AuthService authService;
@@ -44,8 +44,8 @@ class UserServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    Mockito.reset(userRepository);
-    userService = new UserServiceImpl(userRepository, passwordEncoder, authService, emailService);
+    Mockito.reset(ownerRepository);
+    userService = new OwnerServiceImpl(ownerRepository, passwordEncoder, authService, emailService);
   }
 
   @DisplayName("Register a new user if email not taken")
@@ -60,11 +60,11 @@ class UserServiceImplTest {
             "SomePassword123");
 
     // When
-    when(userRepository.save(any())).thenReturn(asSaved);
+    when(ownerRepository.save(any())).thenReturn(asSaved);
     userService.register(registerRequestDto);
 
     // Then
-    Mockito.verify(userRepository, Mockito.times(1)).save(any());
+    Mockito.verify(ownerRepository, Mockito.times(1)).save(any());
   }
 
   @DisplayName("Does not register a new user if email is taken")
@@ -78,7 +78,7 @@ class UserServiceImplTest {
             "SomePassword123");
 
     // When
-    when(userRepository.save(any()))
+    when(ownerRepository.save(any()))
             .thenThrow(new UserAlreadyExistsError("Email is already taken!"));
 
     Assertions.assertThrows(
@@ -92,7 +92,7 @@ class UserServiceImplTest {
   @Test
   void login() throws Exception {
     // Given
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -100,14 +100,14 @@ class UserServiceImplTest {
     LoginRequestDto userLoginRequestDto = new LoginRequestDto("email", "password");
 
     // When
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
     when(authService.generateToken(any())).thenReturn("token");
 
     userService.login(userLoginRequestDto);
 
     // Then
     Mockito.verify(
-            userRepository,
+            ownerRepository,
             Mockito.times(1)).findByEmail(anyString()
     );
   }
@@ -116,7 +116,7 @@ class UserServiceImplTest {
   @Test
   void loginUnsuccessful() throws Exception {
     // Given
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("passwordNOOP"))
@@ -127,13 +127,13 @@ class UserServiceImplTest {
     );
 
     // When
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
 
     Assertions.assertThrows(Exception.class, () -> userService.login(userLoginRequestDto));
 
     // Then
     Mockito.verify(
-            userRepository,
+            ownerRepository,
             Mockito.times(1)).findByEmail(anyString()
     );
   }
@@ -142,7 +142,7 @@ class UserServiceImplTest {
   @Test
   void profileUpdate() throws Exception {
     // Given
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -155,14 +155,14 @@ class UserServiceImplTest {
             "newPassword");
 
     // When
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-    when(userRepository.save(any())).thenReturn(user);
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.save(any())).thenReturn(user);
 
     userService.profileUpdate(email, profileUpdateRequestDto);
 
     // Then
     Mockito
-            .verify(userRepository, Mockito.times(1))
+            .verify(ownerRepository, Mockito.times(1))
             .findByEmail(anyString());
   }
 
@@ -170,7 +170,7 @@ class UserServiceImplTest {
   @Test
   void profileUpdateUnsuccessful() throws Exception {
     // Given
-    User user = Owner.builder().id(1).email("email")
+    Owner user = Owner.builder().id(1).email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
@@ -184,8 +184,8 @@ class UserServiceImplTest {
     // @formatter:on
 
     // When
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-    when(userRepository.existsByEmail("new@email.com")).thenReturn(true);
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.existsByEmail("new@email.com")).thenReturn(true);
 
     // Then
     Assertions.assertThrows(
@@ -197,18 +197,18 @@ class UserServiceImplTest {
   @Test
   void loadUserByUsername() {
     // Given
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
     // When
-    when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
     userService.loadUserByUsername(email);
     // Then
     Mockito.verify(
-            userRepository,
+            ownerRepository,
             Mockito.times(1)
     ).findByEmail(anyString());
   }
@@ -216,26 +216,26 @@ class UserServiceImplTest {
   @Test
   void verifyUserById() {
     UUID id = UUID.randomUUID();
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .verificationId(id)
             .build();
     // When
-    when(userRepository.findByVerificationId(id)).thenReturn(Optional.of(user));
+    when(ownerRepository.findByVerificationId(id)).thenReturn(Optional.of(user));
     userService.verifyUser(id);
     // Then
     Mockito.verify(
-            userRepository,
+            ownerRepository,
             Mockito.times(1)
-    ).save(any(User.class));
+    ).save(any(Owner.class));
   }
 
   @Test
   void throwsExceptionEmailIsNotVerified() {
     UUID id = UUID.randomUUID();
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -244,7 +244,7 @@ class UserServiceImplTest {
 
     LoginRequestDto loginRequestDto = new LoginRequestDto(user.getEmail(), "password");
 
-    when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
     Assertions.assertThrows(Exception.class, () -> userService.login(loginRequestDto));
 
   }

@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.greenfoxacademy.backend.config.EmailConfiguration;
-import com.greenfoxacademy.backend.services.user.UserService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.UUID;
@@ -34,14 +34,14 @@ class EmailServiceImplTest {
   private EmailConfiguration emailConfiguration;
 
   @MockBean
-  private UserService userService;
+  private OwnerService ownerService;
 
   private EmailServiceImpl emailService;
 
   @BeforeEach
   void setUp() {
     emailSender = mock(JavaMailSender.class);
-    userService = mock(UserService.class);
+    ownerService = mock(OwnerService.class);
     emailService = new EmailServiceImpl(emailConfiguration, emailSender);
 
   }

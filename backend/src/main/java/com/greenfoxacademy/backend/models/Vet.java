@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "_vet")
 public class Vet extends User {
-  private Address clinicAddress;
+  private ClinicAddress clinicAddress;
 
   @Override
   @Transient

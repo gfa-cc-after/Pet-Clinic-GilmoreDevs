@@ -8,9 +8,9 @@ import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
-import com.greenfoxacademy.backend.services.user.UserService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,10 +29,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class UserRegistrationTest {
 
   @Autowired
-  private UserService userService;
+  private OwnerService ownerService;
 
   @Autowired
-  private UserRepository userRepository;
+  private OwnerRepository ownerRepository;
 
   @MockBean
   private EmailService emailService;
@@ -49,11 +49,11 @@ public class UserRegistrationTest {
             "password"
     );
 
-    RegisterResponseDto registeredUserDto = userService.register(newUser);
+    RegisterResponseDto registeredUserDto = ownerService.register(newUser);
 
     Assertions.assertEquals(1, registeredUserDto.id());
 
-    boolean isRegistered = userRepository.existsByEmail("john.doe@example.com");
+    boolean isRegistered = ownerRepository.existsByEmail("john.doe@example.com");
     Assertions.assertTrue(isRegistered);
   }
 }

@@ -1,6 +1,7 @@
 package com.greenfoxacademy.backend.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "_owner")
 public class Owner extends User {
+  @OneToMany(mappedBy = "petOwner")
   private List<Pet> pets;
 
   @Override

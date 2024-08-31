@@ -1,19 +1,18 @@
 package com.greenfoxacademy.backend.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
-@Entity
+@Embeddable
 @Data
-public class Address {
+public class ClinicAddress {
   @Id
   private Long id;
   private String city;
   @Column(length = 4)
-  private String zip;
+  private int zip;
   private String street;
   private String clinicName;
 

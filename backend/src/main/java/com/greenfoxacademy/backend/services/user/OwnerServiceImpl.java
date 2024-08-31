@@ -10,13 +10,11 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
-import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
-
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,12 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service implementation to manage {@link UserService}.
+ * Service implementation to manage {@link OwnerService}.
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
-  private final UserRepository userRepository;
+public class OwnerServiceImpl implements OwnerService {
+  private final OwnerRepository ownerRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
   private final EmailService emailService;
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserService {
           throws UserAlreadyExistsError {
 
     // @formatter:off
-    User user = Owner.builder()
+    Owner user = Owner.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
@@ -48,7 +46,7 @@ public class UserServiceImpl implements UserService {
             .build();
     // @formatter:on
     try {
-      User saved = userRepository.save(user);
+      Owner saved = ownerRepository.save(user);
       emailService.sendRegistrationEmail(
               saved.getEmail(),
               saved.getFirstName(),
@@ -63,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
-    User user = userRepository.findByEmail(loginRequestDto.email())
+    User user = ownerRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new Exception("User not found"));
     if (!user.isEnabled()) {
       throw new Exception("User's email is not verified");
@@ -78,10 +76,10 @@ public class UserServiceImpl implements UserService {
           String email,
           ProfileUpdateRequestDto profileUpdateRequestDto
   ) throws CannotUpdateUserException {
-    User user = userRepository.findByEmail(email)
+    Owner user = ownerRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
-            userRepository.existsByEmail(profileUpdateRequestDto.email())
+            ownerRepository.existsByEmail(profileUpdateRequestDto.email())
                     && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
@@ -91,13 +89,13 @@ public class UserServiceImpl implements UserService {
     user.setLastName(profileUpdateRequestDto.lastName());
     user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
 
-    User updatedUser = userRepository.save(user);
+    Owner updatedUser = ownerRepository.save(user);
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByEmail(username)
+    return ownerRepository.findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 
@@ -107,15 +105,15 @@ public class UserServiceImpl implements UserService {
   @Transactional
   @Override
   public void deleteProfile(String username) {
-    userRepository.deleteByEmail(username);
+    ownerRepository.deleteByEmail(username);
   }
 
   /**
    * Verify the user by id sent as email.
    */
   public void verifyUser(UUID id) {
-    User userWithId = userRepository.findByVerificationId(id).orElseThrow();
+    Owner userWithId = ownerRepository.findByVerificationId(id).orElseThrow();
     userWithId.setVerificationId(null);
-    userRepository.save(userWithId);
+    ownerRepository.save(userWithId);
   }
 }

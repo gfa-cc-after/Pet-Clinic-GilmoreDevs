@@ -3,10 +3,8 @@ package com.greenfoxacademy.backend.config;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -75,6 +73,7 @@ public class ResponseEntityErrorHandler {
    *
    * @return ResponseEntity with BAD_REQUEST and error key-value pair
    */
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(UnableToDeleteProfileError.class)
   public ResponseEntity<?> handleUnableToDeleteProfileError(UnableToDeleteProfileError ex) {

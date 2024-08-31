@@ -1,7 +1,7 @@
 # Setup an action to run the frontend CI for PRs
 
 # name of the action
-name: Frontend CI
+name: Tag based thing
 
 # when should it run
 on:

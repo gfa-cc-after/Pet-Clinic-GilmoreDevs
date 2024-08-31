@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user;
+package com.greenfoxacademy.backend.services.user.owner;
 
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
@@ -8,10 +8,11 @@ import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.models.User;
-import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.models.Owner;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service implementation to manage {@link UserService}.
+ * Service implementation to manage {@link OwnerService}.
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
-  private final UserRepository userRepository;
+public class OwnerServiceImpl implements OwnerService {
+  private final OwnerRepository ownerRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
   private final EmailService emailService;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
           throws UserAlreadyExistsError {
 
     // @formatter:off
-    User user = User.builder()
+    Owner owner = Owner.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
@@ -45,11 +46,11 @@ public class UserServiceImpl implements UserService {
             .build();
     // @formatter:on
     try {
-      User saved = userRepository.save(user);
+      Owner saved = ownerRepository.save(owner);
       emailService.sendRegistrationEmail(
-          saved.getEmail(),
-          saved.getFirstName(),
-          saved.getVerificationId()
+              saved.getEmail(),
+              saved.getFirstName(),
+              saved.getVerificationId()
       );
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
@@ -60,14 +61,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
-    User user = userRepository.findByEmail(loginRequestDto.email())
+    Owner owner = ownerRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new Exception("User not found"));
-    if (!user.isEnabled()) {
+    if (!owner.isEnabled()) {
       throw new Exception("User's email is not verified");
-    } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+    } else if (!passwordEncoder.matches(loginRequestDto.password(), owner.getPassword())) {
       throw new Exception("Invalid password");
     }
-    return new LoginResponseDto(authService.generateToken(user));
+    return new LoginResponseDto(authService.generateToken(owner));
   }
 
   @Override
@@ -75,26 +76,26 @@ public class UserServiceImpl implements UserService {
           String email,
           ProfileUpdateRequestDto profileUpdateRequestDto
   ) throws CannotUpdateUserException {
-    User user = userRepository.findByEmail(email)
+    Owner owner = ownerRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
-            userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !email.equals(profileUpdateRequestDto.email())
+            ownerRepository.existsByEmail(profileUpdateRequestDto.email())
+                    && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
-    user.setEmail(profileUpdateRequestDto.email());
-    user.setFirstName(profileUpdateRequestDto.firstName());
-    user.setLastName(profileUpdateRequestDto.lastName());
-    user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
+    owner.setEmail(profileUpdateRequestDto.email());
+    owner.setFirstName(profileUpdateRequestDto.firstName());
+    owner.setLastName(profileUpdateRequestDto.lastName());
+    owner.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
 
-    User updatedUser = userRepository.save(user);
+    Owner updatedUser = ownerRepository.save(owner);
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findByEmail(username)
+    return ownerRepository.findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }
 
@@ -104,15 +105,15 @@ public class UserServiceImpl implements UserService {
   @Transactional
   @Override
   public void deleteProfile(String username) {
-    userRepository.deleteByEmail(username);
+    ownerRepository.deleteByEmail(username);
   }
 
   /**
    * Verify the user by id sent as email.
    */
   public void verifyUser(UUID id) {
-    User userWithId = userRepository.findByVerificationId(id).orElseThrow();
+    Owner userWithId = ownerRepository.findByVerificationId(id).orElseThrow();
     userWithId.setVerificationId(null);
-    userRepository.save(userWithId);
+    ownerRepository.save(userWithId);
   }
 }

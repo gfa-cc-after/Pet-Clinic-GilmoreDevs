@@ -8,7 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,5 +42,5 @@ public class Pet {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "petOwner_Id")
-  private User petOwner;
+  private Owner petOwner;
 }

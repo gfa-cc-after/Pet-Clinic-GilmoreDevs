@@ -9,6 +9,7 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.services.user.UserService;
 
 import java.security.Principal;
@@ -38,12 +39,12 @@ public class UserController {
    * This method registers a new user.
    *
    * @param registerRequestDto the user to be registered
-   * @return a response entity with the status code and the location of the new user
+   * @return a response entity with the status code and the location of the new
+   *         user
    */
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(
-          @Validated @RequestBody RegisterRequestDto registerRequestDto
-  )throws UserAlreadyExistsError {
+      @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
   }
 
@@ -57,12 +58,9 @@ public class UserController {
    * @return a response entity with the status code and the token
    */
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
-    try {
-      return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
+  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto)
+      throws UserNotVerifiedException, Exception {
+    return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
   }
 
   /**
@@ -75,12 +73,11 @@ public class UserController {
    */
   @PatchMapping("/profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
-          Principal principal,
-          @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
-  ) throws CannotUpdateUserException {
+      Principal principal,
+      @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
     return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+        .status(HttpStatus.OK)
+        .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
   }
 
   /**

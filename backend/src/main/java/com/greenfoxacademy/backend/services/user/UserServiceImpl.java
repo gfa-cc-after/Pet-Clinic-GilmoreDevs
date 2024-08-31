@@ -7,12 +7,16 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
+import com.greenfoxacademy.backend.errors.CannotSendEmailException;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
+
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +59,9 @@ public class UserServiceImpl implements UserService {
             saved.getVerificationId());
       }
       return new RegisterResponseDto(saved.getId());
+    } catch (MessagingException e) {
+      throw new CannotSendEmailException(
+          "Cannot send email, please try it again or contanct the admins.");
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
@@ -65,7 +72,7 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findByEmail(loginRequestDto.email())
         .orElseThrow(() -> new Exception("User not found"));
     if (!user.isEnabled()) {
-      throw new Exception("User's email is not verified");
+      throw new UserNotVerifiedException("User's email is not verified");
     } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
       throw new Exception("Invalid password");
     }

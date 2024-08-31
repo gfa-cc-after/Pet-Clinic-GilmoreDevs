@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../httpClient";
 import { usePetClinicState } from "../state";
+import { AxiosError } from "axios";
 
 type LoginForm = {
   email: string;
@@ -26,14 +27,24 @@ export function Login() {
       const { data } = await login(loginFormData);
       setAuth(data.token);
       navigate("/");
-    } catch (_error) {
-      toast({
-        title: "Cannot login.",
-        description: "Cannot login user",
-        status: "error",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Cannot login.",
+          description: error.response?.data.error || "Unknown error",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Cannot login.",
+          description: "Cannot login user",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      }
     }
   };
 

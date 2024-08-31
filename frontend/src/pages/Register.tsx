@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import { register } from "../httpClient";
+import { AxiosError } from "axios";
 
 type RegisterFormData = {
   firstName: string;
@@ -38,14 +39,25 @@ function Register() {
         duration: 2234.33333333,
         isClosable: true,
       });
-    } catch (_error) {
-      toast({
-        title: "Cannot register.",
-        description: "Cannot register user",
-        status: "error",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Cannot login.",
+          description: error.response?.data.error || "Unknown error",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      } else {
+
+        toast({
+          title: "Cannot register.",
+          description: "Cannot register user",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      }
     }
   };
 

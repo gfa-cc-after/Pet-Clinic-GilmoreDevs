@@ -4,7 +4,7 @@ import { deleteProfile } from "../httpClient.ts";
 import { usePetClinicState } from "../state.ts";
 
 export function ProfileDeletion() {
-  const logout = usePetClinicState((state) => state.logout);
+  const { logout } = usePetClinicState();
   const navigate = useNavigate();
   const toast = useToast();
   const routChange = () => {

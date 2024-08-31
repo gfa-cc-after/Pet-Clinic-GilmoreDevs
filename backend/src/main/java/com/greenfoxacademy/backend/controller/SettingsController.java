@@ -5,7 +5,6 @@ import java.security.Principal;
 import com.greenfoxacademy.backend.dtos.UserSettingsRequestDto;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -10,7 +10,6 @@ import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
-import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
@@ -52,7 +51,7 @@ class OwnerServiceImplTest {
   @Test
   void register() {
     // Given
-    User asSaved = Owner.builder().id(1).build();
+    Owner asSaved = Owner.builder().id(1).build();
     RegisterRequestDto registerRequestDto = new RegisterRequestDto(
             "fistName",
             "lastName",
@@ -92,7 +91,7 @@ class OwnerServiceImplTest {
   @Test
   void login() throws Exception {
     // Given
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -100,7 +99,7 @@ class OwnerServiceImplTest {
     LoginRequestDto userLoginRequestDto = new LoginRequestDto("email", "password");
 
     // When
-    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
     when(authService.generateToken(any())).thenReturn("token");
 
     userService.login(userLoginRequestDto);
@@ -116,7 +115,7 @@ class OwnerServiceImplTest {
   @Test
   void loginUnsuccessful() throws Exception {
     // Given
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("passwordNOOP"))
@@ -127,7 +126,7 @@ class OwnerServiceImplTest {
     );
 
     // When
-    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
 
     Assertions.assertThrows(Exception.class, () -> userService.login(userLoginRequestDto));
 
@@ -142,7 +141,7 @@ class OwnerServiceImplTest {
   @Test
   void profileUpdate() throws Exception {
     // Given
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -155,8 +154,8 @@ class OwnerServiceImplTest {
             "newPassword");
 
     // When
-    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-    when(ownerRepository.save(any())).thenReturn(user);
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
+    when(ownerRepository.save(any())).thenReturn(owner);
 
     userService.profileUpdate(email, profileUpdateRequestDto);
 
@@ -170,7 +169,7 @@ class OwnerServiceImplTest {
   @Test
   void profileUpdateUnsuccessful() throws Exception {
     // Given
-    Owner user = Owner.builder().id(1).email("email")
+    Owner owner = Owner.builder().id(1).email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
@@ -184,7 +183,7 @@ class OwnerServiceImplTest {
     // @formatter:on
 
     // When
-    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
     when(ownerRepository.existsByEmail("new@email.com")).thenReturn(true);
 
     // Then
@@ -197,14 +196,14 @@ class OwnerServiceImplTest {
   @Test
   void loadUserByUsername() {
     // Given
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
     // When
-    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
     userService.loadUserByUsername(email);
     // Then
     Mockito.verify(
@@ -216,14 +215,14 @@ class OwnerServiceImplTest {
   @Test
   void verifyUserById() {
     UUID id = UUID.randomUUID();
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .verificationId(id)
             .build();
     // When
-    when(ownerRepository.findByVerificationId(id)).thenReturn(Optional.of(user));
+    when(ownerRepository.findByVerificationId(id)).thenReturn(Optional.of(owner));
     userService.verifyUser(id);
     // Then
     Mockito.verify(
@@ -235,16 +234,16 @@ class OwnerServiceImplTest {
   @Test
   void throwsExceptionEmailIsNotVerified() {
     UUID id = UUID.randomUUID();
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .verificationId(id)
             .build();
 
-    LoginRequestDto loginRequestDto = new LoginRequestDto(user.getEmail(), "password");
+    LoginRequestDto loginRequestDto = new LoginRequestDto(owner.getEmail(), "password");
 
-    when(ownerRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    when(ownerRepository.findByEmail(owner.getEmail())).thenReturn(Optional.of(owner));
     Assertions.assertThrows(Exception.class, () -> userService.login(loginRequestDto));
 
   }

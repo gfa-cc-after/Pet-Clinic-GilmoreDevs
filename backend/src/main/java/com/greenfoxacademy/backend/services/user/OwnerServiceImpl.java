@@ -9,7 +9,6 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
-import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
@@ -37,7 +36,7 @@ public class OwnerServiceImpl implements OwnerService {
           throws UserAlreadyExistsError {
 
     // @formatter:off
-    Owner user = Owner.builder()
+    Owner owner = Owner.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
@@ -46,7 +45,7 @@ public class OwnerServiceImpl implements OwnerService {
             .build();
     // @formatter:on
     try {
-      Owner saved = ownerRepository.save(user);
+      Owner saved = ownerRepository.save(owner);
       emailService.sendRegistrationEmail(
               saved.getEmail(),
               saved.getFirstName(),
@@ -61,14 +60,14 @@ public class OwnerServiceImpl implements OwnerService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
-    User user = ownerRepository.findByEmail(loginRequestDto.email())
+    Owner owner = ownerRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new Exception("User not found"));
-    if (!user.isEnabled()) {
+    if (!owner.isEnabled()) {
       throw new Exception("User's email is not verified");
-    } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+    } else if (!passwordEncoder.matches(loginRequestDto.password(), owner.getPassword())) {
       throw new Exception("Invalid password");
     }
-    return new LoginResponseDto(authService.generateToken(user));
+    return new LoginResponseDto(authService.generateToken(owner));
   }
 
   @Override
@@ -76,7 +75,7 @@ public class OwnerServiceImpl implements OwnerService {
           String email,
           ProfileUpdateRequestDto profileUpdateRequestDto
   ) throws CannotUpdateUserException {
-    Owner user = ownerRepository.findByEmail(email)
+    Owner owner = ownerRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
             ownerRepository.existsByEmail(profileUpdateRequestDto.email())
@@ -84,12 +83,12 @@ public class OwnerServiceImpl implements OwnerService {
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
-    user.setEmail(profileUpdateRequestDto.email());
-    user.setFirstName(profileUpdateRequestDto.firstName());
-    user.setLastName(profileUpdateRequestDto.lastName());
-    user.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
+    owner.setEmail(profileUpdateRequestDto.email());
+    owner.setFirstName(profileUpdateRequestDto.firstName());
+    owner.setLastName(profileUpdateRequestDto.lastName());
+    owner.setPassword(passwordEncoder.encode(profileUpdateRequestDto.password()));
 
-    Owner updatedUser = ownerRepository.save(user);
+    Owner updatedUser = ownerRepository.save(owner);
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 

@@ -67,7 +67,7 @@ export function Login() {
           autoComplete="current-password"
           required={true}
         />
-        <Button colorScheme="pink" type="submit">
+        <Button colorScheme="purple" type="submit">
           Login
         </Button>
       </form>

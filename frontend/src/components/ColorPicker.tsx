@@ -22,7 +22,7 @@ const ColorPicker = () => {
       <form onSubmit={handleUpdateSettings}>
         <label htmlFor="accentColor">Settings accessColor</label>
         <input onChange={handleColorChange} id="accentColor" type="color" />
-        <Button colorScheme="pink" type="submit" id="accentColor-btn">
+        <Button colorScheme="purple" type="submit" id="accentColor-btn">
           Update
         </Button>
       </form>

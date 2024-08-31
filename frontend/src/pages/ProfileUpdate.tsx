@@ -76,7 +76,7 @@ export function ProfileUpdate() {
           required={true}
         />
         <PasswordStrengthValidator password={user.password} />
-        <Button colorScheme="pink" type="submit">
+        <Button colorScheme="purple" type="submit">
           Save
         </Button>
         <Button colorScheme="gray" type="button" onClick={() => navigate("/")}>

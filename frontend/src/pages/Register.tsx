@@ -90,7 +90,7 @@ function Register() {
           onChange={handleUserChange}
         />
         <PasswordStrengthValidator password={user.password} />
-        <Button colorScheme="pink" type="submit">
+        <Button colorScheme="purple" type="submit">
           Register
         </Button>
       </form>

@@ -2,9 +2,11 @@ package com.greenfoxacademy.backend.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +36,10 @@ public abstract class User implements UserDetails {
   private String email;
   private String password;
   private UUID verificationId;
+
+  @OneToMany(mappedBy = "petOwner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Pet> pets = new ArrayList<>();
+
 
   @Override
   public String getUsername() {

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +19,11 @@ import org.springframework.security.core.userdetails.UserDetails;
  * that maps to the user table in the database.
  */
 @Data
-@Builder
+@SuperBuilder
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "_user")
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
 
   @Id
   @GeneratedValue
@@ -35,11 +34,6 @@ public class User implements UserDetails {
   private String email;
   private String password;
   private UUID verificationId;
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-  }
 
   @Override
   public String getUsername() {

@@ -8,6 +8,7 @@ import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
           throws UserAlreadyExistsError {
 
     // @formatter:off
-    User user = User.builder()
+    User user = Owner.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())

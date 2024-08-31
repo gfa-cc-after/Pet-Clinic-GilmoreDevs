@@ -15,6 +15,7 @@ import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
@@ -246,7 +247,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
 
-    when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
+    when(userRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1).build());
     when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
             .thenReturn(new EmailSentDto());
     String content = """
@@ -271,7 +272,7 @@ class UserControllerTest {
     when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(true);
     when(userRepository.findByEmail("johndoe@gmail.com"))
             .thenReturn(Optional
-                    .of(User.builder()
+                    .of(Owner.builder()
                             .id(1)
                             .firstName("John")
                             .lastName("Doe")
@@ -324,7 +325,7 @@ class UserControllerTest {
   void shouldBeAbleToUpdateProfileIfLoggedIn() throws Exception {
     String email = "john.doe@gmail.com";
     when(userRepository.findByEmail("john.doe@gmail.com"))
-            .thenReturn(Optional.of(User.builder()
+            .thenReturn(Optional.of(Owner.builder()
                     .id(1)
                     .email(email)
                     .firstName("John")
@@ -333,7 +334,7 @@ class UserControllerTest {
                     .build()));
 
     when(userRepository.save(Mockito.any()))
-            .thenReturn(User.builder()
+            .thenReturn(Owner.builder()
                     .id(1)
                     .email(email)
                     .firstName("John")
@@ -381,7 +382,7 @@ class UserControllerTest {
             "password");
     when(userRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
     when(userRepository.findByEmail(loginRequestDto.email()))
-            .thenReturn(Optional.of(User.builder()
+            .thenReturn(Optional.of(Owner.builder()
                     .id(1)
                     .email(loginRequestDto.email())
                     .firstName("John")

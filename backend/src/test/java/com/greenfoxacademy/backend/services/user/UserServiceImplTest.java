@@ -9,6 +9,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
@@ -51,7 +52,7 @@ class UserServiceImplTest {
   @Test
   void register() {
     // Given
-    User asSaved = User.builder().id(1).build();
+    User asSaved = Owner.builder().id(1).build();
     RegisterRequestDto registerRequestDto = new RegisterRequestDto(
             "fistName",
             "lastName",
@@ -91,7 +92,7 @@ class UserServiceImplTest {
   @Test
   void login() throws Exception {
     // Given
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -115,7 +116,7 @@ class UserServiceImplTest {
   @Test
   void loginUnsuccessful() throws Exception {
     // Given
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("passwordNOOP"))
@@ -141,7 +142,7 @@ class UserServiceImplTest {
   @Test
   void profileUpdate() throws Exception {
     // Given
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -169,7 +170,7 @@ class UserServiceImplTest {
   @Test
   void profileUpdateUnsuccessful() throws Exception {
     // Given
-    User user = User.builder().id(1).email("email")
+    User user = Owner.builder().id(1).email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
@@ -196,7 +197,7 @@ class UserServiceImplTest {
   @Test
   void loadUserByUsername() {
     // Given
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -215,7 +216,7 @@ class UserServiceImplTest {
   @Test
   void verifyUserById() {
     UUID id = UUID.randomUUID();
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))
@@ -234,7 +235,7 @@ class UserServiceImplTest {
   @Test
   void throwsExceptionEmailIsNotVerified() {
     UUID id = UUID.randomUUID();
-    User user = User.builder()
+    User user = Owner.builder()
             .id(1)
             .email("email")
             .password(passwordEncoder.encode("password"))

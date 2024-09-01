@@ -94,7 +94,7 @@ public class OwnerServiceImpl implements OwnerService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public Owner loadUserByUsername(String username) throws UsernameNotFoundException {
     return ownerRepository.findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));
   }

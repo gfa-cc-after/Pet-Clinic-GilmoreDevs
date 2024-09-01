@@ -7,6 +7,7 @@ import jakarta.persistence.MappedSuperclass;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 public abstract class User implements UserDetails {
 
+  @Getter
   @Id
   @GeneratedValue
   private Integer id;

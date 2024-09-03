@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom'
 import { SideBar } from '../components/SideBar';
+import { useSideBar } from '../hooks/useSideBar';
 
 const SideBarLayout = () => {
-
+  const { sideBarElements } = useSideBar();
   return (
     <Box display="flex" flexDirection="row">
-      {/* <SideBar /> */}
+      <SideBar sideBarElements={sideBarElements} />
       <Box
         display="flex"
         flexDirection="column"

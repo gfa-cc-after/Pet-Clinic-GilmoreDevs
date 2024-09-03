@@ -4,6 +4,7 @@ import {
   type ProfileUpdateForm,
   useProfileUpdateState,
 } from "../hooks/useProfileUpdate.ts";
+import { Button } from "@chakra-ui/react";
 
 export function ProfileUpdate() {
   const {
@@ -71,10 +72,13 @@ export function ProfileUpdate() {
           required={true}
         />
         <PasswordStrengthValidator password={user.password} />
-        <button type="submit">Save</button>
-        <button type="button" onClick={() => navigate("/")}>
+        <Button
+          type="submit">Save</Button>
+        <Button
+          type="button"
+          onClick={() => navigate("/")}>
           Discard
-        </button>
+        </Button>
       </form>
     </>
   );

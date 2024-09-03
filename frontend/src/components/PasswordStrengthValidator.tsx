@@ -28,13 +28,17 @@ const PasswordStrengthValidator: FC<PasswordStrengthValidatorProps> = ({
 }) => {
   const errors = validatePassword(password);
   return (
-    <ul style={{ color: "red", fontWeight: "bold" }}>
+    <div style={{
+      color: "purple",
+      fontWeight: "normal",
+      fontSize: "12px"
+    }}>
       {errors.map((error, _index) => (
-        <li aria-label={"passworderrors"} key={error}>
+        <p aria-label={"passworderrors"} key={error}>
           {error}
-        </li>
+        </p>
       ))}
-    </ul>
+    </div>
   );
 };
 

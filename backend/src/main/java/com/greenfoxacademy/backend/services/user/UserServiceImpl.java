@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
     return new LoginResponseDto(authService.generateToken(user));
   }
 
+  @CacheEvict
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
@@ -105,6 +107,7 @@ public class UserServiceImpl implements UserService {
   /**
    * Delete the user by username.
    */
+  @CacheEvict
   @Transactional
   @Override
   public void deleteProfile(String username) {

@@ -13,8 +13,11 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,9 +50,9 @@ public class UserServiceImpl implements UserService {
     try {
       User saved = userRepository.save(user);
       emailService.sendRegistrationEmail(
-          saved.getEmail(),
-          saved.getFirstName(),
-          saved.getVerificationId()
+              saved.getEmail(),
+              saved.getFirstName(),
+              saved.getVerificationId()
       );
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-
+  @Cacheable
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())
@@ -79,7 +82,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
             userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !email.equals(profileUpdateRequestDto.email())
+                    && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
+  @Cacheable
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByEmail(username)

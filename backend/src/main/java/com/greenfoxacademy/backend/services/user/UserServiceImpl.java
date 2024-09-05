@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  @Cacheable
+  @Cacheable (value = "login-cache", key = "#loginRequestDto.email()")
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())

@@ -1,8 +1,6 @@
 package com.greenfoxacademy.backend.dtos;
 
 
-import java.io.Serializable;
-
 /**
  * This class is responsible for the response of the login endpoint.
  *
@@ -11,5 +9,5 @@ import java.io.Serializable;
 
 public record LoginResponseDto(
         String token
-) implements Serializable {
+) {
 }

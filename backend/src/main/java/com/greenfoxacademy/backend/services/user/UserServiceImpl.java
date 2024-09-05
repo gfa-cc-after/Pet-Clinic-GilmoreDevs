@@ -60,8 +60,7 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
-
-  @Cacheable (value = "login-cache", key = "#loginRequestDto.email()")
+  
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())

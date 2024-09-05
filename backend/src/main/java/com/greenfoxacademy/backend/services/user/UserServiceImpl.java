@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
-  
+
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
     User user = userRepository.findByEmail(loginRequestDto.email())
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     return new LoginResponseDto(authService.generateToken(user));
   }
 
-  @CacheEvict
+  @CacheEvict(value = "update-profile-cache", key = "#email")
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
-  @Cacheable
+  @Cacheable(value = "profile-cache", key = "#username")
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByEmail(username)
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
   /**
    * Delete the user by username.
    */
-  @CacheEvict
+  @CacheEvict(value = "delete-cache", key = "#username")
   @Transactional
   @Override
   public void deleteProfile(String username) {

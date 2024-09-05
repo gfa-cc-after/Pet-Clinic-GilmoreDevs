@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PetController {
   private final PetService petService;
 
-  @GetMapping("/owner/pets")
+  @GetMapping("/pets")
   public ResponseEntity<PetListResponseDto> getPets(Principal owner) {
     return ResponseEntity.status(HttpStatus.OK).body(petService.getOwnerPets(owner.getName()));
   }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface OwnerService extends UserDetailsService {
+  Owner findByEmail(String username);
   RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError;
 
   LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;

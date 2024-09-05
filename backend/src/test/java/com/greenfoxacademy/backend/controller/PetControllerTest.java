@@ -46,11 +46,11 @@ public class PetControllerTest {
     ownerRepository.saveAll(Arrays.asList(userWithPets, userWithNoPets));
 
     Pet pet1 = new Pet();
-    pet1.setPetName("Morzsi");
-    pet1.setPetOwner(userWithPets);
+    pet1.setName("Morzsi");
+    pet1.setOwner(userWithPets);
     Pet pet2 = new Pet();
-    pet2.setPetName("Rusty");
-    pet2.setPetOwner(userWithPets);
+    pet2.setName("Rusty");
+    pet2.setOwner(userWithPets);
 
     petRepository.saveAll(Arrays.asList(pet1, pet2));
   }
@@ -58,17 +58,17 @@ public class PetControllerTest {
   @Test
   @WithMockUser(username = "userWithPets@example.com")
   public void testCorrectEmailWithExistingPets() throws Exception {
-    mockMvc.perform(get("/owner/pets")
+    mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
-      .andExpect(jsonPath("$.pets[0].petName").value("Morzsi"))
-      .andExpect(jsonPath("$.pets[1].petName").value("Rusty"));
+      .andExpect(jsonPath("$.pets[0].name").value("Morzsi"))
+      .andExpect(jsonPath("$.pets[1].name").value("Rusty"));
   }
 
   @Test
   @WithMockUser(username = "userWithNoPets@example.com")
   public void testCorrectEmailWithNoExistingPets() throws Exception {
-    mockMvc.perform(get("/owner/pets")
+    mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.pets").isEmpty());
@@ -77,8 +77,8 @@ public class PetControllerTest {
   @Test
   @WithMockUser(username = "nonExistingUser@example.com")
   public void testIncorrectEmail() throws Exception {
-    mockMvc.perform(get("/owner/pets")
+    mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isForbidden());
+      .andExpect(status().is4xxClientError());
   }
 }

@@ -2,7 +2,7 @@ package com.greenfoxacademy.backend.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 /**
@@ -10,16 +10,16 @@ import lombok.Data;
  *
  * @author Your Name
  */
-public record PetListRequestDto(
+@Data
+public class PetDetailsDto {
     @NotBlank
-    String petName,
+    String name;
     @NotBlank
-    String petBreed,
+    String breed;
     @NotBlank
-    String petSex,
+    String sex;
     @NotBlank
-    Date petBirthDate,
-    Date lastCheckUp,
-    Date nextCheckUp
-) {
+    Date birthDate;
+    Date lastCheckUp;
+    Date nextCheckUp;
 }

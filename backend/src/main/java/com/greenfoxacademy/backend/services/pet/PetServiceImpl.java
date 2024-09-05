@@ -1,6 +1,6 @@
 package com.greenfoxacademy.backend.services.pet;
 
-import com.greenfoxacademy.backend.dtos.PetListRequestDto;
+import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.models.Pet;
 import com.greenfoxacademy.backend.repositories.PetRepository;
@@ -32,10 +32,10 @@ public class PetServiceImpl implements PetService {
   @Override
   public PetListResponseDto getOwnerPets(String email) {
     List<Pet> petList = petRepository
-        .findAllByPetOwnerId(ownerService.loadUserByUsername(email).getId());
+        .findAllByOwnerId(ownerService.findByEmail(email).getId());
 
-    List<PetListRequestDto> petDtoList = petList.stream()
-        .map(pet -> modelMapper.map(pet, PetListRequestDto.class))
+    List<PetDetailsDto> petDtoList = petList.stream()
+        .map(pet -> modelMapper.map(pet, PetDetailsDto.class))
         .collect(Collectors.toList());
 
     return new PetListResponseDto(petDtoList);

@@ -11,7 +11,9 @@ services:
       POSTGRES_DB: petclinic_db
 
   redis-cache:
-    image: redis
+    image: bitnami/redis
+    environment:
+      - REDIS_PASSWORD=some_redis_password
     ports:
       - 6379:6379
 
@@ -35,6 +37,7 @@ services:
       - CORS_URLS=http://localhost:5173
       - CACHE_PORT=6379
       - CACHE_URL=redis://redis-cache
+      - CACHE_PASSWORD=some_redis_password
     depends_on:
       - postgres-db
       - redis-cache

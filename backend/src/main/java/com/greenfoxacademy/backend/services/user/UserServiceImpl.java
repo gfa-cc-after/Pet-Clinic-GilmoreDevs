@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,6 +78,7 @@ public class UserServiceImpl implements UserService {
     return new LoginResponseDto(authService.generateToken(user));
   }
 
+  @CacheEvict(value = "update-profile-cache", key = "#email")
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
@@ -95,6 +98,7 @@ public class UserServiceImpl implements UserService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
+  @Cacheable(value = "profile-cache", key = "#username")
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByEmail(username)
@@ -104,6 +108,7 @@ public class UserServiceImpl implements UserService {
   /**
    * Delete the user by username.
    */
+  @CacheEvict(value = "delete-cache", key = "#username")
   @Transactional
   @Override
   public void deleteProfile(String username) {

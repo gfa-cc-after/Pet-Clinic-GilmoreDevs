@@ -119,7 +119,9 @@ public class UserServiceImpl implements UserService {
    * Verify the user by id sent as email.
    */
   public void verifyUser(UUID id) {
-    if (!featureFlags.isEmailVerificationEnabled()) return;
+    if (!featureFlags.isEmailVerificationEnabled()) {
+      return;
+    }
     User userWithId = userRepository.findByVerificationId(id).orElseThrow();
     userWithId.setVerificationId(null);
     userRepository.save(userWithId);

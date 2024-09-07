@@ -29,7 +29,7 @@ export function ProfileDeletion() {
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
-          title: "Cannot login 🫣.",
+          title: "Cannot delete profile 🫣.",
           description:
             error.response?.data.error ||
             "Unknown network error, please contact support.",

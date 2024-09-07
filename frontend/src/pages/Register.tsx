@@ -42,7 +42,7 @@ function Register() {
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
-          title: "Cannot login 🫣.",
+          title: "Cannot register 🫣.",
           description:
             error.response?.data.error ||
             "Unknown network error, please contact support.",

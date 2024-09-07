@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.services.user;
 
+import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
@@ -13,7 +14,9 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,33 +33,36 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
   private final EmailService emailService;
+  private final FeatureFlags featureFlags;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto registerRequestDto)
           throws UserAlreadyExistsError {
 
+    boolean isEmailEnabled = featureFlags.isEmailVerificationEnabled();
+    UUID verificationId = isEmailEnabled ? UUID.randomUUID() : null;
     // @formatter:off
     User user = User.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
             .password(passwordEncoder.encode(registerRequestDto.password()))
-            .verificationId(UUID.randomUUID())
+            .verificationId(verificationId)
             .build();
     // @formatter:on
     try {
       User saved = userRepository.save(user);
-      emailService.sendRegistrationEmail(
-          saved.getEmail(),
-          saved.getFirstName(),
-          saved.getVerificationId()
-      );
+      if (isEmailEnabled) {
+        emailService.sendRegistrationEmail(
+                saved.getEmail(),
+                saved.getFirstName(),
+                saved.getVerificationId());
+      }
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
-
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
@@ -73,14 +79,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
-          ProfileUpdateRequestDto profileUpdateRequestDto
-  ) throws CannotUpdateUserException {
+          ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException {
     User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    if (
-            userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !email.equals(profileUpdateRequestDto.email())
-    ) {
+    if (userRepository.existsByEmail(profileUpdateRequestDto.email())
+            && !email.equals(profileUpdateRequestDto.email())) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
     user.setEmail(profileUpdateRequestDto.email());
@@ -111,6 +114,7 @@ public class UserServiceImpl implements UserService {
    * Verify the user by id sent as email.
    */
   public void verifyUser(UUID id) {
+    if (!featureFlags.isEmailVerificationEnabled()) return;
     User userWithId = userRepository.findByVerificationId(id).orElseThrow();
     userWithId.setVerificationId(null);
     userRepository.save(userWithId);

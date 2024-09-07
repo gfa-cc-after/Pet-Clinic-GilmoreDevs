@@ -15,7 +15,7 @@ The project uses a `.env` file to store the secrets and environment variables. Y
 You can copy the sample file to a new file called `.env` and fill in the values.
 
 ```bash
-cp .env.example .env
+cp .env.sample .env
 ```
 
 then fill in the values in the `.env` file.

@@ -1,20 +1,20 @@
 package com.greenfoxacademy.backend.repositories;
 
+import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.models.User;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Repository to manage {@link User} entities.
  */
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface OwnerRepository extends JpaRepository<Owner, Integer> {
   boolean existsByEmail(String email);
 
-  Optional<User> findByEmail(String email);
+  Optional<Owner> findByEmail(String email);
 
   void deleteByEmail(String email);
 
-  Optional<User> findByVerificationId(UUID id);
+  Optional<Owner> findByVerificationId(UUID id);
 }

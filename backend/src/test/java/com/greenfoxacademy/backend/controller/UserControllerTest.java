@@ -15,8 +15,8 @@ import com.greenfoxacademy.backend.dtos.EmailSentDto;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.models.User;
-import com.greenfoxacademy.backend.repositories.UserRepository;
+import com.greenfoxacademy.backend.models.Owner;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ class UserControllerTest {
    * The UserRepository is mocked, so we can define its behavior in each test.
    */
   @MockBean
-  private UserRepository userRepository;
+  private OwnerRepository ownerRepository;
 
   /**
    * The MockMvc is used to perform a request to the controller and validate the response.
@@ -225,7 +225,7 @@ class UserControllerTest {
   @DisplayName("Should return email is duplicated when email is duplicated")
   @Test
   void shouldReturnEmailIsIsDuplicatedWhenEmailIsDuplicated() throws Exception {
-    when(userRepository.save(Mockito.any()))
+    when(ownerRepository.save(Mockito.any()))
             .thenThrow(new UserAlreadyExistsError("Email is already taken!"));
     String content = """
             {
@@ -246,7 +246,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
 
-    when(userRepository.save(Mockito.any())).thenReturn(User.builder().id(1).build());
+    when(ownerRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1).build());
     when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
             .thenReturn(new EmailSentDto());
     String content = """
@@ -268,10 +268,10 @@ class UserControllerTest {
   @Test
   void shouldReturnTokenWhenUserIsSuccessfullyLoggedInWithGoodCredentials() throws Exception {
 
-    when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(true);
-    when(userRepository.findByEmail("johndoe@gmail.com"))
+    when(ownerRepository.existsByEmail("johndoe@gmail.com")).thenReturn(true);
+    when(ownerRepository.findByEmail("johndoe@gmail.com"))
             .thenReturn(Optional
-                    .of(User.builder()
+                    .of(Owner.builder()
                             .id(1)
                             .firstName("John")
                             .lastName("Doe")
@@ -296,7 +296,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUnauthenticatedWhenEmailIsNotFound() throws Exception {
 
-    when(userRepository.existsByEmail("johndoe@gmail.com")).thenReturn(false);
+    when(ownerRepository.existsByEmail("johndoe@gmail.com")).thenReturn(false);
     String content = """
             {
                 "email": "johndoe@gmail.com",
@@ -323,8 +323,8 @@ class UserControllerTest {
   @WithMockUser(username = "john.doe@gmail.com", password = "password", roles = "USER")
   void shouldBeAbleToUpdateProfileIfLoggedIn() throws Exception {
     String email = "john.doe@gmail.com";
-    when(userRepository.findByEmail("john.doe@gmail.com"))
-            .thenReturn(Optional.of(User.builder()
+    when(ownerRepository.findByEmail("john.doe@gmail.com"))
+            .thenReturn(Optional.of(Owner.builder()
                     .id(1)
                     .email(email)
                     .firstName("John")
@@ -332,8 +332,8 @@ class UserControllerTest {
                     .password(passwordEncoder.encode("password"))
                     .build()));
 
-    when(userRepository.save(Mockito.any()))
-            .thenReturn(User.builder()
+    when(ownerRepository.save(Mockito.any()))
+            .thenReturn(Owner.builder()
                     .id(1)
                     .email(email)
                     .firstName("John")
@@ -379,9 +379,9 @@ class UserControllerTest {
   void deleteProfile() throws Exception {
     LoginRequestDto loginRequestDto = new LoginRequestDto("john.doe@gmail.com",
             "password");
-    when(userRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
-    when(userRepository.findByEmail(loginRequestDto.email()))
-            .thenReturn(Optional.of(User.builder()
+    when(ownerRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
+    when(ownerRepository.findByEmail(loginRequestDto.email()))
+            .thenReturn(Optional.of(Owner.builder()
                     .id(1)
                     .email(loginRequestDto.email())
                     .firstName("John")
@@ -407,7 +407,7 @@ class UserControllerTest {
             )
             .andExpect(status().isAccepted());
 
-    Mockito.verify(userRepository, Mockito.times(1))
+    Mockito.verify(ownerRepository, Mockito.times(1))
             .deleteByEmail(loginRequestDto.email());
   }
 }

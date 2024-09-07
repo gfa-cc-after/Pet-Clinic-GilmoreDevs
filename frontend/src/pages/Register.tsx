@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -38,14 +39,26 @@ function Register() {
         duration: 2234.33333333,
         isClosable: true,
       });
-    } catch (_error) {
-      toast({
-        title: "Cannot register.",
-        description: "Cannot register user",
-        status: "error",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Cannot register 🫣.",
+          description:
+            error.response?.data.error ||
+            "Unknown network error, please contact support.",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Cannot register.",
+          description: "Cannot register user",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      }
     }
   };
 

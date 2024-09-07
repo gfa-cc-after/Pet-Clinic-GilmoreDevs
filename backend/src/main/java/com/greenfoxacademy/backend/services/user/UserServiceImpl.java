@@ -13,8 +13,12 @@ import com.greenfoxacademy.backend.repositories.UserRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,16 +51,15 @@ public class UserServiceImpl implements UserService {
     try {
       User saved = userRepository.save(user);
       emailService.sendRegistrationEmail(
-          saved.getEmail(),
-          saved.getFirstName(),
-          saved.getVerificationId()
+              saved.getEmail(),
+              saved.getFirstName(),
+              saved.getVerificationId()
       );
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
-
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
@@ -70,6 +73,7 @@ public class UserServiceImpl implements UserService {
     return new LoginResponseDto(authService.generateToken(user));
   }
 
+  @CacheEvict(value = "update-profile-cache", key = "#email")
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
@@ -79,7 +83,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (
             userRepository.existsByEmail(profileUpdateRequestDto.email())
-            && !email.equals(profileUpdateRequestDto.email())
+                    && !email.equals(profileUpdateRequestDto.email())
     ) {
       throw new CannotUpdateUserException("Email is already taken!");
     }
@@ -92,6 +96,7 @@ public class UserServiceImpl implements UserService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
+  @Cacheable(value = "profile-cache", key = "#username")
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByEmail(username)
@@ -101,6 +106,7 @@ public class UserServiceImpl implements UserService {
   /**
    * Delete the user by username.
    */
+  @CacheEvict(value = "delete-cache", key = "#username")
   @Transactional
   @Override
   public void deleteProfile(String username) {

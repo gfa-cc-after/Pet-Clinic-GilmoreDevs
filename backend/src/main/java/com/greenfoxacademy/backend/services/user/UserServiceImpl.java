@@ -8,6 +8,7 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.User;
 import com.greenfoxacademy.backend.repositories.UserRepository;
@@ -67,13 +68,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
+  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws
+          CannotVerifyUserError,
+          UsernameNotFoundException {
     User user = userRepository.findByEmail(loginRequestDto.email())
-            .orElseThrow(() -> new Exception("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (!user.isEnabled()) {
-      throw new Exception("User's email is not verified");
+      throw new CannotVerifyUserError("User's email is not verified");
     } else if (!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
-      throw new Exception("Invalid password");
+      throw new UsernameNotFoundException("Invalid password");
     }
     return new LoginResponseDto(authService.generateToken(user));
   }

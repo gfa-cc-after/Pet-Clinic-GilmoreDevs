@@ -6,13 +6,16 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
-import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
+import com.greenfoxacademy.backend.errors.CannotSendEmailException;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.models.User;
 import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,9 +23,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService extends UserDetailsService {
-  RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError;
+  RegisterResponseDto register(RegisterRequestDto userDto) throws
+          UserAlreadyExistsError,
+          CannotSendEmailException;
 
-  LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception;
+  LoginResponseDto login(LoginRequestDto loginRequestDto)
+          throws UserNotVerifiedException, UsernameNotFoundException;
 
   ProfileUpdateResponseDto profileUpdate(
       String user,

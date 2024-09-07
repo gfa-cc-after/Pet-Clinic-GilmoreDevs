@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verify;
 import com.greenfoxacademy.backend.controller.UserController;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.repositories.UserRepository;
-import com.greenfoxacademy.backend.services.user.UserService;
+import com.greenfoxacademy.backend.repositories.OwnerRepository;
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,12 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
  * This class runs a test to verify if the register method in the userService is properly called.
  */
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class OwnerServiceTest {
 
   @Mock
-  private UserService userService;
+  private OwnerService ownerService;
   @Mock
-  private UserRepository userRepository;
+  private OwnerRepository ownerRepository;
 
   @InjectMocks
   private UserController userController;
@@ -37,9 +37,9 @@ public class UserServiceTest {
             "password"
     );
 
-    userService.register(registerRequestDto);
+    ownerService.register(registerRequestDto);
 
-    verify(userService, times(1)).register(registerRequestDto);
+    verify(ownerService, times(1)).register(registerRequestDto);
 
   }
 

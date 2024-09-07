@@ -9,11 +9,9 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
-import com.greenfoxacademy.backend.services.user.UserService;
-
+import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import java.security.Principal;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-  private final UserService userService;
+  private final OwnerService ownerService;
 
   /**
    * This method registers a new user.
@@ -44,7 +42,7 @@ public class UserController {
   public ResponseEntity<RegisterResponseDto> registerUser(
           @Validated @RequestBody RegisterRequestDto registerRequestDto
   )throws UserAlreadyExistsError {
-    return ResponseEntity.status(HttpStatus.OK).body(userService.register(registerRequestDto));
+    return ResponseEntity.status(HttpStatus.OK).body(ownerService.register(registerRequestDto));
   }
 
   /**
@@ -59,7 +57,7 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
     try {
-      return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequestDto));
+      return ResponseEntity.status(HttpStatus.OK).body(ownerService.login(loginRequestDto));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
@@ -80,7 +78,7 @@ public class UserController {
   ) throws CannotUpdateUserException {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(userService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+            .body(ownerService.profileUpdate(principal.getName(), profileUpdateRequestDto));
   }
 
   /**
@@ -91,14 +89,14 @@ public class UserController {
    */
   @DeleteMapping("/delete-profile")
   public ResponseEntity<?> deleteProfile(Principal principal) throws UnableToDeleteProfileError {
-    userService.deleteProfile(principal.getName());
+    ownerService.deleteProfile(principal.getName());
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }
 
   // http://localhost:8080/verification?code=56565-55656-56-56-5-65-6-56
   @GetMapping("/verification")
   public ResponseEntity<?> verificationPage(@RequestParam(value = "code") UUID verificationCode) {
-    userService.verifyUser(verificationCode);
+    ownerService.verifyUser(verificationCode);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

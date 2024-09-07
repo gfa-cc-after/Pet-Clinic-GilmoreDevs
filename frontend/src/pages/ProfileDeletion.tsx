@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { deleteProfile } from "../httpClient.ts";
 import { usePetClinicState } from "../state.ts";
@@ -25,14 +26,26 @@ export function ProfileDeletion() {
         duration: 2234.33333333,
         isClosable: true,
       });
-    } catch (_error) {
-      toast({
-        title: "Cannot delete profile.",
-        description: "Unable to delete profile",
-        status: "error",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Cannot delete profile 🫣.",
+          description:
+            error.response?.data.error ||
+            "Unknown network error, please contact support.",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Cannot delete profile.",
+          description: "Unable to delete profile",
+          status: "error",
+          duration: 2234.33333333,
+          isClosable: true,
+        });
+      }
     }
   };
 

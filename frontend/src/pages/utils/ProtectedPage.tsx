@@ -1,16 +1,15 @@
 import type { PropsWithChildren } from "react";
+import { Navigate } from "react-router-dom";
 import { usePetClinicState } from "../../state";
-import { Login } from "../Login";
-
 type ProtectedPageProps = PropsWithChildren;
 
 const ProtectedPage = ({ children }: ProtectedPageProps) => {
   const {
     auth: { user },
   } = usePetClinicState();
-  if (user) {
-    return <>{children}</>;
+  if (!user) {
+    return <Navigate to="/login" />;
   }
-  return <Login />;
+  return <>{children}</>;
 };
 export { ProtectedPage };

@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
@@ -16,6 +17,7 @@ import com.greenfoxacademy.backend.services.mail.EmailService;
 import com.greenfoxacademy.backend.services.user.owner.OwnerServiceImpl;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -40,12 +43,19 @@ class OwnerServiceImplTest {
   private AuthService authService;
   @Mock
   private EmailService emailService;
+  @Mock
+  private FeatureFlags featureFlags;
 
 
   @BeforeEach
   void setUp() {
     Mockito.reset(ownerRepository);
-    userService = new OwnerServiceImpl(ownerRepository, passwordEncoder, authService, emailService);
+    userService = new OwnerServiceImpl(
+            ownerRepository,
+            passwordEncoder,
+            authService,
+            emailService,
+            featureFlags);
   }
 
   @DisplayName("Register a new user if email not taken")
@@ -215,6 +225,7 @@ class OwnerServiceImplTest {
 
   @Test
   void verifyUserById() {
+    when(featureFlags.isEmailVerificationEnabled()).thenReturn(true);
     UUID id = UUID.randomUUID();
     Owner owner = Owner.builder()
             .id(1)

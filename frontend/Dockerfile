@@ -1,5 +1,5 @@
 #create frontend container
-FROM node:lts as builder
+FROM node:lts AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install

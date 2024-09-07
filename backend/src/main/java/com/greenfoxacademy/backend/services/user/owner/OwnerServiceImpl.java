@@ -1,5 +1,6 @@
 package com.greenfoxacademy.backend.services.user.owner;
 
+import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
@@ -14,8 +15,12 @@ import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import jakarta.transaction.Transactional;
+
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,33 +36,36 @@ public class OwnerServiceImpl implements OwnerService {
   private final PasswordEncoder passwordEncoder;
   private final AuthService authService;
   private final EmailService emailService;
+  private final FeatureFlags featureFlags;
 
   @Override
   public RegisterResponseDto register(RegisterRequestDto registerRequestDto)
           throws UserAlreadyExistsError {
 
+    boolean isEmailEnabled = featureFlags.isEmailVerificationEnabled();
+    UUID verificationId = isEmailEnabled ? UUID.randomUUID() : null;
     // @formatter:off
     Owner owner = Owner.builder()
             .email(registerRequestDto.email())
             .firstName(registerRequestDto.firstName())
             .lastName(registerRequestDto.lastName())
             .password(passwordEncoder.encode(registerRequestDto.password()))
-            .verificationId(UUID.randomUUID())
+            .verificationId(verificationId)
             .build();
     // @formatter:on
     try {
       Owner saved = ownerRepository.save(owner);
-      emailService.sendRegistrationEmail(
-              saved.getEmail(),
-              saved.getFirstName(),
-              saved.getVerificationId()
-      );
+      if (isEmailEnabled) {
+        emailService.sendRegistrationEmail(
+                saved.getEmail(),
+                saved.getFirstName(),
+                saved.getVerificationId());
+      }
       return new RegisterResponseDto(saved.getId());
     } catch (Exception e) {
       throw new UserAlreadyExistsError("Email is already taken!");
     }
   }
-
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
@@ -71,6 +79,7 @@ public class OwnerServiceImpl implements OwnerService {
     return new LoginResponseDto(authService.generateToken(owner));
   }
 
+  @CacheEvict(value = "update-profile-cache", key = "#email")
   @Override
   public ProfileUpdateResponseDto profileUpdate(
           String email,
@@ -93,6 +102,7 @@ public class OwnerServiceImpl implements OwnerService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
+  @Cacheable(value = "profile-cache", key = "#username")
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return ownerRepository.findByEmail(username)
@@ -102,6 +112,7 @@ public class OwnerServiceImpl implements OwnerService {
   /**
    * Delete the user by username.
    */
+  @CacheEvict(value = "delete-cache", key = "#username")
   @Transactional
   @Override
   public void deleteProfile(String username) {
@@ -113,6 +124,9 @@ public class OwnerServiceImpl implements OwnerService {
    */
   public void verifyUser(UUID id) {
     Owner userWithId = ownerRepository.findByVerificationId(id).orElseThrow();
+    if (!featureFlags.isEmailVerificationEnabled()) {
+      return;
+    }
     userWithId.setVerificationId(null);
     ownerRepository.save(userWithId);
   }

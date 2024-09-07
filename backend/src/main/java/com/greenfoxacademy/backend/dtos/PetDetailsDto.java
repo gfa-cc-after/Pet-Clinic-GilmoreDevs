@@ -2,7 +2,6 @@ package com.greenfoxacademy.backend.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
-
 import lombok.Data;
 
 /**
@@ -12,14 +11,14 @@ import lombok.Data;
  */
 @Data
 public class PetDetailsDto {
-    @NotBlank
-    String name;
-    @NotBlank
-    String breed;
-    @NotBlank
-    String sex;
-    @NotBlank
-    Date birthDate;
-    Date lastCheckUp;
-    Date nextCheckUp;
+  @NotBlank
+  String name;
+  @NotBlank
+  String breed;
+  @NotBlank
+  String sex;
+  @NotBlank
+  Date birthDate;
+  Date lastCheckUp;
+  Date nextCheckUp;
 }

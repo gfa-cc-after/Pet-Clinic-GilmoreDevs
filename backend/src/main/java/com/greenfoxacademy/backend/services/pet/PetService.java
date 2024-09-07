@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @param name The name of the owner.
  * @return A response containing the owner's pets.
  */
-@Service
+
 public interface PetService {
   PetListResponseDto getOwnerPets(String name);
 }

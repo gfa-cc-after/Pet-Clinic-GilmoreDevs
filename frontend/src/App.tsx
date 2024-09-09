@@ -7,6 +7,7 @@ import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register";
+import PetList from "./pages/PetList.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "delete-profile",
     element: <ProfileDeletion />,
+  },
+  {
+    path: "pets",
+    element: <PetList />,
   },
 ]);
 

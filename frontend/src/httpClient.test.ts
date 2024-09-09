@@ -8,7 +8,7 @@ vi.mock("./httpClient", () => ({
   petList: vi.fn(),
 }));
 
-import { login, logout, register, updateProfile, petList } from "./httpClient";
+import { login, logout, petList, register, updateProfile } from "./httpClient";
 
 describe("httpClient", () => {
   it("should call login", async () => {

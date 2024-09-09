@@ -1,13 +1,13 @@
 import "./App.css";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Login } from "./pages/Login";
-import { Main } from "./pages/Main";
+import { Login } from "./pages/Login.tsx";
+import { Main } from "./pages/Main.tsx";
+import PetList from "./pages/PetList.tsx";
 import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
-import { Register } from "./pages/Register";
-import PetList from "./pages/PetList.tsx";
+import { Register } from "./pages/Register.tsx";
 
 const router = createBrowserRouter([
   {

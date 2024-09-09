@@ -5,9 +5,10 @@ vi.mock("./httpClient", () => ({
   logout: vi.fn(),
   register: vi.fn(),
   updateProfile: vi.fn(),
+  petList: vi.fn(),
 }));
 
-import { login, logout, register, updateProfile } from "./httpClient";
+import { login, logout, register, updateProfile, petList } from "./httpClient";
 
 describe("httpClient", () => {
   it("should call login", async () => {
@@ -44,5 +45,10 @@ describe("httpClient", () => {
     await login({ email: "test", password: "test" });
     expect(login).toHaveBeenCalledTimes(2);
     expect(login).toHaveBeenCalledWith({ email: "test", password: "test" });
+  });
+
+  it("should call petList", () => {
+    petList();
+    expect(petList).toHaveBeenCalledTimes(1);
   });
 });

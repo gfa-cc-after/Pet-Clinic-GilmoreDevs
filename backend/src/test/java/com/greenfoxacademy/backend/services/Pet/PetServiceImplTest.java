@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.controller;
+package com.greenfoxacademy.backend.services.Pet;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class PetControllerTest {
+public class PetServiceImplTest {
 
   @Autowired
   private MockMvc mockMvc;

@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.ProfileUpdateRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
@@ -40,12 +41,19 @@ class OwnerServiceImplTest {
   private AuthService authService;
   @Mock
   private EmailService emailService;
+  @Mock
+  private FeatureFlags featureFlags;
 
 
   @BeforeEach
   void setUp() {
     Mockito.reset(ownerRepository);
-    userService = new OwnerServiceImpl(ownerRepository, passwordEncoder, authService, emailService);
+    userService = new OwnerServiceImpl(
+            ownerRepository,
+            passwordEncoder,
+            authService,
+            emailService,
+            featureFlags);
   }
 
   @DisplayName("Register a new user if email not taken")
@@ -215,6 +223,7 @@ class OwnerServiceImplTest {
 
   @Test
   void verifyUserById() {
+    when(featureFlags.isEmailVerificationEnabled()).thenReturn(true);
     UUID id = UUID.randomUUID();
     Owner owner = Owner.builder()
             .id(1)

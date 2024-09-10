@@ -58,6 +58,7 @@ public class SecurityConfig {
               .authorizeHttpRequests((authorize) -> authorize
                       .requestMatchers(allowedUrls).permitAll()
                       .requestMatchers("/profile-update").authenticated()
+                      .requestMatchers("/pets").authenticated()
                       .anyRequest().authenticated()
               )
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))

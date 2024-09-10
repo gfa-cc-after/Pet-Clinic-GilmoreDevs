@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Repository to manage Pet entities.
  */
 public interface PetRepository extends JpaRepository<Pet, Integer> {
-  List<Pet> findAllByOwnerId(Integer owner);
+  List<Pet> findAllByOwnerId(Integer ownerId);
 }

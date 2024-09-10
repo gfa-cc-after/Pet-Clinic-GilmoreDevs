@@ -1,7 +1,10 @@
 package com.greenfoxacademy.backend.dtos;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
+
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 /**
@@ -17,8 +20,10 @@ public class PetDetailsDto {
   String breed;
   @NotBlank
   String sex;
-  @NotBlank
+  @PastOrPresent(message = "The birth date must be in the past or present")
   Date birthDate;
+  @PastOrPresent(message = "The last check-up date must be in the past or present")
   Date lastCheckUp;
+  @FutureOrPresent(message = "The next check-up date must be in the future or present")
   Date nextCheckUp;
 }

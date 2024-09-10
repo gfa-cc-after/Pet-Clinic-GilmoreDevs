@@ -2,9 +2,8 @@ package com.greenfoxacademy.backend.dtos;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import java.util.Date;
-
 import jakarta.validation.constraints.PastOrPresent;
+import java.util.Date;
 import lombok.Data;
 
 /**

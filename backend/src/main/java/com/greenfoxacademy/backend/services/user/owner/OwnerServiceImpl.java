@@ -14,9 +14,7 @@ import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import jakarta.transaction.Transactional;
-
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

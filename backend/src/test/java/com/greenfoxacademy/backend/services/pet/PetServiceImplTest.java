@@ -1,7 +1,7 @@
-package com.greenfoxacademy.backend.services.Pet;
+package com.greenfoxacademy.backend.services.pet;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.greenfoxacademy.backend.models.Owner;
@@ -19,6 +19,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * Integration test class for PetServiceImpl.
+ * This class uses the following annotations:
+ * - {@link SpringBootTest}: Indicates that the class is a Spring Boot test that
+ * will start the full application context.
+ * - {@link AutoConfigureMockMvc}: Automatically configures MockMvc for testing web layer.
+ * - {@link Transactional}: Ensures that each test method runs within a transaction
+ * that is rolled back after the test completes.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
@@ -33,6 +42,11 @@ public class PetServiceImplTest {
   @Autowired
   private OwnerRepository ownerRepository;
 
+  /**
+   * Sets up mock data before each test.
+   * This method is executed before each test method in the current test class.
+   * It initializes mock data for owners and pets and saves them to the repository.
+   */
   @BeforeEach
   public void setUp() {
     // Set up mock data
@@ -60,9 +74,9 @@ public class PetServiceImplTest {
   public void testCorrectEmailWithExistingPets() throws Exception {
     mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.pets[0].name").value("Morzsi"))
-      .andExpect(jsonPath("$.pets[1].name").value("Rusty"));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.pets[0].name").value("Morzsi"))
+        .andExpect(jsonPath("$.pets[1].name").value("Rusty"));
   }
 
   @Test
@@ -70,8 +84,8 @@ public class PetServiceImplTest {
   public void testCorrectEmailWithNoExistingPets() throws Exception {
     mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.pets").isEmpty());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.pets").isEmpty());
   }
 
   @Test
@@ -79,6 +93,6 @@ public class PetServiceImplTest {
   public void testIncorrectEmail() throws Exception {
     mockMvc.perform(get("/pets")
         .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().is4xxClientError());
+        .andExpect(status().is4xxClientError());
   }
 }

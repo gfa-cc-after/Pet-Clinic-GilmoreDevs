@@ -8,6 +8,7 @@ import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
 import { ProfileDetail } from "./pages/ProfileDetail.tsx";
 import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
 import { Register } from "./pages/Register.tsx";
+import AddPet from "./pages/AddPet.tsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "pets",
     element: <PetList />,
+  },
+  {
+    path: "add-pet",
+    element: <AddPet />,
   },
 ]);
 

@@ -27,6 +27,17 @@ const petList = () => {
   return httpClient.get<PetListResponse>("/pets");
 };
 
+const addPet = (request: {
+  lastCheckUp: string;
+  nextCheckUp: string;
+  sex: string;
+  name: string;
+  birthDate: string;
+  breed: string
+}) => {
+  return httpClient.post<PetListResponse>("/pets", request);
+};
+
 type RegisterRequest = {
   email: string;
   password: string;
@@ -87,4 +98,4 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile, petList };
+export { login, register, logout, updateProfile, deleteProfile, petList, addPet };

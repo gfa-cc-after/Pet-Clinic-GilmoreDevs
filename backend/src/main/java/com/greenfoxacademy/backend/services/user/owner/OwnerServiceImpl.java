@@ -8,12 +8,12 @@ import com.greenfoxacademy.backend.dtos.ProfileUpdateResponseDto;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import jakarta.transaction.Transactional;
 
 import java.util.UUID;
@@ -68,13 +68,15 @@ public class OwnerServiceImpl implements OwnerService {
   }
 
   @Override
-  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
+  public LoginResponseDto login(LoginRequestDto loginRequestDto) throws
+          CannotVerifyUserError,
+          UsernameNotFoundException {
     Owner owner = ownerRepository.findByEmail(loginRequestDto.email())
-            .orElseThrow(() -> new Exception("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     if (!owner.isEnabled()) {
-      throw new Exception("User's email is not verified");
+      throw new CannotVerifyUserError("User's email is not verified");
     } else if (!passwordEncoder.matches(loginRequestDto.password(), owner.getPassword())) {
-      throw new Exception("Invalid password");
+      throw new UsernameNotFoundException("Invalid password");
     }
     return new LoginResponseDto(authService.generateToken(owner));
   }

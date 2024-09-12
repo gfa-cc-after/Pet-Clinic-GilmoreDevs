@@ -40,4 +40,19 @@ public class PetServiceImpl implements PetService {
 
     return new PetListResponseDto(petDtoList);
   }
+
+  /**
+   * Adds a new pet for the specified owner.
+   *
+   * @param email the email of the owner
+   * @param petDetailsDto the details of the pet to be added
+   * @return the added pet details as a PetListResponseDto
+   */
+  @Override
+  public PetListResponseDto addPet(String email, PetDetailsDto petDetailsDto) {
+    Pet pet = modelMapper.map(petDetailsDto, Pet.class);
+    pet.setOwner(ownerService.findByEmail(email));
+    petRepository.save(pet);
+    return modelMapper.map(pet, PetListResponseDto.class) ;
+  }
 }

@@ -11,28 +11,34 @@ import { Register } from "./pages/Register";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    children: [
+      {
+        path: "/",
+        element: <Main />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "profile-update",
+        element: <ProfileUpdate />,
+      },
+      {
+        path: "profile",
+        element: <ProfileDetail />,
+      },
+      {
+        path: "delete-profile",
+        element: <ProfileDeletion />,
+      },
+    ]
   },
-  {
-    path: "register",
-    element: <Register />,
-  },
-  {
-    path: "login",
-    element: <Login />,
-  },
-  {
-    path: "profile-update",
-    element: <ProfileUpdate />,
-  },
-  {
-    path: "profile",
-    element: <ProfileDetail />,
-  },
-  {
-    path: "delete-profile",
-    element: <ProfileDeletion />,
-  },
+
 ]);
 
 function App() {

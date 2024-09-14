@@ -47,7 +47,7 @@ public class PetServiceImpl implements PetService {
    * Adds a new pet for the specified owner.
    *
    * @param email the email of the owner
-   * @param petDetailsDto the details of the pet to be added
+   * @param createPetDto the details of the pet to be added
    * @return the added pet details as a PetListResponseDto
    */
   @Override

@@ -43,5 +43,8 @@ public class ClinicAddress {
   private double longitude;
   private double latitude;
 
+  public String addressToString() {
+    return zip + " " + city + " " + street;
+  }
 
 }

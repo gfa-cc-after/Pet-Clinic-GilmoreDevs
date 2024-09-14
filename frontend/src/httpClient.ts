@@ -85,4 +85,19 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile, petList };
+export type VetDetails = {
+  firstName : string
+  lastName : string
+  email : string
+  clinicAddress : string
+};
+
+type VetListResponse = {
+  vets: string[];
+};
+
+const vetList = () => {
+  return httpClient.get<VetListResponse>("/search-vets");
+};
+
+export { login, register, logout, updateProfile, deleteProfile, vetList };

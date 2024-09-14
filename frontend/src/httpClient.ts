@@ -27,15 +27,24 @@ const petList = () => {
   return httpClient.get<PetListResponse>("/pets");
 };
 
-const addPet = (request: {
-  lastCheckUp: string;
-  nextCheckUp: string;
-  sex: string;
+export type CreatePet = {
   name: string;
-  birthDate: string;
-  breed: string
+  breed: string;
+  sex: string;
+  birthDate: Date;
+};
+
+type AddPetResponse = {
+  id: number;
+};
+
+const addPet = (request: {
+  name: string;
+  breed: string;
+  sex: string;
+  birthDate: Date;
 }) => {
-  return httpClient.post<PetListResponse>("/pets", request);
+  return httpClient.post<AddPetResponse>("/add-pet", request);
 };
 
 type RegisterRequest = {
@@ -98,4 +107,12 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile, petList, addPet };
+export {
+  login,
+  register,
+  logout,
+  updateProfile,
+  deleteProfile,
+  petList,
+  addPet,
+};

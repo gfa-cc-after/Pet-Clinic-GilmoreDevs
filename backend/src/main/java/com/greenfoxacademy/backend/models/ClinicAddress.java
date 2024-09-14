@@ -40,7 +40,10 @@ public class ClinicAddress {
   @Column(length = 4)
   private int zip;
   private String street;
-  private String clinicName;
+  private double longitude;
+  private double latitude;
+
+
 
 
 }

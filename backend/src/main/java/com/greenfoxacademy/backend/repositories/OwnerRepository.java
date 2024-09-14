@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Repository to manage {@link User} entities.
  */
-public interface OwnerRepository extends JpaRepository<Owner, Integer> {
+public interface OwnerRepository extends JpaRepository<Owner, Long> {
   boolean existsByEmail(String email);
 
   Optional<Owner> findByEmail(String email);

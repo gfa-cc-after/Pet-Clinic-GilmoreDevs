@@ -10,6 +10,11 @@ import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * VetServiceImpl is the implementation of the VetService interface.
+ * It provides functionality for retrieving veterinarian data.
+ */
+
 @RequiredArgsConstructor
 public class VetServiceImpl implements VetService {
 

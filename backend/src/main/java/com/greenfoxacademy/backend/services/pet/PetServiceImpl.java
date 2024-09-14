@@ -4,7 +4,8 @@ import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.models.Pet;
 import com.greenfoxacademy.backend.repositories.PetRepository;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ public class PetServiceImpl implements PetService {
    *
    * @param email the email of the pet owner
    * @return a {@link PetListResponseDto} containing the list of pets
-   * @throws UsernameNotFoundException if the user with the specified email is not found
+   * @throws UsernameNotFoundException if the user with the specified email is not
+   *                                   found
    */
   @Override
   public PetListResponseDto getOwnerPets(String email) {

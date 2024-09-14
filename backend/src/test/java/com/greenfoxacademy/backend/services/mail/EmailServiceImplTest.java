@@ -3,10 +3,9 @@ package com.greenfoxacademy.backend.services.mail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import com.greenfoxacademy.backend.config.EmailConfiguration;
 import com.greenfoxacademy.backend.services.pet.PetService;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.UUID;

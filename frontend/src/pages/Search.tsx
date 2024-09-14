@@ -1,5 +1,6 @@
+import { Button } from "@chakra-ui/react";
+
 function Search() {
-    
   // Commented part is for later ticket SCRUM 86 (find closest vet)
 
   // function geoFindMe() {
@@ -34,13 +35,25 @@ function Search() {
 
   return (
     <>
+      <form>
+        <div>
+          <input
+            type="search"
+            id="mySearch"
+            name="q"
+            placeholder="Search the site…"
+          />
+          <Button type="submit">Search</Button>
+        </div>
+      </form>
+
       <div>
         <button type="submit" id="find-me">
           Show my location
         </button>
         <br />
         <p id="status" />
-        <a id="map-link" target="_blank" href="" />
+        <a id="map-link" target="_blank" href="" rel="noreferrer" />
       </div>
     </>
   );

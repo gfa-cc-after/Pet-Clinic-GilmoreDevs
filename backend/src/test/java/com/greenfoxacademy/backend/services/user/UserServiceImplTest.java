@@ -14,7 +14,7 @@ import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.auth.AuthService;
 import com.greenfoxacademy.backend.services.mail.EmailService;
-import com.greenfoxacademy.backend.services.user.owner.OwnerServiceImpl;
+
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -29,8 +29,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class OwnerServiceImplTest {
-  private OwnerServiceImpl userService;
+class UserServiceImplTest {
+  private UserServiceImpl userService;
 
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -48,7 +48,7 @@ class OwnerServiceImplTest {
   @BeforeEach
   void setUp() {
     Mockito.reset(ownerRepository);
-    userService = new OwnerServiceImpl(
+    userService = new UserServiceImpl(
             ownerRepository,
             passwordEncoder,
             authService,
@@ -60,7 +60,7 @@ class OwnerServiceImplTest {
   @Test
   void register() {
     // Given
-    Owner asSaved = Owner.builder().id(1).build();
+    Owner asSaved = Owner.builder().id(1L).build();
     RegisterRequestDto registerRequestDto = new RegisterRequestDto(
             "fistName",
             "lastName",
@@ -101,7 +101,7 @@ class OwnerServiceImplTest {
   void login() throws Exception {
     // Given
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .build();
@@ -125,7 +125,7 @@ class OwnerServiceImplTest {
   void loginUnsuccessful() throws Exception {
     // Given
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("passwordNOOP"))
             .build();
@@ -151,7 +151,7 @@ class OwnerServiceImplTest {
   void profileUpdate() throws Exception {
     // Given
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .build();
@@ -178,7 +178,7 @@ class OwnerServiceImplTest {
   @Test
   void profileUpdateUnsuccessful() throws Exception {
     // Given
-    Owner owner = Owner.builder().id(1).email("email")
+    Owner owner = Owner.builder().id(1L).email("email")
             .password(passwordEncoder.encode("password"))
             .build();
     String email = "email";
@@ -206,7 +206,7 @@ class OwnerServiceImplTest {
   void loadUserByUsername() {
     // Given
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .build();
@@ -226,7 +226,7 @@ class OwnerServiceImplTest {
     when(featureFlags.isEmailVerificationEnabled()).thenReturn(true);
     UUID id = UUID.randomUUID();
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .verificationId(id)
@@ -245,7 +245,7 @@ class OwnerServiceImplTest {
   void throwsExceptionEmailIsNotVerified() {
     UUID id = UUID.randomUUID();
     Owner owner = Owner.builder()
-            .id(1)
+            .id(1L)
             .email("email")
             .password(passwordEncoder.encode("password"))
             .verificationId(id)

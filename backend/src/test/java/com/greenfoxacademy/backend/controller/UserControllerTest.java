@@ -246,7 +246,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
 
-    when(ownerRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1).build());
+    when(ownerRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1L).build());
     when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
             .thenReturn(new EmailSentDto());
     String content = """
@@ -272,7 +272,7 @@ class UserControllerTest {
     when(ownerRepository.findByEmail("johndoe@gmail.com"))
             .thenReturn(Optional
                     .of(Owner.builder()
-                            .id(1)
+                            .id(1L)
                             .firstName("John")
                             .lastName("Doe")
                             .email("johndoe@gmail.com")
@@ -325,7 +325,7 @@ class UserControllerTest {
     String email = "john.doe@gmail.com";
     when(ownerRepository.findByEmail("john.doe@gmail.com"))
             .thenReturn(Optional.of(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(email)
                     .firstName("John")
                     .lastName("Doe")
@@ -334,7 +334,7 @@ class UserControllerTest {
 
     when(ownerRepository.save(Mockito.any()))
             .thenReturn(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(email)
                     .firstName("John")
                     .lastName("Doe")
@@ -382,7 +382,7 @@ class UserControllerTest {
     when(ownerRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
     when(ownerRepository.findByEmail(loginRequestDto.email()))
             .thenReturn(Optional.of(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(loginRequestDto.email())
                     .firstName("John")
                     .lastName("Doe")

@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user.owner;
+package com.greenfoxacademy.backend.services.user;
 
 import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service implementation to manage {@link OwnerService}.
+ * Service implementation to manage {@link UserService}.
  */
 @Service
 @RequiredArgsConstructor

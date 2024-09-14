@@ -25,9 +25,6 @@ import lombok.Data;
 @Embeddable
 public class ClinicDetails {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
   private String clinicName;
   private ClinicAddress clinicAddress;
 

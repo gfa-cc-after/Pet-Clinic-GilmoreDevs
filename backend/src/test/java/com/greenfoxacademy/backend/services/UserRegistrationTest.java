@@ -10,7 +10,7 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
+import com.greenfoxacademy.backend.services.user.UserService;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class UserRegistrationTest {
 
   @Autowired
-  private OwnerService ownerService;
+  private UserService userService;
 
   @Autowired
   private OwnerRepository ownerRepository;
@@ -49,7 +49,7 @@ public class UserRegistrationTest {
             "password"
     );
 
-    RegisterResponseDto registeredUserDto = ownerService.register(newUser);
+    RegisterResponseDto registeredUserDto = userService.register(newUser);
 
     Assertions.assertEquals(1, registeredUserDto.id());
 

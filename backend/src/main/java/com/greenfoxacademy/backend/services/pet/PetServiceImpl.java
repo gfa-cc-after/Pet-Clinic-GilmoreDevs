@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backend.services.pet;
 
+import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
+import com.greenfoxacademy.backend.dtos.CreatePetDto;
 import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.models.Pet;
@@ -49,10 +51,10 @@ public class PetServiceImpl implements PetService {
    * @return the added pet details as a PetListResponseDto
    */
   @Override
-  public PetListResponseDto addPet(String email, PetDetailsDto petDetailsDto) {
-    Pet pet = modelMapper.map(petDetailsDto, Pet.class);
+  public AddPetResponseDto addPet(String email, CreatePetDto createPetDto) {
+    Pet pet = modelMapper.map(createPetDto, Pet.class);
     pet.setOwner(ownerService.findByEmail(email));
-    petRepository.save(pet);
-    return modelMapper.map(pet, PetListResponseDto.class) ;
+    Pet newPet = petRepository.save(pet);
+    return new AddPetResponseDto(newPet.getId());
   }
 }

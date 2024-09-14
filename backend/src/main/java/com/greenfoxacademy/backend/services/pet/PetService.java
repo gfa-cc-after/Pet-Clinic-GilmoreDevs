@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backend.services.pet;
 
+import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
+import com.greenfoxacademy.backend.dtos.CreatePetDto;
 import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,5 +17,5 @@ import org.springframework.stereotype.Service;
 public interface PetService {
   PetListResponseDto getOwnerPets(String name);
 
-  PetListResponseDto addPet(String name, PetDetailsDto petDetailsDto);
+  AddPetResponseDto addPet(String name, CreatePetDto createPetDto);
 }

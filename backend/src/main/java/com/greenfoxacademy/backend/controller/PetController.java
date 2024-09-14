@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backend.controller;
 
+import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
+import com.greenfoxacademy.backend.dtos.CreatePetDto;
 import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.services.pet.PetService;
@@ -28,7 +30,7 @@ public class PetController {
   }
 
   @PostMapping("/pets")
-  public ResponseEntity<PetListResponseDto> addPet(Principal owner, @RequestBody PetDetailsDto petDetailsDto) {
-    return ResponseEntity.status(HttpStatus.OK).body(petService.addPet(owner.getName(),petDetailsDto));
+  public ResponseEntity<AddPetResponseDto> addPet(Principal owner, @RequestBody CreatePetDto createPetDto) {
+    return ResponseEntity.status(HttpStatus.OK).body(petService.addPet(owner.getName(), createPetDto));
   }
 }

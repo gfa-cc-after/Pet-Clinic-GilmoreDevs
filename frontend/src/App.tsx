@@ -36,9 +36,8 @@ const router = createBrowserRouter([
         path: "delete-profile",
         element: <ProfileDeletion />,
       },
-    ]
+    ],
   },
-
 ]);
 
 function App() {

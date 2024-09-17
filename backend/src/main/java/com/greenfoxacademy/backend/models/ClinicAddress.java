@@ -1,8 +1,6 @@
 package com.greenfoxacademy.backend.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**
@@ -31,20 +29,18 @@ import lombok.Data;
  * @see jakarta.persistence.Embeddable
  */
 
-@Embeddable
+@Entity
+@Table(name = "_clinicAddress")
 @Data
 public class ClinicAddress {
   @Id
   private Long id;
+  @OneToOne
+  private ClinicDetails clinicDetails;
   private String city;
   @Column(length = 4)
   private int zip;
   private String street;
   private double longitude;
   private double latitude;
-
-  public String addressToString() {
-    return zip + " " + city + " " + street;
-  }
-
 }

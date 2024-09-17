@@ -19,6 +19,8 @@ import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
 import java.util.Optional;
+
+import com.greenfoxacademy.backend.services.user.vet.VetService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -50,6 +52,9 @@ class UserControllerTest {
 
   @MockBean
   private EmailService emailService;
+
+  @MockBean
+  private VetService vetService;
 
   /**
    * The PasswordEncoder is used to encode the password before saving it to the database.

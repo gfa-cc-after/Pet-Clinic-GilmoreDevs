@@ -28,8 +28,7 @@ public class PetServiceImpl implements PetService {
    *
    * @param email the email of the pet owner
    * @return a {@link PetListResponseDto} containing the list of pets
-   * @throws UsernameNotFoundException if the user with the specified email is not
-   *                                   found
+   * @throws UsernameNotFoundException if the user with the specified email is not found
    */
   @Override
   public PetListResponseDto getOwnerPets(String email) {

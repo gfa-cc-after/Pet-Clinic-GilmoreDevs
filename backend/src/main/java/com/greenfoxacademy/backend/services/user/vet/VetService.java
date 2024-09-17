@@ -1,7 +1,6 @@
 package com.greenfoxacademy.backend.services.user.vet;
 
 import com.greenfoxacademy.backend.dtos.VetListResponseDto;
-import org.springframework.stereotype.Service;
 
 /**
  * VetService defines the business logic for handling veterinarian-related data and
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service;
  * This interface provides methods for retrieving veterinarian data.
  */
 
-@Service
 public interface VetService {
-
-  VetListResponseDto getAll();
+  VetListResponseDto getAll(String word);
 }

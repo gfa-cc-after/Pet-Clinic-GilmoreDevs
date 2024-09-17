@@ -1,8 +1,6 @@
 package com.greenfoxacademy.backend.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -37,6 +35,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Entity
 @Table(name = "_vet")
 public class Vet extends User {
+  @OneToOne
   private ClinicDetails clinicDetails;
 
   @Override

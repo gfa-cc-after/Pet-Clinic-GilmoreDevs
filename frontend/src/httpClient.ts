@@ -86,18 +86,21 @@ const logout = () => {
 };
 
 export type VetDetails = {
-  firstName : string
-  lastName : string
-  email : string
-  clinicAddress : string
+  firstName: string;
+  lastName: string;
+  email: string;
+  clinicAddress: string;
 };
 
 type VetListResponse = {
-  vets: string[];
+  vets: VetDetails[];
 };
 
-const vetList = () => {
-  return httpClient.get<VetListResponse>("/search-vets");
+const vetList = async (request: string) => {
+  const response = await httpClient.get<VetListResponse>(
+    `/search-vet/?word=${request}`,
+  );
+  return response.data;
 };
 
 export { login, register, logout, updateProfile, deleteProfile, vetList };

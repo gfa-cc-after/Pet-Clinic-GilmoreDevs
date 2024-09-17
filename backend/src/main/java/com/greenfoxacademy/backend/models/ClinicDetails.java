@@ -1,9 +1,6 @@
 package com.greenfoxacademy.backend.models;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**
@@ -22,10 +19,15 @@ import lombok.Data;
  */
 
 @Data
-@Embeddable
+@Entity
+@Table(name = "_clinicDetails")
 public class ClinicDetails {
-
+  @Id
+  private Long id;
   private String clinicName;
+  @OneToOne
   private ClinicAddress clinicAddress;
+  @OneToOne
+  private Vet vet;
 
 }

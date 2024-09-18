@@ -15,8 +15,6 @@ export type PetDetails = {
   breed: string;
   sex: string;
   birthDate: Date;
-  lastCheckUp: Date;
-  nextCheckUp: Date;
 };
 
 type PetListResponse = {

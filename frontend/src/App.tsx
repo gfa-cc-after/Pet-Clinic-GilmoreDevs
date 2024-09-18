@@ -8,6 +8,7 @@ import { ProfileDeletion } from "./pages/ProfileDeletion";
 import { ProfileDetail } from "./pages/ProfileDetail";
 import { ProfileUpdate } from "./pages/ProfileUpdate";
 import { Register } from "./pages/Register";
+import { ProtectedPage } from "./pages/utils/ProtectedPage";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,9 @@ const router = createBrowserRouter([
   },
   {
     path: "pets",
-    element: <PetList />,
+    element: <ProtectedPage>
+               <PetList />
+             </ProtectedPage>,
   },
 ]);
 

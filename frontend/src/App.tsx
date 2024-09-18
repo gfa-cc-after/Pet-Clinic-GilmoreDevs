@@ -37,9 +37,11 @@ const router = createBrowserRouter([
   },
   {
     path: "pets",
-    element: <ProtectedPage>
-               <PetList />
-             </ProtectedPage>,
+    element: (
+      <ProtectedPage>
+        <PetList />
+      </ProtectedPage>
+    ),
   },
 ]);
 

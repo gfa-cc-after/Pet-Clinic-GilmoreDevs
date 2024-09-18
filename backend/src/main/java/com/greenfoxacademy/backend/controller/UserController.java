@@ -9,6 +9,7 @@ import com.greenfoxacademy.backend.dtos.RegisterResponseDto;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
+import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import java.security.Principal;
 import java.util.UUID;
@@ -55,12 +56,9 @@ public class UserController {
    * @return a response entity with the status code and the token
    */
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
-    try {
+  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto)
+          throws UserNotVerifiedException {
       return ResponseEntity.status(HttpStatus.OK).body(ownerService.login(loginRequestDto));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
   }
 
   /**

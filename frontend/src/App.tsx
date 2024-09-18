@@ -13,27 +13,32 @@ import { ProtectedPage } from "./pages/utils/ProtectedPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
-  },
-  {
-    path: "register",
-    element: <Register />,
-  },
-  {
-    path: "login",
-    element: <Login />,
-  },
-  {
-    path: "profile-update",
-    element: <ProfileUpdate />,
-  },
-  {
-    path: "profile",
-    element: <ProfileDetail />,
-  },
-  {
-    path: "delete-profile",
-    element: <ProfileDeletion />,
+    children: [
+      {
+        path: "/",
+        element: <Main />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "profile-update",
+        element: <ProfileUpdate />,
+      },
+      {
+        path: "profile",
+        element: <ProfileDetail />,
+      },
+      {
+        path: "delete-profile",
+        element: <ProfileDeletion />,
+      },
+    ],
   },
   {
     path: "pets",

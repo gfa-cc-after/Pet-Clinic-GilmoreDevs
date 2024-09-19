@@ -39,6 +39,19 @@ services:
       - CACHE_PORT=6379
       - CACHE_URL=redis://redis-cache
       - CACHE_PASSWORD=some_redis_password
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_TIMEOUT_SEC=50
     depends_on:
       - postgres-db
       - redis-cache
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  ollama:

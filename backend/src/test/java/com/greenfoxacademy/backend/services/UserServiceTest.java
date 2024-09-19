@@ -7,7 +7,7 @@ import com.greenfoxacademy.backend.controller.OwnerController;
 import com.greenfoxacademy.backend.dtos.RegisterRequestDto;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
-import com.greenfoxacademy.backend.services.user.UserService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class UserServiceTest {
 
   @Mock
-  private UserService userService;
+  private OwnerService ownerService;
   @Mock
   private OwnerRepository ownerRepository;
 
@@ -37,9 +37,9 @@ public class UserServiceTest {
             "password"
     );
 
-    userService.register(registerRequestDto);
+    ownerService.register(registerRequestDto);
 
-    verify(userService, times(1)).register(registerRequestDto);
+    verify(ownerService, times(1)).register(registerRequestDto);
 
   }
 

@@ -30,7 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
-  private UserServiceImpl userService;
+  private OwnerService ownerService;
 
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -48,7 +48,7 @@ class UserServiceImplTest {
   @BeforeEach
   void setUp() {
     Mockito.reset(ownerRepository);
-    userService = new UserServiceImpl(
+    ownerService = new OwnerServiceImpl(
             ownerRepository,
             passwordEncoder,
             authService,
@@ -69,7 +69,7 @@ class UserServiceImplTest {
 
     // When
     when(ownerRepository.save(any())).thenReturn(asSaved);
-    userService.register(registerRequestDto);
+    ownerService.register(registerRequestDto);
 
     // Then
     Mockito.verify(ownerRepository, Mockito.times(1)).save(any());
@@ -91,7 +91,7 @@ class UserServiceImplTest {
 
     Assertions.assertThrows(
             UserAlreadyExistsError.class,
-            () -> userService.register(registerRequestDto)
+            () -> ownerService.register(registerRequestDto)
     );
 
   }
@@ -111,7 +111,7 @@ class UserServiceImplTest {
     when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
     when(authService.generateToken(any())).thenReturn("token");
 
-    userService.login(userLoginRequestDto);
+    ownerService.login(userLoginRequestDto);
 
     // Then
     Mockito.verify(
@@ -137,7 +137,7 @@ class UserServiceImplTest {
     // When
     when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
 
-    Assertions.assertThrows(Exception.class, () -> userService.login(userLoginRequestDto));
+    Assertions.assertThrows(Exception.class, () -> ownerService.login(userLoginRequestDto));
 
     // Then
     Mockito.verify(
@@ -166,7 +166,7 @@ class UserServiceImplTest {
     when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
     when(ownerRepository.save(any())).thenReturn(owner);
 
-    userService.profileUpdate(email, profileUpdateRequestDto);
+    ownerService.profileUpdate(email, profileUpdateRequestDto);
 
     // Then
     Mockito
@@ -198,7 +198,7 @@ class UserServiceImplTest {
     // Then
     Assertions.assertThrows(
             CannotUpdateUserException.class,
-            () -> userService.profileUpdate(email, profileUpdateRequestDto)
+            () -> ownerService.profileUpdate(email, profileUpdateRequestDto)
     );
   }
 
@@ -213,7 +213,7 @@ class UserServiceImplTest {
     String email = "email";
     // When
     when(ownerRepository.findByEmail(anyString())).thenReturn(Optional.of(owner));
-    userService.loadUserByUsername(email);
+    ownerService.loadUserByUsername(email);
     // Then
     Mockito.verify(
             ownerRepository,
@@ -233,7 +233,7 @@ class UserServiceImplTest {
             .build();
     // When
     when(ownerRepository.findByVerificationId(id)).thenReturn(Optional.of(owner));
-    userService.verifyUser(id);
+    ownerService.verifyUser(id);
     // Then
     Mockito.verify(
             ownerRepository,
@@ -254,7 +254,7 @@ class UserServiceImplTest {
     LoginRequestDto loginRequestDto = new LoginRequestDto(owner.getEmail(), "password");
 
     when(ownerRepository.findByEmail(owner.getEmail())).thenReturn(Optional.of(owner));
-    Assertions.assertThrows(Exception.class, () -> userService.login(loginRequestDto));
+    Assertions.assertThrows(Exception.class, () -> ownerService.login(loginRequestDto));
 
   }
 }

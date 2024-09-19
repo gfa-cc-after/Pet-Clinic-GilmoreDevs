@@ -8,8 +8,8 @@ import { ProfileDeletion } from "./pages/ProfileDeletion";
 import { ProfileDetail } from "./pages/ProfileDetail";
 import { ProfileUpdate } from "./pages/ProfileUpdate";
 import { Register } from "./pages/Register";
+import { Search } from "./pages/Search";
 import { ProtectedPage as PP } from "./pages/utils/ProtectedPage";
-import { Search } from "./pages/Search"
 
 const router = createBrowserRouter([
   {
@@ -29,21 +29,37 @@ const router = createBrowserRouter([
       },
       {
         path: "profile-update",
-        element: <PP><ProfileUpdate /></PP>,
+        element: (
+          <PP>
+            <ProfileUpdate />
+          </PP>
+        ),
       },
       {
         path: "profile",
-        element: <PP><ProfileDetail /></PP>,
+        element: (
+          <PP>
+            <ProfileDetail />
+          </PP>
+        ),
       },
       {
         path: "delete-profile",
-        element: <PP><ProfileDeletion /></PP>,
+        element: (
+          <PP>
+            <ProfileDeletion />
+          </PP>
+        ),
       },
     ],
   },
   {
     path: "pets",
-    element: <PP><PetList /></PP>
+    element: (
+      <PP>
+        <PetList />
+      </PP>
+    ),
   },
   {
     path: "search",

@@ -18,9 +18,8 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
-import java.util.Optional;
-
 import com.greenfoxacademy.backend.services.user.vet.VetService;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,7 +35,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerTest {
+class OwnerControllerTest {
 
   /**
    * The UserRepository is mocked, so we can define its behavior in each test.

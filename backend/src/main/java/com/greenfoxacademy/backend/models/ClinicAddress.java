@@ -39,7 +39,7 @@ public class ClinicAddress {
   private ClinicDetails clinicDetails;
   private String city;
   @Column(length = 4)
-  private int zip;
+  private String zip;
   private String street;
   private double longitude;
   private double latitude;

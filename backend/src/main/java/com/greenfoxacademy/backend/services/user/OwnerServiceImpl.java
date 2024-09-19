@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service implementation to manage {@link UserService}.
+ * Service implementation to manage {@link OwnerService}.
  */
 @Service
 @RequiredArgsConstructor

@@ -19,5 +19,5 @@ public interface ClinicAddressRepository extends JpaRepository<ClinicAddress, Lo
    * @return a list of clinic addresses matching the given criteria.
    */
   List<ClinicAddress> findAllByZipContainingOrCityContainingOrStreetContaining(
-          Integer zip, String city, String street);
+          String zip, String city, String street);
 }

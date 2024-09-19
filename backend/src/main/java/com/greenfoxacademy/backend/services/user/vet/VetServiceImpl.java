@@ -33,7 +33,7 @@ public class VetServiceImpl implements VetService {
 
     List<ClinicAddress> clinicAddressList = clinicAddressRepository
             .findAllByZipContainingOrCityContainingOrStreetContaining(
-                    Integer.parseInt(word), word, word);
+                    word , word, word);
 
     vetList.addAll( clinicAddressList.stream()
             .map(a -> a.getClinicDetails().getVet()).toList());

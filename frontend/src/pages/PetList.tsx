@@ -6,7 +6,7 @@ const PetList = () => {
 
   useEffect(() => {
     petList()
-      .then((petsResponse) => setPets(petsResponse.data.pets))
+      .then((petsResponse) => setPets(petsResponse.pets))
       .catch((error) => {
         console.error("Error fetching pets:", error);
       });

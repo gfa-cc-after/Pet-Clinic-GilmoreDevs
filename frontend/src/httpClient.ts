@@ -21,8 +21,9 @@ type PetListResponse = {
   pets: PetDetails[];
 };
 
-const petList = () => {
-  return httpClient.get<PetListResponse>("/pets");
+const petList = async () => {
+  const response = await httpClient.get<PetListResponse>("/pets");
+  return response.data;
 };
 
 type RegisterRequest = {
@@ -103,4 +104,12 @@ const vetList = async (request: string) => {
   return response.data;
 };
 
-export { login, register, logout, updateProfile, deleteProfile, vetList };
+export {
+  login,
+  register,
+  logout,
+  updateProfile,
+  deleteProfile,
+  vetList,
+  petList,
+};

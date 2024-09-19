@@ -20,9 +20,14 @@ export function Main() {
         </>
       )}
       {isAuthenticated && (
-        <Link className={"links"} to="/profile">
-          Profile
-        </Link>
+        <>
+          <Link className={"links"} to="/profile">
+            Profile
+          </Link>
+          <Link className={"links"} to="/pets">
+            PetList
+          </Link>
+        </>
       )}
     </>
   );

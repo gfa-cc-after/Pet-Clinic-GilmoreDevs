@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.greenfoxacademy.backend.config.EmailConfiguration;
+import com.greenfoxacademy.backend.services.pet.PetService;
 import com.greenfoxacademy.backend.services.user.owner.OwnerService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -35,6 +36,10 @@ class EmailServiceImplTest {
 
   @MockBean
   private OwnerService ownerService;
+
+  @MockBean
+  private PetService petService;
+
 
   private EmailServiceImpl emailService;
 

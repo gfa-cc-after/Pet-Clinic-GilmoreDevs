@@ -10,6 +10,21 @@ const httpClient = axios.create({
   },
 });
 
+export type PetDetails = {
+  name: string;
+  breed: string;
+  sex: string;
+  birthDate: Date;
+};
+
+type PetListResponse = {
+  pets: PetDetails[];
+};
+
+const petList = () => {
+  return httpClient.get<PetListResponse>("/pets");
+};
+
 type RegisterRequest = {
   email: string;
   password: string;
@@ -70,4 +85,4 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile };
+export { login, register, logout, updateProfile, deleteProfile, petList };

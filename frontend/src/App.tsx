@@ -3,10 +3,12 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
-import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
-import { ProfileDetail } from "./pages/ProfileDetail.tsx";
-import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
+import PetList from "./pages/PetList";
+import { ProfileDeletion } from "./pages/ProfileDeletion";
+import { ProfileDetail } from "./pages/ProfileDetail";
+import { ProfileUpdate } from "./pages/ProfileUpdate";
 import { Register } from "./pages/Register";
+import { ProtectedPage } from "./pages/utils/ProtectedPage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
         element: <ProfileDeletion />,
       },
     ],
+  },
+  {
+    path: "pets",
+    element: (
+      <ProtectedPage>
+        <PetList />
+      </ProtectedPage>
+    ),
   },
 ]);
 

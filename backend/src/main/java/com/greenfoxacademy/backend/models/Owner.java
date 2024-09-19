@@ -38,7 +38,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @AllArgsConstructor
 @Table(name = "_owner")
 public class Owner extends User {
-  @OneToMany(mappedBy = "petOwner")
+  @OneToMany(mappedBy = "owner")
   private List<Pet> pets;
 
   @Override

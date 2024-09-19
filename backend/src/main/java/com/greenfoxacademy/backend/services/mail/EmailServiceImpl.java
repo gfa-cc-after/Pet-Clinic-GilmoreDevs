@@ -6,7 +6,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;

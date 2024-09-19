@@ -33,9 +33,9 @@ public class VetServiceImpl implements VetService {
 
     List<ClinicAddress> clinicAddressList = clinicAddressRepository
             .findAllByZipContainingOrCityContainingOrStreetContaining(
-                    word , word, word);
+                    word, word, word);
 
-    vetList.addAll( clinicAddressList.stream()
+    vetList.addAll(clinicAddressList.stream()
             .map(a -> a.getClinicDetails().getVet()).toList());
 
     vetList.addAll(clinicDetailsRepository.findAllByClinicNameContaining(word)

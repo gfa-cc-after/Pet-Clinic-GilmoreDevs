@@ -1,6 +1,9 @@
 package com.greenfoxacademy.backend.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;

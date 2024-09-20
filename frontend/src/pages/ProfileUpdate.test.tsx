@@ -1,22 +1,32 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { MockedFunction } from "vitest";
 import { useProfileUpdateState } from "../hooks/useProfileUpdate";
 import { ProfileUpdate } from "./ProfileUpdate.tsx";
 
 vi.mock("../hooks/useProfileUpdate");
 
-const mockUseProfileUpdateState = useProfileUpdateState as vi.MockedFunction<
+const mockUseProfileUpdateState = useProfileUpdateState as MockedFunction<
   typeof useProfileUpdateState
 >;
 
 describe("ProfileUpdate", () => {
   beforeEach(() => {
     mockUseProfileUpdateState.mockReturnValue({
-      state: { user: { email: "", firstName: "", lastName: "", password: "" } },
       updateUserField: vi.fn(),
       updateUserProfile: vi.fn(),
       navigate: vi.fn(),
+      state: {
+        user: {
+          email: "",
+          firstName: "",
+          lastName: "",
+          password: "",
+        },
+        errorMessage: null,
+        message: null,
+      },
     });
   });
 

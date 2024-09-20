@@ -102,4 +102,4 @@ const PetList = () => {
   );
 };
 
-export default PetList;
+export { PetList };

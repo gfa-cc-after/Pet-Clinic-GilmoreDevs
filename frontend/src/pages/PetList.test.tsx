@@ -1,12 +1,15 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-import { petList } from "../httpClient";
-import PetList from "./PetList";
+import type { AxiosResponse } from "axios";
+import { type Mocked, describe, expect, it, vi } from "vitest";
+import * as httpClient from "../httpClient";
+import { PetList } from "./PetList";
 
 // Mock the petList function
 vi.mock("../httpClient", () => ({
   petList: vi.fn(),
 }));
+
+const mockHttpClient = httpClient as Mocked<typeof httpClient>;
 
 const mockPets = [
   {
@@ -29,7 +32,9 @@ const mockPets = [
 
 describe("PetList Component", () => {
   it("displays pets in a table when data is available", async () => {
-    (petList as vi.mock).mockResolvedValueOnce({ data: { pets: mockPets } });
+    mockHttpClient.petList.mockResolvedValue({
+      data: { pets: mockPets },
+    } as AxiosResponse);
 
     render(<PetList />);
 
@@ -42,7 +47,9 @@ describe("PetList Component", () => {
   });
 
   it("displays a message when no pets are registered", async () => {
-    (petList as vi.mock).mockResolvedValueOnce({ data: { pets: [] } });
+    mockHttpClient.petList.mockResolvedValue({
+      data: { pets: [] },
+    } as AxiosResponse);
 
     render(<PetList />);
 

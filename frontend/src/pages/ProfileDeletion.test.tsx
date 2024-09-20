@@ -9,7 +9,6 @@ vi.mock("../httpClient", () => ({
   deleteProfile: vi.fn(),
 }));
 
-// biome-ignore lint: used it for mocking purposes
 import * as httpClient from "../httpClient";
 
 describe("ProfileDeletion", () => {

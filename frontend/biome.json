@@ -37,6 +37,16 @@
           }
         }
       }
+    },
+    {
+      "include": ["*.test.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNamespaceImport": "off"
+          }
+        }
+      }
     }
   ]
 }

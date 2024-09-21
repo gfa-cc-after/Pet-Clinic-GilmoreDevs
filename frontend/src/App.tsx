@@ -3,7 +3,7 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
-import PetList from "./pages/PetList";
+import { PetList } from "./pages/PetList";
 import { ProfileDeletion } from "./pages/ProfileDeletion";
 import { ProfileDetail } from "./pages/ProfileDetail";
 import { ProfileUpdate } from "./pages/ProfileUpdate";

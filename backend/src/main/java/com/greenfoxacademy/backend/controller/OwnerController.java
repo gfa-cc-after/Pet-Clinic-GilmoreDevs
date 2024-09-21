@@ -10,9 +10,10 @@ import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import java.security.Principal;
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +31,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class OwnerController {
   private final OwnerService ownerService;
 
   /**
    * This method registers a new user.
    *
    * @param registerRequestDto the user to be registered
-   * @return a response entity with the status code and the location of the new user
+   * @return a response entity with the status code and the location of the new
+   *         user
    */
   @PostMapping("/register")
   public ResponseEntity<RegisterResponseDto> registerUser(
-          @Validated @RequestBody RegisterRequestDto registerRequestDto
-  )throws UserAlreadyExistsError {
+      @Validated @RequestBody RegisterRequestDto registerRequestDto) throws UserAlreadyExistsError {
     return ResponseEntity.status(HttpStatus.OK).body(ownerService.register(registerRequestDto));
   }
 
@@ -57,8 +58,8 @@ public class UserController {
    */
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto)
-          throws UserNotVerifiedException {
-      return ResponseEntity.status(HttpStatus.OK).body(ownerService.login(loginRequestDto));
+      throws UserNotVerifiedException {
+    return ResponseEntity.status(HttpStatus.OK).body(ownerService.login(loginRequestDto));
   }
 
   /**
@@ -71,12 +72,12 @@ public class UserController {
    */
   @PatchMapping("/profile-update")
   public ResponseEntity<ProfileUpdateResponseDto> userProfileUpdate(
-          Principal principal,
-          @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto
-  ) throws CannotUpdateUserException {
+      Principal principal,
+      @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto)
+       throws CannotUpdateUserException {
     return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(ownerService.profileUpdate(principal.getName(), profileUpdateRequestDto));
+        .status(HttpStatus.OK)
+        .body(ownerService.profileUpdate(principal.getName(), profileUpdateRequestDto));
   }
 
   /**

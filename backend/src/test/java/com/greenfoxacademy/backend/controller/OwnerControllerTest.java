@@ -18,6 +18,7 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.models.Owner;
 import com.greenfoxacademy.backend.repositories.OwnerRepository;
 import com.greenfoxacademy.backend.services.mail.EmailService;
+import com.greenfoxacademy.backend.services.user.vet.VetService;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerTest {
+class OwnerControllerTest {
 
   /**
    * The UserRepository is mocked, so we can define its behavior in each test.
@@ -50,6 +51,9 @@ class UserControllerTest {
 
   @MockBean
   private EmailService emailService;
+
+  @MockBean
+  private VetService vetService;
 
   /**
    * The PasswordEncoder is used to encode the password before saving it to the database.
@@ -246,7 +250,7 @@ class UserControllerTest {
   @Test
   void shouldReturnUserSuccessfullyCreatedIfEverythingIsCorrect() throws Exception {
 
-    when(ownerRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1).build());
+    when(ownerRepository.save(Mockito.any())).thenReturn(Owner.builder().id(1L).build());
     when(emailService.sendRegistrationEmail(anyString(), anyString(), Mockito.any()))
             .thenReturn(new EmailSentDto());
     String content = """
@@ -272,7 +276,7 @@ class UserControllerTest {
     when(ownerRepository.findByEmail("johndoe@gmail.com"))
             .thenReturn(Optional
                     .of(Owner.builder()
-                            .id(1)
+                            .id(1L)
                             .firstName("John")
                             .lastName("Doe")
                             .email("johndoe@gmail.com")
@@ -325,7 +329,7 @@ class UserControllerTest {
     String email = "john.doe@gmail.com";
     when(ownerRepository.findByEmail("john.doe@gmail.com"))
             .thenReturn(Optional.of(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(email)
                     .firstName("John")
                     .lastName("Doe")
@@ -334,7 +338,7 @@ class UserControllerTest {
 
     when(ownerRepository.save(Mockito.any()))
             .thenReturn(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(email)
                     .firstName("John")
                     .lastName("Doe")
@@ -382,7 +386,7 @@ class UserControllerTest {
     when(ownerRepository.existsByEmail(loginRequestDto.email())).thenReturn(true);
     when(ownerRepository.findByEmail(loginRequestDto.email()))
             .thenReturn(Optional.of(Owner.builder()
-                    .id(1)
+                    .id(1L)
                     .email(loginRequestDto.email())
                     .firstName("John")
                     .lastName("Doe")

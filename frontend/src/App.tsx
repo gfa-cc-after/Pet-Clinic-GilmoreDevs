@@ -3,35 +3,67 @@ import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
-import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
-import { ProfileDetail } from "./pages/ProfileDetail.tsx";
-import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
+import { PetList } from "./pages/PetList";
+import { ProfileDeletion } from "./pages/ProfileDeletion";
+import { ProfileDetail } from "./pages/ProfileDetail";
+import { ProfileUpdate } from "./pages/ProfileUpdate";
 import { Register } from "./pages/Register";
+import { Search } from "./pages/Search";
+import { ProtectedPage as PP } from "./pages/utils/ProtectedPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    children: [
+      {
+        path: "/",
+        element: <Main />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "profile-update",
+        element: (
+          <PP>
+            <ProfileUpdate />
+          </PP>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <PP>
+            <ProfileDetail />
+          </PP>
+        ),
+      },
+      {
+        path: "delete-profile",
+        element: (
+          <PP>
+            <ProfileDeletion />
+          </PP>
+        ),
+      },
+    ],
   },
   {
-    path: "register",
-    element: <Register />,
+    path: "pets",
+    element: (
+      <PP>
+        <PetList />
+      </PP>
+    ),
   },
   {
-    path: "login",
-    element: <Login />,
-  },
-  {
-    path: "profile-update",
-    element: <ProfileUpdate />,
-  },
-  {
-    path: "profile",
-    element: <ProfileDetail />,
-  },
-  {
-    path: "delete-profile",
-    element: <ProfileDeletion />,
+    path: "search",
+    element: <Search />,
   },
 ]);
 

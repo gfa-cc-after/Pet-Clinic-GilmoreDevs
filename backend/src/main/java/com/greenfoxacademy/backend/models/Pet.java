@@ -31,14 +31,14 @@ public class Pet {
   private Integer id;
 
   @Column(nullable = false)
-  private String petName;
-  private String petBreed;
-  private String petSex;
-  private Date petBirthDate;
+  private String name;
+  private String breed;
+  private String sex;
+  private Date birthDate;
   private Date lastCheckUp;
   private Date nextCheckUp;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "petOwner_Id")
-  private Owner petOwner;
+  @JoinColumn(name = "owner_id")
+  private Owner owner;
 }

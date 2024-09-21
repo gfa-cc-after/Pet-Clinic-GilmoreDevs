@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user.owner;
+package com.greenfoxacademy.backend.services.user;
 
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
@@ -28,10 +28,13 @@ public interface OwnerService extends UserDetailsService {
           throws UserNotVerifiedException, UsernameNotFoundException;
 
   ProfileUpdateResponseDto profileUpdate(
-      String user,
-      ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
+          String user,
+          ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
 
   void deleteProfile(String username) throws UnableToDeleteProfileError;
 
   void verifyUser(UUID uuid) throws CannotVerifyUserError;
+
+  Owner findByEmail(String username) throws UsernameNotFoundException;
+
 }

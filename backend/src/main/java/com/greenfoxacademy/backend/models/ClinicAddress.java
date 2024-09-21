@@ -1,8 +1,10 @@
 package com.greenfoxacademy.backend.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
@@ -31,16 +33,18 @@ import lombok.Data;
  * @see jakarta.persistence.Embeddable
  */
 
-@Embeddable
+@Entity
+@Table(name = "_clinicAddress")
 @Data
 public class ClinicAddress {
   @Id
   private Long id;
+  @OneToOne
+  private ClinicDetails clinicDetails;
   private String city;
   @Column(length = 4)
-  private int zip;
+  private String zip;
   private String street;
-  private String clinicName;
-
-
+  private double longitude;
+  private double latitude;
 }

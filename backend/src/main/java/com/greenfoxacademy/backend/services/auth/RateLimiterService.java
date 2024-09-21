@@ -17,10 +17,10 @@ public class RateLimiterService {
   private static final int ADMIN_RATE_LIMIT = 20;
 
   // Method to determine rate limit based on role
-  public boolean isRateLimited(String userId, List<String> roles) {
+  public boolean isRateLimited(String email, List<String> roles) {
     int maxRequestsPerMinute = getMaxRequestsPerMinute(roles);
 
-    String key = "rate_limit:" + userId;
+    String key = "rate_limit:" + email;
     Long requestCount = redisTemplate.opsForValue().increment(key);
 
     if (requestCount == 1) {

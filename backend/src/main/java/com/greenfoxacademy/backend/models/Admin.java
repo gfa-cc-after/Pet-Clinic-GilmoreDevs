@@ -33,7 +33,6 @@ import java.util.List;
 @Entity
 @SuperBuilder
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class Admin extends User {
   @Override
   @Transient

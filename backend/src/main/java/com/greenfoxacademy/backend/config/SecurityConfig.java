@@ -6,9 +6,12 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+
 import java.util.Arrays;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,6 +26,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,14 +41,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
   private final CorsConfig corsConfig;
   private final RsaSecretKeys rsaSecretKeys;
+  private final RedisRateLimitFilter redisRateLimitFilter;
 
   private final String[] allowedUrls = {
-      "/register",
-      "/login",
-      "/health-check",
-      "/swagger-ui",
-      "/v3/api-docs",
-      "/verification"
+          "/register",
+          "/login",
+          "/health-check",
+          "/swagger-ui",
+          "/v3/api-docs",
+          "/verification"
   };
 
   /**
@@ -64,6 +69,7 @@ public class SecurityConfig {
               .csrf((csrf) -> csrf.ignoringRequestMatchers("/login", "/register"))
               .httpBasic(Customizer.withDefaults())
               .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder())))
+              .addFilterAfter(redisRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
               .sessionManagement((session) -> session
                   .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -78,9 +84,9 @@ public class SecurityConfig {
   @Bean
   JwtEncoder jwtEncoder() {
     JWK jwk = new RSAKey
-        .Builder(this.rsaSecretKeys.getPublicKey())
-        .privateKey(this.rsaSecretKeys.getPrivateKey())
-        .build();
+            .Builder(this.rsaSecretKeys.getPublicKey())
+            .privateKey(this.rsaSecretKeys.getPrivateKey())
+            .build();
     JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
     return new NimbusJwtEncoder(jwks);
   }
@@ -99,15 +105,15 @@ public class SecurityConfig {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Arrays.stream(corsConfig.getCorsUrls().split(",")).toList());
     configuration
-        .setAllowedMethods(Arrays.asList(
-            "GET",
-            "POST",
-            "PUT",
-            "PATCH",
-            "DELETE",
-            "OPTIONS",
-            "HEAD"
-        ));
+            .setAllowedMethods(Arrays.asList(
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "PATCH",
+                    "DELETE",
+                    "OPTIONS",
+                    "HEAD"
+            ));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
 

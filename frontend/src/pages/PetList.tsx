@@ -6,7 +6,7 @@ const PetList = () => {
 
   useEffect(() => {
     petList()
-      .then((petsResponse) => setPets(petsResponse.data.pets))
+      .then((petsResponse) => setPets(petsResponse.pets))
       .catch((error) => {
         console.error("Error fetching pets:", error);
       });
@@ -15,7 +15,7 @@ const PetList = () => {
   return (
     <>
       <h1>Please choose from your registered Pets!</h1>
-      {pets.length > 0 ? (
+      {pets?.length > 0 ? (
         <table
           style={{
             width: "100%",

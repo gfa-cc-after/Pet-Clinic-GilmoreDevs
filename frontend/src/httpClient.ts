@@ -21,8 +21,9 @@ type PetListResponse = {
   pets: PetDetails[];
 };
 
-const petList = () => {
-  return httpClient.get<PetListResponse>("/pets");
+const petList = async () => {
+  const response = await httpClient.get<PetListResponse>("/pets");
+  return response.data;
 };
 
 type RegisterRequest = {
@@ -85,4 +86,30 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
-export { login, register, logout, updateProfile, deleteProfile, petList };
+export type VetDetails = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  clinicAddress: string;
+};
+
+type VetListResponse = {
+  vets: VetDetails[];
+};
+
+const vetList = async (request: string) => {
+  const response = await httpClient.get<VetListResponse>(
+    `/search-vet/?word=${request}`,
+  );
+  return response.data;
+};
+
+export {
+  login,
+  register,
+  logout,
+  updateProfile,
+  deleteProfile,
+  vetList,
+  petList,
+};

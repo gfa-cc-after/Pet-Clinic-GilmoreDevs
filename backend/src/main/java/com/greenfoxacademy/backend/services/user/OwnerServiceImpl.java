@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user.owner;
+package com.greenfoxacademy.backend.services.user;
 
 import com.greenfoxacademy.backend.config.FeatureFlags;
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;

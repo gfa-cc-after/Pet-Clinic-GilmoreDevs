@@ -27,6 +27,9 @@ export function Main() {
           <Link className={"links"} to="/pets">
             PetList
           </Link>
+          <Link className={"links"} to="/search">
+            Search vets nearby
+          </Link>
         </>
       )}
     </>

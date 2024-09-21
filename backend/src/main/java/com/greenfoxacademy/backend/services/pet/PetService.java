@@ -1,8 +1,6 @@
 package com.greenfoxacademy.backend.services.pet;
 
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
 /**
  * Retrieves the pets of the specified owner.

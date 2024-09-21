@@ -1,4 +1,4 @@
-package com.greenfoxacademy.backend.services.user.owner;
+package com.greenfoxacademy.backend.services.user;
 
 import com.greenfoxacademy.backend.dtos.LoginRequestDto;
 import com.greenfoxacademy.backend.dtos.LoginResponseDto;
@@ -13,7 +13,6 @@ import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.models.Owner;
 import java.util.UUID;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,20 +22,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface OwnerService extends UserDetailsService {
-  UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-
-  Owner findByEmail(String username);
-
   RegisterResponseDto register(RegisterRequestDto userDto) throws UserAlreadyExistsError;
 
   LoginResponseDto login(LoginRequestDto loginRequestDto)
           throws UserNotVerifiedException, UsernameNotFoundException;
 
   ProfileUpdateResponseDto profileUpdate(
-      String user,
-      ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
+          String user,
+          ProfileUpdateRequestDto profileUpdateRequestDto) throws CannotUpdateUserException;
 
   void deleteProfile(String username) throws UnableToDeleteProfileError;
 
   void verifyUser(UUID uuid) throws CannotVerifyUserError;
+
+  Owner findByEmail(String username) throws UsernameNotFoundException;
+
 }

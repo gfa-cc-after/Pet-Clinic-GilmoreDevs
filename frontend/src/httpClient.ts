@@ -21,8 +21,9 @@ type PetListResponse = {
   pets: PetDetails[];
 };
 
-const petList = () => {
-  return httpClient.get<PetListResponse>("/pets");
+const petList = async () => {
+  const response = await httpClient.get<PetListResponse>("/pets");
+  return response.data;
 };
 
 export type CreatePet = {
@@ -36,7 +37,12 @@ type AddPetResponse = {
   id: number;
 };
 
-const addPet = (request: { sex: string; name: string; birthDate: Date; breed: string }) => {
+const addPet = (request: {
+  sex: string;
+  name: string;
+  birthDate: Date;
+  breed: string;
+}) => {
   return httpClient.post<AddPetResponse>("/add-pet", request);
 };
 

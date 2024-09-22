@@ -5,12 +5,11 @@ import { type PetDetails, petList } from "../httpClient.ts";
 
 const PetList = () => {
     const [pets, setPets] = useState<PetDetails[]>([]);
-
     const navigate = useNavigate();
 
   useEffect(() => {
     petList()
-      .then((petsResponse) => setPets(petsResponse.data.pets))
+      .then((petsResponse) => setPets(petsResponse.pets))
       .catch((error) => {
         console.error("Error fetching pets:", error);
       });

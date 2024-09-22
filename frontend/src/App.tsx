@@ -1,14 +1,14 @@
 import "./App.css";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import AddPet from "./pages/AddPet.tsx";
-import { Login } from "./pages/Login.tsx";
-import { Main } from "./pages/Main.tsx";
-import PetList from "./pages/PetList.tsx";
-import { ProfileDeletion } from "./pages/ProfileDeletion.tsx";
-import { ProfileDetail } from "./pages/ProfileDetail.tsx";
-import { ProfileUpdate } from "./pages/ProfileUpdate.tsx";
-import { Register } from "./pages/Register.tsx";
+import AddPet from "./pages/AddPet";
+import { Login } from "./pages/Login";
+import { Main } from "./pages/Main";
+import PetList from "./pages/PetList";
+import { ProfileDeletion } from "./pages/ProfileDeletion";
+import { ProfileDetail } from "./pages/ProfileDetail";
+import { ProfileUpdate } from "./pages/ProfileUpdate";
+import { Register } from "./pages/Register";
 
 const router = createBrowserRouter([
   {

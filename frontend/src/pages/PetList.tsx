@@ -93,7 +93,7 @@ const PetList = () => {
                     border: "1px solid #ddd",
                   }}
                 >
-                  {new Date(pet.birthDate).toDateString()}
+                  {pet.birthDate}
                 </td>
               </tr>
             ))}

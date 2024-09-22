@@ -14,9 +14,7 @@ export type PetDetails = {
   name: string;
   breed: string;
   sex: string;
-  birthDate: Date;
-  lastCheckUp: Date;
-  nextCheckUp: Date;
+  birthDate: string;
 };
 
 type PetListResponse = {
@@ -31,19 +29,14 @@ export type CreatePet = {
   name: string;
   breed: string;
   sex: string;
-  birthDate: Date;
+  birthDate: string;
 };
 
 type AddPetResponse = {
   id: number;
 };
 
-const addPet = (request: {
-  name: string;
-  breed: string;
-  sex: string;
-  birthDate: Date;
-}) => {
+const addPet = (request: { sex: string; name: string; birthDate: Date; breed: string }) => {
   return httpClient.post<AddPetResponse>("/add-pet", request);
 };
 
@@ -53,6 +46,7 @@ type RegisterRequest = {
   firstName: string;
   lastName: string;
 };
+
 type RegisterResponse = {
   id: number;
 };

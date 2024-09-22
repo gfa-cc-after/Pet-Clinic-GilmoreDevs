@@ -10,28 +10,25 @@ function AddPet() {
     name: "",
     breed: "",
     sex: "",
-    birthDate: new Date(),
+    birthDate: "",
   });
 
   const handleChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    //if (name === "birthDate") {
-    //  setPet({ ...pet, [name]: new Date(value) });
-    //} else {
-      setPet({ ...pet, [name]: value });
-    //}
+                          target: { name, value },
+                        }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+          setPet({ ...pet, [name]: value });
   };
 
   const toast = useToast();
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addPet(pet);
-      setPet({ name: "", breed: "", sex: "", birthDate: new Date() });
+      const petToSubmit = { ...pet, birthDate: new Date(pet.birthDate) };
+      console.log("Submitting pet:", petToSubmit);
+      await addPet(petToSubmit);
+      setPet({ name: "", breed: "", sex: "", birthDate: "" });
       toast({
         title: "Pet Added.",
         description: "Pet added successfully",
@@ -40,6 +37,7 @@ function AddPet() {
         isClosable: true,
       });
     } catch (error) {
+      console.error("Error adding pet:", error);
       if (error instanceof AxiosError) {
         toast({
           title: "Cannot add pet 🫣.",

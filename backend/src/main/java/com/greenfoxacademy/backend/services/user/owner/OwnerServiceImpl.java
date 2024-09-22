@@ -99,8 +99,6 @@ public class OwnerServiceImpl implements OwnerService {
     return new ProfileUpdateResponseDto(authService.generateToken(updatedUser));
   }
 
-  @Cacheable(value = "profile-cache", key = "#username")
-  @Override
   public Owner findByEmail(String username) throws UsernameNotFoundException {
     return ownerRepository.findByEmail(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user!"));

@@ -42,7 +42,7 @@ public class PetController {
     * @return a {@link ResponseEntity} containing an {@link AddPetResponseDto}
     with the added pet's details
     */
-  @PostMapping("/pets")
+  @PostMapping("/add-pet")
   public ResponseEntity<AddPetResponseDto> addPet(Principal owner,
                                                   @RequestBody CreatePetDto createPetDto) {
     return ResponseEntity

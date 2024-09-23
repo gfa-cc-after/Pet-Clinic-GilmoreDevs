@@ -52,7 +52,11 @@ public class PetServiceImpl implements PetService {
    */
   @Override
   public AddPetResponseDto addPet(String email, CreatePetDto createPetDto) {
-    Pet pet = modelMapper.map(createPetDto, Pet.class);
+    Pet pet = new Pet();
+    pet.setName(createPetDto.name());
+    pet.setBreed(createPetDto.breed());
+    pet.setSex(createPetDto.sex());
+    pet.setBirthDate(createPetDto.birthDate());
     pet.setOwner(ownerService.findByEmail(email));
     Pet newPet = petRepository.save(pet);
     return new AddPetResponseDto(newPet.getId());

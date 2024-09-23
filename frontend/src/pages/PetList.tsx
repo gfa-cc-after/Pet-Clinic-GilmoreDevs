@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { type PetDetails, petList } from "../httpClient.ts";
 
 const PetList = () => {
-    const [pets, setPets] = useState<PetDetails[]>([]);
-    const navigate = useNavigate();
+  const [pets, setPets] = useState<PetDetails[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     petList()

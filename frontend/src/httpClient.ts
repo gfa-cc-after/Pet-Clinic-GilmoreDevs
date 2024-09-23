@@ -133,5 +133,5 @@ export {
   deleteProfile,
   vetList,
   petList,
-  addPet
+  addPet,
 };

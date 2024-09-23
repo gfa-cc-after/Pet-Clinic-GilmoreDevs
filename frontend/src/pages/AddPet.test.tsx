@@ -1,9 +1,9 @@
-import { describe, expect, test, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-import AddPet from "./AddPet";
-import { addPet } from "../httpClient";
 import { ChakraProvider } from "@chakra-ui/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { describe, expect, test, vi } from "vitest";
+import { addPet } from "../httpClient";
+import AddPet from "./AddPet";
 
 // Mock the addPet function
 vi.mock("../httpClient", () => ({
@@ -14,11 +14,11 @@ describe("AddPet Component", () => {
   test("renders AddPet form and submits data", async () => {
     // Arrange
     render(
-        <ChakraProvider>
-          <BrowserRouter>
-            <AddPet />
-          </BrowserRouter>
-        </ChakraProvider>
+      <ChakraProvider>
+        <BrowserRouter>
+          <AddPet />
+        </BrowserRouter>
+      </ChakraProvider>,
     );
 
     // Act
@@ -44,6 +44,8 @@ describe("AddPet Component", () => {
       sex: "Male",
       birthDate: new Date("2020-01-01"),
     });
-    expect(await screen.findByText(/pet added successfully/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/pet added successfully/i),
+    ).toBeInTheDocument();
   });
 });

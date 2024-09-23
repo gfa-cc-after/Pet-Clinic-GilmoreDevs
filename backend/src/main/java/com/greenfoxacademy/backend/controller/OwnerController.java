@@ -13,7 +13,6 @@ import com.greenfoxacademy.backend.errors.UserNotVerifiedException;
 import com.greenfoxacademy.backend.services.user.OwnerService;
 import java.security.Principal;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

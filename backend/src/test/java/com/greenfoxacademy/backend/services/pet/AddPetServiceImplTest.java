@@ -30,8 +30,8 @@ class AddPetServiceImplTest {
 
   @Test
   void petSuccessfullyAddedToPetRepository() {
-    CreatePetDto pet = new CreatePetDto("Morzsi","Dog","Male",new Date(2024,9,13));
-    petService.addPet("owner",pet);
+    CreatePetDto pet = new CreatePetDto("Morzsi", "Dog", "Male", new Date(2024, 9, 13));
+    petService.addPet("owner", pet);
 
     verify(petService, times(1)).addPet("owner", pet);
   }

@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import {describe, expect, Mock, test, vi} from "vitest";
+import { type Mock, describe, expect, test, vi } from "vitest";
 import { petList } from "../httpClient";
 import { PetList } from "./PetList";
 

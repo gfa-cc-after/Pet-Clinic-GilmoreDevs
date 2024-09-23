@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import {describe, expect, vi, test} from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { usePetClinicState } from "../../state";
 import { ProtectedPage } from "./ProtectedPage";
 

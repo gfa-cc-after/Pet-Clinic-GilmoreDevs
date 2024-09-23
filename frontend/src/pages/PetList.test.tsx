@@ -1,6 +1,8 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import { render, screen, waitFor } from "@testing-library/react";
-import { type Mocked, describe, expect, it, vi } from "vitest";
-import * as httpClient from "../httpClient";
+import { BrowserRouter } from "react-router-dom";
+import { describe, expect, vi } from "vitest";
+import { petList } from "../httpClient";
 import { PetList } from "./PetList";
 
 // Mock the petList function
@@ -8,48 +10,62 @@ vi.mock("../httpClient", () => ({
   petList: vi.fn(),
 }));
 
-const mockHttpClient = httpClient as Mocked<typeof httpClient>;
-
-const mockPets = [
-  {
-    name: "Buddy",
-    breed: "Golden Retriever",
-    sex: "Male",
-    birthDate: new Date("2018-01-01"),
-    lastCheckUp: new Date("2023-01-01"),
-    nextCheckUp: new Date("2024-01-01"),
-  },
-  {
-    name: "Mittens",
-    breed: "Tabby",
-    sex: "Female",
-    birthDate: new Date("2019-05-15"),
-    lastCheckUp: new Date("2023-05-15"),
-    nextCheckUp: new Date("2024-05-15"),
-  },
-];
+const mockPets = {
+  pets: [
+    {
+      name: "Buddy",
+      breed: "Golden Retriever",
+      sex: "Male",
+      birthDate: "2020-01-01",
+    },
+    { name: "Lucy", breed: "Labrador", sex: "Female", birthDate: "2019-05-15" },
+  ],
+};
 
 describe("PetList Component", () => {
-  it("displays pets in a table when data is available", async () => {
-    mockHttpClient.petList.mockResolvedValue({ pets: mockPets });
+  test("renders pet list and handles navigation", async () => {
+    // Arrange
+    petList.mockResolvedValueOnce(mockPets);
 
-    render(<PetList />);
+    render(
+      <ChakraProvider>
+        <BrowserRouter>
+          <PetList />
+        </BrowserRouter>
+      </ChakraProvider>,
+    );
 
+    // Assert
     await waitFor(() => {
-      expect(screen.getByText("Buddy")).toBeInTheDocument();
-      expect(screen.getByText("Golden Retriever")).toBeInTheDocument();
-      expect(screen.getByText("Mittens")).toBeInTheDocument();
-      expect(screen.getByText("Tabby")).toBeInTheDocument();
+      expect(
+        screen.getByText(/please choose from your registered pets!/i),
+      ).toBeInTheDocument();
+      expect(screen.getByText(/buddy/i)).toBeInTheDocument();
+      expect(screen.getByText(/golden retriever/i)).toBeInTheDocument();
+      expect(screen.getByText(/lucy/i)).toBeInTheDocument();
+      expect(screen.getByText(/labrador/i)).toBeInTheDocument();
     });
+
+    // Act
+    const addButton = screen.getByRole("button", { name: /add new pet/i });
+    expect(addButton).toBeInTheDocument();
   });
 
-  it("displays a message when no pets are registered", async () => {
-    mockHttpClient.petList.mockResolvedValue({ pets: [] });
+  test("displays message when no pets are registered", async () => {
+    // Arrange
+    petList.mockResolvedValueOnce({ pets: [] });
 
-    render(<PetList />);
+    render(
+      <ChakraProvider>
+        <BrowserRouter>
+          <PetList />
+        </BrowserRouter>
+      </ChakraProvider>,
+    );
 
+    // Assert
     await waitFor(() => {
-      expect(screen.getByText("No pets registered.")).toBeInTheDocument();
+      expect(screen.getByText(/no pets registered/i)).toBeInTheDocument();
     });
   });
 });

@@ -29,25 +29,25 @@ public class RedisRateLimitFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request,
                                   HttpServletResponse response,
                                   FilterChain filterChain) throws ServletException, IOException {
-     if (SecurityContextHolder.getContext().getAuthentication() == null){
-        filterChain.doFilter(request, response);
-        return;
+    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+    UserDetails userDetails = (UserDetails) SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getDetails();
+    if (userDetails != null) {
+      String userAuthority = userDetails
+              .getAuthorities()
+              .stream()
+              .map(GrantedAuthority::getAuthority)
+              .findFirst().orElse(null);
+      boolean notAllowed = rateLimiterService.isRateLimited(userDetails, userAuthority);
+      if (notAllowed) {
+        response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(),
+                "Too many request, please return later!");
       }
-      UserDetails userDetails = (UserDetails) SecurityContextHolder
-              .getContext()
-              .getAuthentication()
-              .getDetails();
-      if (userDetails != null) {
-        List<String> userAuthorities = userDetails
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-        boolean notAllowed = rateLimiterService.isRateLimited(userDetails.getUsername(), userAuthorities);
-        if (notAllowed) {
-          response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(),
-                  "Too many request, please return later!");
-        }
     }
     filterChain.doFilter(request, response);
   }

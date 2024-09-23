@@ -1,40 +1,54 @@
 package com.greenfoxacademy.backend.services.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnection;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RateLimiterService {
 
-  @Autowired
-  private StringRedisTemplate redisTemplate;
-
   private static final int OWNER_RATE_LIMIT = 5;
   private static final int ADMIN_RATE_LIMIT = 20;
 
+  public RateLimiterService() {
+    JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+    jedisConnectionFactory.afterPropertiesSet();
+    StringRedisTemplate redisTemplate = new StringRedisTemplate(jedisConnectionFactory);
+  }
+
   // Method to determine rate limit based on role
-  public boolean isRateLimited(String email, List<String> roles) {
-    int maxRequestsPerMinute = getMaxRequestsPerMinute(roles);
+  public boolean isRateLimited(UserDetails userDetails, String userAuthority) {
+    int maxRequestsPerMinute = getMaxRequestsPerMinute(userAuthority);
 
-    String key = "rate_limit:" + email;
-    Long requestCount = redisTemplate.opsForValue().increment(key);
+    String key = "ratelimit:" + userDetails.getUsername() + ":requests";
+    String atKey = redisTemplate.opsForValue().get(key);
 
-    if (requestCount == 1) {
-      redisTemplate.expire(key, Duration.ofMinutes(1));
+    if (atKey == null) {
+      redisTemplate.opsForValue().set(key, "0", 1, TimeUnit.MINUTES);
+      return false;
     }
 
-    return requestCount > maxRequestsPerMinute;
+    int requests = Integer.parseInt(Objects.requireNonNull(atKey));
+    if (requests >= maxRequestsPerMinute) {
+      return true;
+    }
+
+    redisTemplate.opsForValue().increment(key);
+    return false;
   }
 
   // Helper method to determine rate limit based on user role
-  private int getMaxRequestsPerMinute(List<String> roles) {
-    if (roles.contains("ROLE_ADMIN")) {
+  private int getMaxRequestsPerMinute(String userAuthority) {
+    if (userAuthority.equals("ROLE_ADMIN")) {
       return ADMIN_RATE_LIMIT;
     }
-    return OWNER_RATE_LIMIT;  // Default rate limit for regular users
+    return OWNER_RATE_LIMIT;
   }
 }

@@ -1,6 +1,8 @@
 package com.greenfoxacademy.backend.config;
 
 import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +21,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @ConditionalOnProperty(name = "spring.cache.type", havingValue = "redis")
 public class RedisConfig {
-
   /**
    * The cacheManager method creates a RedisCacheManager bean that is used to manage.
    */

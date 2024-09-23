@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { describe, expect, vi } from "vitest";
+import {describe, expect, Mock, test, vi} from "vitest";
 import { petList } from "../httpClient";
 import { PetList } from "./PetList";
 
@@ -25,7 +25,7 @@ const mockPets = {
 describe("PetList Component", () => {
   test("renders pet list and handles navigation", async () => {
     // Arrange
-    petList.mockResolvedValueOnce(mockPets);
+    (petList as Mock).mockResolvedValueOnce(mockPets);
 
     render(
       <ChakraProvider>
@@ -53,7 +53,7 @@ describe("PetList Component", () => {
 
   test("displays message when no pets are registered", async () => {
     // Arrange
-    petList.mockResolvedValueOnce({ pets: [] });
+    (petList as Mock).mockResolvedValueOnce({ pets: [] });
 
     render(
       <ChakraProvider>

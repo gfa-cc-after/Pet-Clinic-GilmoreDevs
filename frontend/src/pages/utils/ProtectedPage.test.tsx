@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { describe, expect, vi } from "vitest";
+import {describe, expect, vi, test} from "vitest";
 import { usePetClinicState } from "../../state";
 import { ProtectedPage } from "./ProtectedPage";
 
@@ -12,7 +12,7 @@ vi.mock("../../state", () => ({
 describe("ProtectedPage Component", () => {
   test("renders children when user is authenticated", () => {
     // Arrange
-    usePetClinicState.mockReturnValue({
+    (usePetClinicState as vi.mock).mockReturnValue({
       auth: { user: { name: "John Doe" } },
     });
 
@@ -30,7 +30,7 @@ describe("ProtectedPage Component", () => {
 
   test("renders Login component when user is not authenticated", () => {
     // Arrange
-    usePetClinicState.mockReturnValue({
+    (usePetClinicState as vi.mock).mockReturnValue({
       auth: { user: null },
     });
 

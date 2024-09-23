@@ -107,12 +107,31 @@ const logout = () => {
   httpClient.defaults.headers.common.Authorization = undefined;
 };
 
+export type VetDetails = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  clinicAddress: string;
+};
+
+type VetListResponse = {
+  vets: VetDetails[];
+};
+
+const vetList = async (request: string) => {
+  const response = await httpClient.get<VetListResponse>(
+    `/search-vet/?word=${request}`,
+  );
+  return response.data;
+};
+
 export {
   login,
   register,
   logout,
   updateProfile,
   deleteProfile,
+  vetList,
   petList,
-  addPet,
+  addPet
 };

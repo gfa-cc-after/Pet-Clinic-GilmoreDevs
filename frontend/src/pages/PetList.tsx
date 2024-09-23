@@ -18,7 +18,7 @@ const PetList = () => {
   return (
     <>
       <h1>Please choose from your registered Pets!</h1>
-      {pets.length > 0 ? (
+      {pets?.length > 0 ? (
         <table
           style={{
             width: "100%",
@@ -112,4 +112,4 @@ const PetList = () => {
   );
 };
 
-export default PetList;
+export { PetList };

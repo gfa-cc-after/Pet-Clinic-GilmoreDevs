@@ -4,8 +4,6 @@ import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
 import com.greenfoxacademy.backend.dtos.CreatePetDto;
 import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
 /**
  * Retrieves the pets of the specified owner.

@@ -6,7 +6,7 @@ import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.models.Pet;
 import com.greenfoxacademy.backend.repositories.PetRepository;
-import com.greenfoxacademy.backend.services.user.owner.OwnerService;
+import com.greenfoxacademy.backend.services.user.OwnerService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

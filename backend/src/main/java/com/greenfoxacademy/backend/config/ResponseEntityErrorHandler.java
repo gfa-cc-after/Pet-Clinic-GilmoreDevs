@@ -1,6 +1,8 @@
 package com.greenfoxacademy.backend.config;
 
+import com.greenfoxacademy.backend.errors.CannotSendEmailException;
 import com.greenfoxacademy.backend.errors.CannotUpdateUserException;
+import com.greenfoxacademy.backend.errors.CannotVerifyUserError;
 import com.greenfoxacademy.backend.errors.UnableToDeleteProfileError;
 import com.greenfoxacademy.backend.errors.UserAlreadyExistsError;
 import java.util.HashMap;
@@ -79,6 +81,36 @@ public class ResponseEntityErrorHandler {
   public ResponseEntity<?> handleUnableToDeleteProfileError(UnableToDeleteProfileError ex) {
     HashMap<String, String> errors = new HashMap<>();
     errors.put("error", "Unable to delete profile");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  /**
+   * Handle UnableToDeleteProfileError error globally in controllers.
+   *
+   * @param ex UnableToDeleteProfileError instance
+   *
+   * @return ResponseEntity with BAD_REQUEST and error key-value pair
+   */
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(CannotSendEmailException.class)
+  public ResponseEntity<?> handleCannotSendEmail(CannotSendEmailException ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  /**
+   * Handle UserNotVerifiedException error globally in controllers.
+   *
+   * @param ex UserNotVerifiedException instance
+   *
+   * @return ResponseEntity with BAD_REQUEST and error key-value pair
+   */
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(CannotVerifyUserError.class)
+  public ResponseEntity<?> handleVerifyUser(CannotVerifyUserError ex) {
+    HashMap<String, String> errors = new HashMap<>();
+    errors.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 }

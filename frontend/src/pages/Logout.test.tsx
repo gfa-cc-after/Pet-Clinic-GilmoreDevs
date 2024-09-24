@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { type Mock, describe, expect, it, vi } from "vitest";
 import { usePetClinicState } from "../state";
 import { Logout } from "./Logout";
 
@@ -11,7 +11,9 @@ vi.mock("../state", () => ({
 describe("Logout component", () => {
   it("calls logout on render", () => {
     const logoutMock = vi.fn();
-    (usePetClinicState as vi.mock).mockReturnValue({ logout: logoutMock });
+    (usePetClinicState as unknown as Mock).mockReturnValue({
+      logout: logoutMock,
+    });
 
     render(<Logout />);
 

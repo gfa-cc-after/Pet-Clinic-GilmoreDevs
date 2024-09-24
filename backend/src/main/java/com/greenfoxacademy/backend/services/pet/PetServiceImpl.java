@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backend.services.pet;
 
+import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
+import com.greenfoxacademy.backend.dtos.CreatePetDto;
 import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 import com.greenfoxacademy.backend.models.Pet;
@@ -39,5 +41,24 @@ public class PetServiceImpl implements PetService {
         .collect(Collectors.toList());
 
     return new PetListResponseDto(petDtoList);
+  }
+
+  /**
+   * Adds a new pet for the specified owner.
+   *
+   * @param email the email of the owner
+   * @param createPetDto the details of the pet to be added
+   * @return the added pet details as a PetListResponseDto
+   */
+  @Override
+  public AddPetResponseDto addPet(String email, CreatePetDto createPetDto) {
+    Pet pet = new Pet();
+    pet.setName(createPetDto.name());
+    pet.setBreed(createPetDto.breed());
+    pet.setSex(createPetDto.sex());
+    pet.setBirthDate(createPetDto.birthDate());
+    pet.setOwner(ownerService.findByEmail(email));
+    Pet newPet = petRepository.save(pet);
+    return new AddPetResponseDto(newPet.getId());
   }
 }

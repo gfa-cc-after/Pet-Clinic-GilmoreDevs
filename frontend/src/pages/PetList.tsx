@@ -1,8 +1,11 @@
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { type PetDetails, petList } from "../httpClient.ts";
 
 const PetList = () => {
   const [pets, setPets] = useState<PetDetails[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     petList()
@@ -89,7 +92,7 @@ const PetList = () => {
                     border: "1px solid #ddd",
                   }}
                 >
-                  {new Date(pet.birthDate).toDateString()}
+                  {pet.birthDate}
                 </td>
               </tr>
             ))}
@@ -98,6 +101,13 @@ const PetList = () => {
       ) : (
         <p>No pets registered.</p>
       )}
+      <Button
+        colorScheme="blue"
+        type="button"
+        onClick={() => navigate("/add-pet")}
+      >
+        Add new pet
+      </Button>
     </>
   );
 };

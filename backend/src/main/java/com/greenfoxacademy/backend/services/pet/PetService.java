@@ -1,5 +1,8 @@
 package com.greenfoxacademy.backend.services.pet;
 
+import com.greenfoxacademy.backend.dtos.AddPetResponseDto;
+import com.greenfoxacademy.backend.dtos.CreatePetDto;
+import com.greenfoxacademy.backend.dtos.PetDetailsDto;
 import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 
 /**
@@ -11,4 +14,6 @@ import com.greenfoxacademy.backend.dtos.PetListResponseDto;
 
 public interface PetService {
   PetListResponseDto getOwnerPets(String name);
+
+  AddPetResponseDto addPet(String name, CreatePetDto createPetDto);
 }

@@ -75,7 +75,11 @@ export function ProfileUpdate() {
         <Button variant="default" type="submit">
           Save
         </Button>
-        <Button variant="destructive" type="button" onClick={() => navigate("/")}>
+        <Button
+          variant="destructive"
+          type="button"
+          onClick={() => navigate("/")}
+        >
           Discard
         </Button>
       </form>

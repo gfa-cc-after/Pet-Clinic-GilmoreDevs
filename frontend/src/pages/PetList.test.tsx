@@ -28,7 +28,6 @@ describe("PetList Component", () => {
     (petList as Mock).mockResolvedValueOnce(mockPets);
 
     render(
-
       <BrowserRouter>
         <PetList />
       </BrowserRouter>,

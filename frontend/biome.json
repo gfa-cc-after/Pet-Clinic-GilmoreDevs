@@ -2,11 +2,7 @@
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "organizeImports": {
     "enabled": true,
-    "ignore": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/coverage/**"
-    ]
+    "ignore": ["**/node_modules/**", "**/dist/**", "**/coverage/**"]
   },
   "linter": {
     "enabled": true,
@@ -37,9 +33,7 @@
   },
   "overrides": [
     {
-      "include": [
-        "*.test.tsx"
-      ],
+      "include": ["*.test.tsx"],
       "linter": {
         "rules": {
           "style": {
@@ -49,9 +43,7 @@
       }
     },
     {
-      "include": [
-        "*.test.tsx"
-      ],
+      "include": ["*.test.tsx"],
       "linter": {
         "rules": {
           "style": {

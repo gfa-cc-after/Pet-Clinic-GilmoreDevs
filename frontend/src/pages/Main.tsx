@@ -18,8 +18,12 @@ export function Main() {
             <TabsTrigger value="account">Login</TabsTrigger>
             <TabsTrigger value="password">Register</TabsTrigger>
           </TabsList>
-          <TabsContent value="account"><LoginForm /></TabsContent>
-          <TabsContent value="password"><RegisterForm /></TabsContent>
+          <TabsContent value="account">
+            <LoginForm />
+          </TabsContent>
+          <TabsContent value="password">
+            <RegisterForm />
+          </TabsContent>
         </Tabs>
       )}
       {isAuthenticated && (

@@ -1,5 +1,5 @@
 const RegisterForm = () => {
-    return (<>REGISTERFORM</>)
-}
+  return <>REGISTERFORM</>;
+};
 
 export { RegisterForm };

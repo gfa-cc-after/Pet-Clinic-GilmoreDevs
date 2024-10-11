@@ -1,4 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+
 import AddPet from "./pages/AddPet";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
@@ -74,6 +76,7 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
+      <Toaster />
     </div>
   );
 }

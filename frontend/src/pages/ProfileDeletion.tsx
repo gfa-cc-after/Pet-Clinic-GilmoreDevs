@@ -65,11 +65,7 @@ export function ProfileDeletion() {
       >
         Yes, delete it!
       </Button>
-      <Button
-        type="button"
-        variant="default"
-        onClick={routChange}
-      >
+      <Button type="button" variant="default" onClick={routChange}>
         Nope, take me back!
       </Button>
     </>

@@ -1,5 +1,5 @@
 // import { Button, useToast } from "@chakra-ui/react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 import { AxiosError } from "axios";
 import type { ChangeEvent, FormEvent } from "react";

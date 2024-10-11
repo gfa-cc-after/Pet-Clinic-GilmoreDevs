@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

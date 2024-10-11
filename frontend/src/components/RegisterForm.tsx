@@ -1,4 +1,3 @@
-"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,6 +19,7 @@ import { register } from "@/httpClient";
 import { passwordSchema, nameSchema } from "@/lib/utils/schemas";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { AxiosError } from "axios";
+import type { ActiveTab } from "./AuthenticationTabs";
 
 const FormSchema = z
   .object({
@@ -38,7 +38,11 @@ const FormSchema = z
 
 type FormValues = z.infer<typeof FormSchema>;
 
-const RegisterForm = () => {
+type RegisterFormProps = {
+  setActiveTab: React.Dispatch<React.SetStateAction<ActiveTab>>;
+};
+
+const RegisterForm = ({ setActiveTab }: RegisterFormProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -71,7 +75,7 @@ const RegisterForm = () => {
     <Form {...form}>
       <Card>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardHeader>
+          <CardHeader className="flex flex-col items-center">
             <h2 className="text-xl font-semibold">Registration</h2>
             <p className="text-sm text-slate-600">
               Make changes to your account here. Click 'Register' when you're done.
@@ -124,7 +128,7 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <MaskedPassword {...field} />
+                    <MaskedPassword {...field} ref={field.ref} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,8 +148,10 @@ const RegisterForm = () => {
               )}
             />
           </CardContent>
-          <CardFooter>
-            <Button type="submit">Register</Button>
+          <CardFooter className="flex flex-col">
+            <Button type="submit" className="my-2 w-1/2">Register</Button>
+            <p className="text-sm text-slate-600 my-4"> - or if you already have and account - </p>
+            <Button className="my-2" variant="link" onClick={() => setActiveTab("login")}>Login</Button>
           </CardFooter>
         </form>
       </Card >

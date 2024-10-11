@@ -41,7 +41,7 @@ const MaskedPassword = ({
       />
       <Button
         className="flex items-center justify-center"
-        variant="ghost"
+        variant="secondary"
         onClick={(event) => {
           event.preventDefault()
           togglePassword()

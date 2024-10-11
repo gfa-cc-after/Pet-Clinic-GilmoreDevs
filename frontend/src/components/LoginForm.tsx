@@ -20,6 +20,7 @@ import { login } from "@/httpClient";
 import { passwordSchema } from "@/lib/utils/schemas";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { AxiosError } from "axios";
+import type { ActiveTab } from "./AuthenticationTabs";
 
 const FormSchema = z
   .object({
@@ -31,7 +32,11 @@ const FormSchema = z
 
 type FormValues = z.infer<typeof FormSchema>;
 
-const LoginForm = () => {
+type LoginFormProps = {
+  setActiveTab: React.Dispatch<React.SetStateAction<ActiveTab>>
+};
+
+const LoginForm = ({ setActiveTab }: LoginFormProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -61,7 +66,7 @@ const LoginForm = () => {
     <Form {...form} >
       <Card>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardHeader>
+          <CardHeader className="flex flex-col items-center">
             <h2 className="text-xl font-semibold">Login</h2>
             <p className="text-sm text-slate-600">
               Login with your account.
@@ -95,8 +100,10 @@ const LoginForm = () => {
               )}
             />
           </CardContent>
-          <CardFooter>
-            <Button type="submit">Submit</Button>
+          <CardFooter className="flex flex-col">
+            <Button type="submit" className="my-2 w-1/2">Login</Button>
+            <p className="text-sm text-slate-600 my-4"> - or if you have not - </p>
+            <Button className="my-2" variant="link" onClick={() => setActiveTab("register")}>Register</Button>
           </CardFooter>
         </form>
       </Card>

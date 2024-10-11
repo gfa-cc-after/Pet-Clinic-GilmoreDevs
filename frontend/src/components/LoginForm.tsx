@@ -21,19 +21,17 @@ import { passwordSchema } from "@/lib/utils/schemas";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { AxiosError } from "axios";
 import type { ActiveTab } from "./AuthenticationTabs";
+import type React from "react";
 
-const FormSchema = z
-  .object({
-    password: passwordSchema,
-    email: z
-      .string()
-      .email({ message: "Email must be a valid email address." }),
-  });
+const FormSchema = z.object({
+  password: passwordSchema,
+  email: z.string().email({ message: "Email must be a valid email address." }),
+});
 
 type FormValues = z.infer<typeof FormSchema>;
 
 type LoginFormProps = {
-  setActiveTab: React.Dispatch<React.SetStateAction<ActiveTab>>
+  setActiveTab: React.Dispatch<React.SetStateAction<ActiveTab>>;
 };
 
 const LoginForm = ({ setActiveTab }: LoginFormProps) => {
@@ -63,14 +61,12 @@ const LoginForm = ({ setActiveTab }: LoginFormProps) => {
   }
 
   return (
-    <Form {...form} >
+    <Form {...form}>
       <Card>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader className="flex flex-col items-center">
             <h2 className="text-xl font-semibold">Login</h2>
-            <p className="text-sm text-slate-600">
-              Login with your account.
-            </p>
+            <p className="text-sm text-slate-600">Login with your account.</p>
           </CardHeader>
           <CardContent>
             <FormField
@@ -101,13 +97,24 @@ const LoginForm = ({ setActiveTab }: LoginFormProps) => {
             />
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button type="submit" className="my-2 w-1/2">Login</Button>
-            <p className="text-sm text-slate-600 my-4"> - or if you have not - </p>
-            <Button className="my-2" variant="link" onClick={() => setActiveTab("register")}>Register</Button>
+            <Button type="submit" className="my-2 w-1/2">
+              Login
+            </Button>
+            <p className="text-sm text-slate-600 my-4">
+              {" "}
+              - or if you have not -{" "}
+            </p>
+            <Button
+              className="my-2"
+              variant="link"
+              onClick={() => setActiveTab("register")}
+            >
+              Register
+            </Button>
           </CardFooter>
         </form>
       </Card>
-    </Form >
+    </Form>
   );
 };
 

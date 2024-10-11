@@ -27,8 +27,7 @@ const MaskedPassword = ({
     setInputMask((mask) => (mask === "text" ? "password" : "text"));
 
   return (
-    <div
-      className="flex w-full space-x-2">
+    <div className="flex w-full space-x-2">
       <Input
         type={inputMask}
         placeholder={placeholder}
@@ -43,9 +42,10 @@ const MaskedPassword = ({
         className="flex items-center justify-center"
         variant="secondary"
         onClick={(event) => {
-          event.preventDefault()
-          togglePassword()
-        }}>
+          event.preventDefault();
+          togglePassword();
+        }}
+      >
         {inputMask === "text" ? visible : hidden}
       </Button>
     </div>

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { usePetClinicState } from "../state";
 import { AuthenticationTabs } from "@/components/AuthenticationTabs";
 
-
 export function Main() {
   const { auth } = usePetClinicState();
   const isAuthenticated = auth.token !== null;

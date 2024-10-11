@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MaskedPassword } from "./MaskedPassword";
 
 const passwordSchema = z
   .string()
@@ -98,7 +99,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <MaskedPassword  {...field} />
               </FormControl>
               <FormDescription>Please enter your password.</FormDescription>
               <FormMessage />
@@ -112,7 +113,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password confirmation</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <MaskedPassword  {...field} />
               </FormControl>
               <FormDescription>
                 Please enter your password again.

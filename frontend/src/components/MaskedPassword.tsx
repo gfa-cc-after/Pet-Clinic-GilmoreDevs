@@ -11,20 +11,20 @@ type MaskedPasswordProps = {
   hidden?: ReactNode;
 } & ControllerRenderProps;
 
-const MaskedPassword = (
-  {
-    hidden = '🙈',
-    visible = '👁',
-    name,
-    onBlur,
-    onChange,
-    ref,
-    value,
-    disabled,
-    placeholder,
-  }: MaskedPasswordProps) => {
+const MaskedPassword = ({
+  hidden = "🙈",
+  visible = "👁",
+  name,
+  onBlur,
+  onChange,
+  ref,
+  value,
+  disabled,
+  placeholder,
+}: MaskedPasswordProps) => {
   const [inputMask, setInputMask] = useState<MaskedInputVariants>("password");
-  const togglePassword = () => setInputMask(mask => mask === "text" ? "password" : "text");
+  const togglePassword = () =>
+    setInputMask((mask) => (mask === "text" ? "password" : "text"));
 
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
@@ -38,9 +38,11 @@ const MaskedPassword = (
         value={value}
         disabled={disabled}
       />
-      <Button variant="ghost" onClick={togglePassword}>{inputMask === "text" ? visible : hidden}</Button>
+      <Button variant="ghost" onClick={togglePassword}>
+        {inputMask === "text" ? visible : hidden}
+      </Button>
     </div>
   );
-}
+};
 
 export { MaskedPassword };

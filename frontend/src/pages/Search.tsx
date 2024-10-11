@@ -6,7 +6,7 @@ import { type VetDetails, vetList } from "../httpClient";
 function Search() {
   const [searchWord, setSearchWord] = useState<string>("");
 
-  const [vets, setVets] = useState<VetDetails[]>([]);
+  const [_vets, setVets] = useState<VetDetails[]>([]);
   useEffect(() => {
     vetList(searchWord)
       .then((vetsResponse) => setVets(vetsResponse.vets))

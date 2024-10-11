@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MaskedPassword } from "./MaskedPassword";
+import { login } from "@/httpClient";
 
 const passwordSchema = z
   .string()
@@ -51,6 +52,8 @@ const FormSchema = z
     path: ["confirmPassword"],
   });
 
+type FormValues = z.infer<typeof FormSchema>;
+
 const LoginForm = () => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -62,15 +65,19 @@ const LoginForm = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: FormValues) {
+    try {
+      await login(data);
+    } catch (error) {
+      toast({
+        title: "You submitted the following values:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(error, null, 2)}</code>
+          </pre>
+        ),
+      });
+    }
   }
 
   return (
@@ -99,7 +106,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <MaskedPassword  {...field} />
+                <MaskedPassword {...field} />
               </FormControl>
               <FormDescription>Please enter your password.</FormDescription>
               <FormMessage />
@@ -113,7 +120,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password confirmation</FormLabel>
               <FormControl>
-                <MaskedPassword  {...field} />
+                <MaskedPassword {...field} />
               </FormControl>
               <FormDescription>
                 Please enter your password again.

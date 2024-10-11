@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { usePetClinicState } from "../state";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LoginForm } from "@/components/LoginForm";
+import { RegisterForm } from "@/components/RegisterForm";
 
 export function Main() {
   const { auth } = usePetClinicState();
@@ -10,14 +13,14 @@ export function Main() {
       <h1>Home</h1>
       <p>Welcome to Gilmore Devs Pet Clinic!</p>
       {!isAuthenticated && (
-        <>
-          <Link className={"links"} to="/login">
-            Login
-          </Link>
-          <Link className={"links"} to="/register">
-            Register
-          </Link>
-        </>
+        <Tabs defaultValue="account" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="account">Login</TabsTrigger>
+            <TabsTrigger value="password">Register</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account"><LoginForm /></TabsContent>
+          <TabsContent value="password"><RegisterForm /></TabsContent>
+        </Tabs>
       )}
       {isAuthenticated && (
         <>

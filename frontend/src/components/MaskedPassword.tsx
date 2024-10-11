@@ -12,8 +12,8 @@ type MaskedPasswordProps = {
 } & ControllerRenderProps;
 
 const MaskedPassword = ({
-  hidden = "🙈",
-  visible = "👁",
+  hidden = "👁",
+  visible = "🙈",
   name,
   onBlur,
   onChange,
@@ -27,7 +27,8 @@ const MaskedPassword = ({
     setInputMask((mask) => (mask === "text" ? "password" : "text"));
 
   return (
-    <div className="flex w-full max-w-sm items-center space-x-2">
+    <div
+      className="flex w-full space-x-2">
       <Input
         type={inputMask}
         placeholder={placeholder}
@@ -38,7 +39,13 @@ const MaskedPassword = ({
         value={value}
         disabled={disabled}
       />
-      <Button variant="ghost" onClick={togglePassword}>
+      <Button
+        className="flex items-center justify-center"
+        variant="ghost"
+        onClick={(event) => {
+          event.preventDefault()
+          togglePassword()
+        }}>
         {inputMask === "text" ? visible : hidden}
       </Button>
     </div>

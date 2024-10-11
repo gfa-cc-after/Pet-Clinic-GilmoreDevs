@@ -18,38 +18,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { MaskedPassword } from "./MaskedPassword";
 import { login } from "@/httpClient";
-
-const passwordSchema = z
-  .string()
-  .min(4, { message: "Password must be at least 4 characters long." })
-  .max(40, { message: "Password must be at most 40 characters long." })
-  .refine((v) => !/\s/.test(v), {
-    message: "Password cannot contain whitespace.",
-  })
-  .refine((v) => /[A-Z]/.test(v), {
-    message: "Password must contain at least one uppercase letter.",
-  })
-  .refine((v) => /\d/.test(v), {
-    message: "Password must contain at least one digit.",
-  })
-  .refine((v) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(v), {
-    message: "Password must contain at least one special character.",
-  })
-  .refine((v) => /[a-z]/.test(v), {
-    message: "Password must contain at least one lowercase letter.",
-  });
+import { passwordSchema } from "@/lib/utils/schemas";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 
 const FormSchema = z
   .object({
     password: passwordSchema,
-    confirmPassword: passwordSchema,
     email: z
       .string()
       .email({ message: "Email must be a valid email address." }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match.",
-    path: ["confirmPassword"],
   });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -61,7 +38,6 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
@@ -81,57 +57,49 @@ const LoginForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="your email" {...field} />
-              </FormControl>
-              <FormDescription>
-                Please enter your email address.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <MaskedPassword {...field} />
-              </FormControl>
-              <FormDescription>Please enter your password.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password confirmation</FormLabel>
-              <FormControl>
-                <MaskedPassword {...field} />
-              </FormControl>
-              <FormDescription>
-                Please enter your password again.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <Form {...form} >
+      <Card>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardHeader>
+            <h2 className="text-xl font-semibold">Login</h2>
+            <p className="text-sm text-slate-600">
+              Login with your account.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="your email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <MaskedPassword {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button type="submit">Submit</Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </Form >
   );
 };
 

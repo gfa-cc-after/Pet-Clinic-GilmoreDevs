@@ -125,12 +125,25 @@ const vetList = async (request: string) => {
   return response.data;
 };
 
+export type EmailValidationRequest = {
+  email: string;
+};
+
+export type EmailValidationResponse = {
+  valid: boolean;
+};
+
+const emailValidation = async (_request: EmailValidationRequest) => {
+  return { valid: false };
+};
+
 export {
   login,
   register,
   logout,
   updateProfile,
   deleteProfile,
+  emailValidation,
   vetList,
   petList,
   addPet,

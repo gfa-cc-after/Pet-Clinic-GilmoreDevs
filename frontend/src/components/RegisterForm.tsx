@@ -20,6 +20,9 @@ import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { AxiosError } from "axios";
 import type { ActiveTab } from "./AuthenticationTabs";
 import type React from "react";
+import { debouncedValidateEmail } from "@/lib/utils/debouncedValidate";
+import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const FormSchema = z
   .object({
@@ -44,6 +47,8 @@ type RegisterFormProps = {
 
 const RegisterForm = ({ setActiveTab }: RegisterFormProps) => {
   const { toast } = useToast();
+  const [isEmailValidationLoading, setIsEmailValidationLoading] =
+    useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -114,7 +119,34 @@ const RegisterForm = ({ setActiveTab }: RegisterFormProps) => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="your email" {...field} />
+                    <div className="flex flex-row">
+                      <Input
+                        placeholder="your email"
+                        {...field}
+                        onChange={async (e) => {
+                          setIsEmailValidationLoading(true);
+                          field.onChange(e);
+                          const result = await debouncedValidateEmail({
+                            email: e.target.value,
+                          });
+                          if (result.valid) {
+                            form.setError("email", {
+                              type: "manual",
+                              message: "",
+                            });
+                          } else {
+                            form.setError("email", {
+                              type: "manual",
+                              message: "Email is already in use.",
+                            });
+                          }
+                          setIsEmailValidationLoading(false);
+                        }}
+                      />
+                      {isEmailValidationLoading && (
+                        <ReloadIcon className="mr-2 h-10 w-10 animate-spin" />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

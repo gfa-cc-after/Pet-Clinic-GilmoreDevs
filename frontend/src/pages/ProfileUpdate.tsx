@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import type { ChangeEvent, FormEvent } from "react";
 import { PasswordStrengthValidator } from "../components/PasswordStrengthValidator";
 import {
@@ -72,10 +72,10 @@ export function ProfileUpdate() {
           required={true}
         />
         <PasswordStrengthValidator password={user.password} />
-        <Button colorScheme="green" type="submit">
+        <Button variant="default" type="submit">
           Save
         </Button>
-        <Button colorScheme="blue" type="button" onClick={() => navigate("/")}>
+        <Button variant="destructive" type="button" onClick={() => navigate("/")}>
           Discard
         </Button>
       </form>

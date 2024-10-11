@@ -1,4 +1,6 @@
-import { Button, useToast } from "@chakra-ui/react";
+// import { Button, useToast } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button"
+
 import { AxiosError } from "axios";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
@@ -19,7 +21,7 @@ export function Login() {
   });
 
   const navigate = useNavigate();
-  const toast = useToast();
+  // const toast = useToast();
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,23 +31,23 @@ export function Login() {
       navigate("/");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          title: "Cannot login 🫣.",
-          description:
-            error.response?.data.error ||
-            "Unknown network error, please contact support.",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot login 🫣.",
+        //   description:
+        //     error.response?.data.error ||
+        //     "Unknown network error, please contact support.",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       } else {
-        toast({
-          title: "Cannot login.",
-          description: "Cannot login user",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot login.",
+        //   description: "Cannot login user",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       }
     }
   };
@@ -80,7 +82,7 @@ export function Login() {
           autoComplete="current-password"
           required={true}
         />
-        <Button colorScheme="purple" type="submit">
+        <Button variant="default" type="submit">
           Login
         </Button>
       </form>

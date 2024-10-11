@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { usePetClinicState } from "../state.ts";
 
@@ -29,7 +29,7 @@ export function ProfileDetail() {
         Profile update
       </Link>
       <Button
-        style={{ backgroundColor: "red" }}
+        variant="destructive"
         type="button"
         onClick={() => navigate("/delete-profile")}
       >

@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button.tsx";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { type PetDetails, petList } from "../httpClient.ts";
@@ -102,7 +102,7 @@ const PetList = () => {
         <p>No pets registered.</p>
       )}
       <Button
-        colorScheme="blue"
+        variant="default"
         type="button"
         onClick={() => navigate("/add-pet")}
       >

@@ -1,5 +1,5 @@
-import { Button, useToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
+import { Button } from "@/components/ui/button"
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ function AddPet() {
     setPet({ ...pet, [name]: value });
   };
 
-  const toast = useToast();
+  // const toast = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -28,32 +28,32 @@ function AddPet() {
       const petToSubmit = { ...pet, birthDate: new Date(pet.birthDate) };
       await addPet(petToSubmit);
       setPet({ name: "", breed: "", sex: "", birthDate: "" });
-      toast({
-        title: "Pet Added.",
-        description: "Pet added successfully",
-        status: "success",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+      // toast({
+      //   title: "Pet Added.",
+      //   description: "Pet added successfully",
+      //   status: "success",
+      //   duration: 2234.33333333,
+      //   isClosable: true,
+      // });
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          title: "Cannot add pet 🫣.",
-          description:
-            error.response?.data.error ||
-            "Unknown network error, please contact support.",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot add pet 🫣.",
+        //   description:
+        //     error.response?.data.error ||
+        //     "Unknown network error, please contact support.",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       } else {
-        toast({
-          title: "Cannot add.",
-          description: "Cannot add pet",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot add.",
+        //   description: "Cannot add pet",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       }
     }
   };
@@ -96,10 +96,10 @@ function AddPet() {
           value={pet.birthDate}
           onChange={handleChange}
         />
-        <Button colorScheme="purple" type="submit">
+        <Button variant="default" type="submit">
           Add Pet
         </Button>
-        <Button colorScheme="blue" type="button" onClick={() => navigate("/")}>
+        <Button variant="ghost" type="button" onClick={() => navigate("/")}>
           Discard
         </Button>
       </form>

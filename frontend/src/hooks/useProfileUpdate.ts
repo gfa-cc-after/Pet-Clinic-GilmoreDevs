@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../httpClient";
@@ -20,7 +19,7 @@ type ProfileUpdateState = {
 const successUrl = "/login" as const;
 
 const useProfileUpdateState = () => {
-  const toast = useToast();
+  // const toast = useToast();
   const navigate = useNavigate();
   const {
     auth: { user: stateUser },
@@ -57,22 +56,22 @@ const useProfileUpdateState = () => {
         lastName: state.user.lastName,
         password: state.user.password,
       });
-      toast({
-        title: "User profile updated.",
-        description: "User profile updated successfully",
-        status: "success",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+      // toast({
+      //   title: "User profile updated.",
+      //   description: "User profile updated successfully",
+      //   status: "success",
+      //   duration: 2234.33333333,
+      //   isClosable: true,
+      // });
       navigate(successUrl);
     } catch (_error) {
-      toast({
-        title: "Cannot update profile.",
-        description: "Unable to update profile",
-        status: "error",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+      // toast({
+      //   title: "Cannot update profile.",
+      //   description: "Unable to update profile",
+      //   status: "error",
+      //   duration: 2234.33333333,
+      //   isClosable: true,
+      // });
     }
   };
 

@@ -1,4 +1,4 @@
-import { Button, useToast } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { deleteProfile } from "../httpClient.ts";
@@ -7,7 +7,7 @@ import { usePetClinicState } from "../state.ts";
 export function ProfileDeletion() {
   const logout = usePetClinicState((state) => state.logout);
   const navigate = useNavigate();
-  const toast = useToast();
+  // const toast = useToast();
   const routChange = () => {
     const path = "/profile";
     navigate(path);
@@ -19,32 +19,32 @@ export function ProfileDeletion() {
       await deleteProfile();
       logout();
       navigate("/");
-      toast({
-        title: "Profile deleted.",
-        description: "Profile has been deleted",
-        status: "success",
-        duration: 2234.33333333,
-        isClosable: true,
-      });
+      // toast({
+      //   title: "Profile deleted.",
+      //   description: "Profile has been deleted",
+      //   status: "success",
+      //   duration: 2234.33333333,
+      //   isClosable: true,
+      // });
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          title: "Cannot delete profile 🫣.",
-          description:
-            error.response?.data.error ||
-            "Unknown network error, please contact support.",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot delete profile 🫣.",
+        //   description:
+        //     error.response?.data.error ||
+        //     "Unknown network error, please contact support.",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       } else {
-        toast({
-          title: "Cannot delete profile.",
-          description: "Unable to delete profile",
-          status: "error",
-          duration: 2234.33333333,
-          isClosable: true,
-        });
+        // toast({
+        //   title: "Cannot delete profile.",
+        //   description: "Unable to delete profile",
+        //   status: "error",
+        //   duration: 2234.33333333,
+        //   isClosable: true,
+        // });
       }
     }
   };
@@ -60,14 +60,14 @@ export function ProfileDeletion() {
       <Button
         type="button"
         data-testid="delete-profile-button"
-        style={{ backgroundColor: "red", margin: "10px" }}
+        variant="destructive"
         onClick={handleDeletion}
       >
         Yes, delete it!
       </Button>
       <Button
         type="button"
-        style={{ backgroundColor: "green", margin: "10px" }}
+        variant="default"
         onClick={routChange}
       >
         Nope, take me back!

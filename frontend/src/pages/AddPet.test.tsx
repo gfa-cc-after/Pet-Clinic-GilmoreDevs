@@ -1,4 +1,3 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
@@ -14,11 +13,9 @@ describe("AddPet Component", () => {
   test("renders AddPet form and submits data", async () => {
     // Arrange
     render(
-      <ChakraProvider>
-        <BrowserRouter>
-          <AddPet />
-        </BrowserRouter>
-      </ChakraProvider>,
+      <BrowserRouter>
+        <AddPet />
+      </BrowserRouter>,
     );
 
     // Act

@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+// import { ChakraProvider } from "@chakra-ui/react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { type Mock, describe, expect, test, vi } from "vitest";
@@ -28,11 +28,10 @@ describe("PetList Component", () => {
     (petList as Mock).mockResolvedValueOnce(mockPets);
 
     render(
-      <ChakraProvider>
-        <BrowserRouter>
-          <PetList />
-        </BrowserRouter>
-      </ChakraProvider>,
+
+      <BrowserRouter>
+        <PetList />
+      </BrowserRouter>,
     );
 
     // Assert
@@ -56,11 +55,9 @@ describe("PetList Component", () => {
     (petList as Mock).mockResolvedValueOnce({ pets: [] });
 
     render(
-      <ChakraProvider>
-        <BrowserRouter>
-          <PetList />
-        </BrowserRouter>
-      </ChakraProvider>,
+      <BrowserRouter>
+        <PetList />
+      </BrowserRouter>,
     );
 
     // Assert

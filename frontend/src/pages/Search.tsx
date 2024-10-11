@@ -1,4 +1,5 @@
-import { Button, FormControl, Select } from "@chakra-ui/react";
+// import {  FormControl, Select } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { type VetDetails, vetList } from "../httpClient";
 
@@ -17,16 +18,16 @@ function Search() {
   return (
     <>
       <h1>Search</h1>
-      <FormControl>
-        <input onChange={(event) => setSearchWord(event.target.value)} />
-        <Select placeholder="Select vet">
+      {/* <FormControl> */}
+      <input onChange={(event) => setSearchWord(event.target.value)} />
+      {/* <Select placeholder="Select vet">
           {vets.map((vetDetails) => (
             <option key={vetDetails.email}>
               {vetDetails.firstName} {vetDetails.lastName}
             </option>
           ))}
-        </Select>
-      </FormControl>
+        </Select> */}
+      {/* </FormControl> */}
       <Button type="submit">Search</Button>
     </>
   );

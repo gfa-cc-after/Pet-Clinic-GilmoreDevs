@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
 import { usePetClinicState } from "../state";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoginForm } from "@/components/LoginForm";
-import { RegisterForm } from "@/components/RegisterForm";
 import { AuthenticationTabs } from "@/components/AuthenticationTabs";
 
 

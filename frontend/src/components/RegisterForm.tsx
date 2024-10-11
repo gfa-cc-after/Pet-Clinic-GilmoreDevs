@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +19,7 @@ import { MaskedPassword } from "./MaskedPassword";
 import { register } from "@/httpClient";
 import { passwordSchema, nameSchema } from "@/lib/utils/schemas";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { AxiosError } from "axios";
 
 const FormSchema = z
   .object({
@@ -55,14 +55,15 @@ const RegisterForm = () => {
     try {
       await register(data);
     } catch (error) {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(error, null, 2)}</code>
-          </pre>
-        ),
-      });
+      if (error instanceof AxiosError && error.response) {
+        toast({
+          variant: "destructive",
+          title: "Error during registration",
+          description: (
+            <p>{error.response.data?.error || "Unknown error"}</p>
+          ),
+        });
+      }
     }
   }
 

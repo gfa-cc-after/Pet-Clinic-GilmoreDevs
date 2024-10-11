@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +19,7 @@ import { MaskedPassword } from "./MaskedPassword";
 import { login } from "@/httpClient";
 import { passwordSchema } from "@/lib/utils/schemas";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { AxiosError } from "axios";
 
 const FormSchema = z
   .object({
@@ -45,14 +45,15 @@ const LoginForm = () => {
     try {
       await login(data);
     } catch (error) {
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(error, null, 2)}</code>
-          </pre>
-        ),
-      });
+      if (error instanceof AxiosError && error.response) {
+        toast({
+          variant: "destructive",
+          title: "Error during logging in",
+          description: (
+            <p>{error.response.data?.error || "Unknown error, try again..."}</p>
+          ),
+        });
+      }
     }
   }
 

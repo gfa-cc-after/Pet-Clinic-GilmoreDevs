@@ -44,7 +44,7 @@
     "react-router-dom": "^6.23.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
-    "vite": "^5.4.6",
+    "vite": "^5.4.14",
     "vitest": "^2.1.1",
     "vitest-dom": "^0.1.1"
   }
